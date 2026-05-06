@@ -43,9 +43,9 @@ const Login = () => {
       <Card className="w-full max-w-md shadow-elegant border-border/60">
         <CardHeader className="text-center">
           <div className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground font-bold text-xl">
-            A
+            N
           </div>
-          <CardTitle>Atlas Cars Admin</CardTitle>
+          <CardTitle>NAYS CAR Admin</CardTitle>
           <CardDescription>Connectez-vous a votre compte</CardDescription>
         </CardHeader>
 

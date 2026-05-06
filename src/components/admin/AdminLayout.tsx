@@ -25,8 +25,8 @@ export const AdminLayout = () => {
       <aside className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-sidebar text-sidebar-foreground transform transition-transform ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}>
         <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
           <span className="font-bold text-lg flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">A</span>
-            Atlas Admin
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">N</span>
+            NAYS CAR Admin
           </span>
         </div>
         <nav className="p-3 space-y-1">
