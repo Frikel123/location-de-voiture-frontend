@@ -1,0 +1,315 @@
+# 🚗 Car Rental API – Full Backend Documentation
+
+## 🌐 Base URL
+
+```
+http://localhost:3000
+```
+
+---
+
+# 🔐 AUTH (Admin)
+
+## ➤ POST /auth/login
+
+### Description:
+
+Authentifie un admin et retourne un token JWT.
+
+### Request:
+
+```json
+{
+  "email": "admin@test.com",
+  "password": "123456"
+}
+```
+
+### Response (200):
+
+```json
+{
+  "token": "JWT_TOKEN"
+}
+```
+
+### Errors:
+
+* 401 Unauthorized → email ou password incorrect
+
+---
+
+# 🚗 CARS
+
+## ➤ GET /cars
+
+### Description:
+
+Retourne la liste de toutes les voitures
+
+### Response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Clio 4",
+    "price": 250,
+    "image": "http://localhost:3000/uploads/clio.jpg"
+  }
+]
+```
+
+---
+
+## ➤ GET /cars/:id
+
+### Description:
+
+Retourne une voiture par ID
+
+### Response:
+
+```json
+{
+  "id": 1,
+  "name": "Clio 4",
+  "price": 250,
+  "image": "http://localhost:3000/uploads/clio.jpg"
+}
+```
+
+---
+
+## ➤ POST /cars
+
+### Description:
+
+Créer une nouvelle voiture
+
+### Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+### Request:
+
+```json
+{
+  "name": "Dacia Logan",
+  "price": 300,
+  "image": "http://..."
+}
+```
+
+### Response:
+
+```json
+{
+  "id": 2,
+  "name": "Dacia Logan",
+  "price": 300,
+  "image": "http://..."
+}
+```
+
+---
+
+## ➤ PUT /cars/:id
+
+### Description:
+
+Modifier une voiture
+
+### Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+### Request:
+
+```json
+{
+  "name": "Updated Car",
+  "price": 350
+}
+```
+
+### Response:
+
+```json
+{
+  "id": 1,
+  "name": "Updated Car",
+  "price": 350,
+  "image": "..."
+}
+```
+
+---
+
+## ➤ DELETE /cars/:id
+
+### Description:
+
+Supprimer une voiture
+
+### Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+### Response:
+
+```json
+{
+  "message": "Car deleted successfully"
+}
+```
+
+---
+
+# 📅 BOOKINGS
+
+## ➤ GET /bookings
+
+### Description:
+
+Retourne toutes les réservations
+
+### Response:
+
+```json
+[
+  {
+    "id": 1,
+    "customerName": "Mostafa",
+    "phone": "0612345678",
+    "startDate": "2026-05-10",
+    "endDate": "2026-05-12",
+    "totalPrice": 500,
+    "car": {
+      "id": 1,
+      "name": "Clio 4"
+    }
+  }
+]
+```
+
+---
+
+## ➤ POST /bookings
+
+### Description:
+
+Créer une réservation
+
+### Request:
+
+```json
+{
+  "carId": 1,
+  "customerName": "Mostafa",
+  "phone": "0612345678",
+  "startDate": "2026-05-10",
+  "endDate": "2026-05-12"
+}
+```
+
+### Response:
+
+```json
+{
+  "id": 1,
+  "customerName": "Mostafa",
+  "phone": "0612345678",
+  "startDate": "2026-05-10",
+  "endDate": "2026-05-12",
+  "totalPrice": 500
+}
+```
+
+---
+
+## ➤ DELETE /bookings/:id
+
+### Description:
+
+Supprimer une réservation
+
+### Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+### Response:
+
+```json
+{
+  "message": "Booking deleted successfully"
+}
+```
+
+---
+
+# 🔒 AUTHORIZATION
+
+## Protected routes:
+
+* POST /cars
+* PUT /cars/:id
+* DELETE /cars/:id
+* DELETE /bookings/:id
+
+### Header obligatoire:
+
+```
+Authorization: Bearer YOUR_TOKEN
+```
+
+---
+
+# 📊 BUSINESS LOGIC
+
+## ➤ Total Price (booking)
+
+Calcul automatique:
+
+```
+totalPrice = number_of_days * car.price
+```
+
+---
+
+# 🧩 FRONTEND EXPECTATIONS
+
+L’Admin Dashboard doit permettre:
+
+## 🔐 Auth
+
+* Login admin
+* Stocker JWT
+* Routes protégées
+
+## 📊 Dashboard
+
+* Nombre de voitures
+* Nombre de réservations
+* Total revenue
+
+## 🚗 Cars
+
+* List
+* Add
+* Edit
+* Delete
+
+## 📅 Bookings
+
+* List
+* Delete
+* Voir détails
