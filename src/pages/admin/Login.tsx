@@ -24,11 +24,11 @@ const Login = () => {
     try {
       const data = await api.post<LoginResponse>("/auth/login", { email, password });
 
-      if (!data.token) {
+      if (!data.accessToken || !data.refreshToken) {
         throw new Error("Token manquant");
       }
 
-      login(data.token);
+      login(data);
       toast.success("Connecte");
       navigate("/admin/dashboard", { replace: true });
     } catch (err) {

@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
 import { CarsSection } from "@/components/site/CarsSection";
+import { Testimonials } from "@/components/site/Testimonials";
+import { TrustSection } from "@/components/site/TrustSection";
 import { WhyUs } from "@/components/site/WhyUs";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
@@ -12,8 +14,10 @@ const Index = () => {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <TrustSection />
         <CarsSection />
         <WhyUs />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />

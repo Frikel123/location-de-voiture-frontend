@@ -1,9 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { DEMO_MODE } from "@/lib/demo";
 
 export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, isAdmin, loading } = useAuth();
+
+  if (DEMO_MODE) return children;
 
   if (loading) {
     return (
