@@ -3,7 +3,7 @@
 ## 🌐 Base URL
 
 ```
-http://localhost:3000
+API_BASE_URL
 ```
 
 ---
@@ -55,7 +55,7 @@ Retourne la liste de toutes les voitures
     "id": 1,
     "name": "Clio 4",
     "price": 250,
-    "image": "http://localhost:3000/uploads/clio.jpg"
+    "image": "API_BASE_URL/uploads/clio.jpg"
   }
 ]
 ```
@@ -75,7 +75,7 @@ Retourne une voiture par ID
   "id": 1,
   "name": "Clio 4",
   "price": 250,
-  "image": "http://localhost:3000/uploads/clio.jpg"
+  "image": "API_BASE_URL/uploads/clio.jpg"
 }
 ```
 

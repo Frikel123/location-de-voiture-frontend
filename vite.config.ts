@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  envPrefix: ["VITE_", "NEXT_PUBLIC_"],
   server: {
     host: "::",
     port: 8080,
@@ -13,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     },
     proxy: {
       "/api": {
-        target: process.env.VITE_API_PROXY_TARGET ?? "http://localhost:3000",
+        target: process.env.VITE_API_PROXY_TARGET ?? process.env.VITE_API_URL ?? "https://location-de-voiture-backend-production-95aa.up.railway.app",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),

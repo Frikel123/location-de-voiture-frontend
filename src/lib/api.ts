@@ -148,7 +148,8 @@ export type LoginResponse = {
   token?: string;
 };
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "/api";
+import { API_URL, API_URL_MISSING_MESSAGE } from "@/lib/api-config";
+
 const UNAUTHORIZED_EVENT = "auth:unauthorized";
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
@@ -233,13 +234,17 @@ const notifyUnauthorized = () => {
 };
 
 const refreshAccessToken = async () => {
+  if (!API_URL) {
+    throw new ApiError(API_URL_MISSING_MESSAGE, 500);
+  }
+
   const refreshToken = getStoredRefreshToken();
 
   if (!refreshToken) {
     throw new ApiError("Session expiree. Veuillez vous reconnecter.", 401);
   }
 
-  const res = await fetch(`${BASE_URL}/auth/refresh`, {
+  const res = await fetch(`${API_URL}/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
@@ -267,7 +272,17 @@ const getFreshAccessToken = () => {
 export const refreshAuthSession = () => getFreshAccessToken();
 
 const request = async <T>(endpoint: string, init: RequestInit = {}, retry = true): Promise<T> => {
-  const res = await fetch(`${BASE_URL}${endpoint}`, init);
+  if (!API_URL) {
+    throw new ApiError(API_URL_MISSING_MESSAGE, 500);
+  }
+
+  let res: Response;
+
+  try {
+    res = await fetch(`${API_URL}${endpoint}`, init);
+  } catch {
+    throw new ApiError("Impossible de joindre le serveur API. Verifiez l'URL du backend.", 0);
+  }
 
   if (res.status !== 401) {
     return parseResponse<T>(res);

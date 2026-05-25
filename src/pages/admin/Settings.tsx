@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { getStoredAccessToken } from "@/lib/api";
+import { API_URL } from "@/lib/api-config";
 import { Bell, Building2, CheckCircle2, Globe2, LogOut, Moon, Save, ShieldCheck, Sun, UserRound } from "lucide-react";
 import { toast } from "sonner";
 
@@ -48,7 +49,7 @@ const Settings = () => {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState<SettingsState>(defaultSettings);
-  const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+  const apiUrl = API_URL || "Non configuree";
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
