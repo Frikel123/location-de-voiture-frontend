@@ -9,7 +9,7 @@ import {
   saveAuthSession,
   UNAUTHORIZED_EVENT,
 } from "@/lib/api";
-import { DEMO_MODE, DEMO_USER } from "@/lib/demo";
+import { AUTH_BYPASS, DEMO_MODE, DEMO_USER } from "@/lib/demo";
 
 interface User {
   id: string;
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     let active = true;
 
     const restoreSession = async () => {
-      if (DEMO_MODE) {
+      if (AUTH_BYPASS) {
         setUser(DEMO_USER);
         setIsAdmin(true);
         setLoading(false);
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const handleUnauthorized = () => {
-      if (DEMO_MODE) return;
+      if (AUTH_BYPASS) return;
 
       clearAuthSession();
       setUser(null);
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [navigate]);
 
   const login = (session: LoginResponse) => {
-    if (DEMO_MODE) {
+    if (AUTH_BYPASS) {
       setUser(DEMO_USER);
       setIsAdmin(true);
       return;
@@ -158,7 +158,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = () => {
-    if (DEMO_MODE) {
+    if (AUTH_BYPASS) {
       setUser(DEMO_USER);
       setIsAdmin(true);
       return;

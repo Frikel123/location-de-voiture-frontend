@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { api, LoginResponse } from "@/lib/api";
+import { AUTH_BYPASS } from "@/lib/demo";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,6 +17,12 @@ const Login = () => {
   const [email, setEmail] = useState("admin@test.com");
   const [password, setPassword] = useState("123456");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (AUTH_BYPASS) {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
