@@ -52,6 +52,7 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   insuranceIncluded: true,
   signedAt: "",
   notes: "",
+  signature: null,
 });
 
 export const buildContractNumber = () => {

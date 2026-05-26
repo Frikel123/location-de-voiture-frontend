@@ -21,7 +21,8 @@ const unwrapContractsResponse = (response: ContractsApiResponse): Contract[] => 
 
 export const normalizeContract = (raw: any): Contract => {
   const status = normalizeContractStatus(raw.status ?? raw.contractStatus ?? "Brouillon");
-  const clientSignature = raw.clientSignature ?? raw.client_signature ?? raw.signatureClient ?? raw.signature_client ?? null;
+  const clientSignature =
+    raw.signature ?? raw.clientSignature ?? raw.client_signature ?? raw.signatureClient ?? raw.signature_client ?? null;
   const agencySignature = raw.agencySignature ?? raw.agency_signature ?? raw.signatureAdmin ?? raw.signature_admin ?? null;
   const qrCode = raw.qrCode ?? raw.qr_code ?? raw.qrUrl ?? raw.qr_url ?? null;
 
@@ -67,6 +68,7 @@ export const normalizeContract = (raw: any): Contract => {
     notes: raw.notes ?? "",
     signatureClient: clientSignature,
     signatureAdmin: agencySignature,
+    signature: clientSignature,
     clientSignature,
     agencySignature,
     documents: raw.documents ?? [],

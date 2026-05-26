@@ -90,6 +90,7 @@ export type Contract = {
   notes?: string;
   signatureClient?: string | null;
   signatureAdmin?: string | null;
+  signature?: string | null;
   clientSignature?: string | null;
   agencySignature?: string | null;
   documents?: ContractDocument[];
@@ -138,6 +139,7 @@ export type ContractPayload = {
   notes?: string;
   signatureClient?: string | null;
   signatureAdmin?: string | null;
+  signature?: string | null;
   clientSignature?: string | null;
   agencySignature?: string | null;
 };
