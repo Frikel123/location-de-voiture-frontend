@@ -247,8 +247,8 @@ const Contracts = () => {
   const downloadPdf = async (contract: Contract) => {
     const clientSignature = contract.clientSignature ?? contract.signatureClient;
     const agencySignature = contract.agencySignature ?? contract.signatureAdmin;
-    if (!hasSignature(clientSignature) || !hasSignature(agencySignature)) {
-      toast.error("PDF bloque: les signatures client et agence sont obligatoires.");
+    if (!hasSignature(clientSignature)) {
+      toast.error("PDF bloque: la signature client est obligatoire.");
       return;
     }
 

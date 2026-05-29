@@ -82,6 +82,8 @@ const ContractDetail = () => {
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,
       signedAt: signedAt || (status === "Signé" ? new Date().toISOString() : ""),
+      signatureIp: contract.signatureIp ?? "",
+      signatureStatus: contract.signatureStatus ?? (clientSignature ? "signed" : "unsigned"),
       notes,
       signatureClient: clientSignature,
       signatureAdmin: adminSignature,
@@ -114,8 +116,8 @@ const ContractDetail = () => {
 
   const downloadPdf = async () => {
     if (!previewContract) return;
-    if (!hasSignature(previewContract.signatureClient) || !hasSignature(previewContract.signatureAdmin)) {
-      toast.error("PDF bloque: les signatures client et agence sont obligatoires.");
+    if (!hasSignature(previewContract.signatureClient)) {
+      toast.error("PDF bloque: la signature client est obligatoire.");
       return;
     }
 
@@ -207,6 +209,16 @@ const ContractDetail = () => {
                 <CardTitle>Controle du contrat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé" ? (
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+                    <p className="font-semibold">Contrat signe</p>
+                    <p className="mt-1">Date: {contract.signedAt || "-"} | IP client: {contract.signatureIp || "-"}</p>
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                    Contrat non signe
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label>Statut</Label>
                   <Select value={status} onValueChange={(value) => setStatus(value as ContractStatus)}>

@@ -87,6 +87,8 @@ export type Contract = {
   insurancePolicyNumber?: string;
   insuranceIncluded?: boolean;
   signedAt?: string;
+  signatureIp?: string | null;
+  signatureStatus?: string | null;
   notes?: string;
   signatureClient?: string | null;
   signatureAdmin?: string | null;
@@ -136,6 +138,8 @@ export type ContractPayload = {
   insurancePolicyNumber?: string;
   insuranceIncluded?: boolean;
   signedAt?: string;
+  signatureIp?: string;
+  signatureStatus?: string;
   notes?: string;
   signatureClient?: string | null;
   signatureAdmin?: string | null;

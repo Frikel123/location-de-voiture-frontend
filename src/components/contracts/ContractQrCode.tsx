@@ -19,7 +19,7 @@ export const ContractQrCode = ({
   size?: number;
 }) => {
   const url = getContractPublicUrlFromContract(contract);
-  const hasValidUrl = /^https?:\/\/.+\/contracts\/.+/i.test(url);
+  const hasValidUrl = /^https?:\/\/.+\/signature\/.+/i.test(url);
 
   return (
     <div className={cn("inline-flex w-full max-w-[220px] flex-col items-center gap-2 rounded-2xl bg-white p-3 text-slate-950 shadow-sm", className)}>
@@ -31,7 +31,7 @@ export const ContractQrCode = ({
           includeMargin
           bgColor="#ffffff"
           fgColor="#020617"
-          title={`Verification contrat ${contract.contractNumber}`}
+          title={`Signature contrat ${contract.contractNumber}`}
           imageSettings={{
             src: logoDataUrl,
             height: Math.round(size * 0.2),

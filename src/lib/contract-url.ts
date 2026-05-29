@@ -20,7 +20,7 @@ export const getContractPublicUrl = (contractNumber: string) => {
   const configuredUrl = import.meta.env.VITE_PUBLIC_APP_URL as string | undefined;
   const origin = normalizeOrigin(configuredUrl) || getDevelopmentOrigin();
 
-  return `${origin}/contracts/verify/${encodeURIComponent(contractNumber)}`;
+  return `${origin}/signature/${encodeURIComponent(contractNumber)}`;
 };
 
 export const getContractPublicUrlFromContract = (contract: Pick<Contract, "contractNumber" | "contractToken" | "qrUrl">) =>

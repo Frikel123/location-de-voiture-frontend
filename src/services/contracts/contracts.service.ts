@@ -65,6 +65,8 @@ export const normalizeContract = (raw: any): Contract => {
     insurancePolicyNumber: raw.insurancePolicyNumber ?? raw.insurance_policy_number ?? "",
     insuranceIncluded: Boolean(raw.insuranceIncluded ?? raw.insurance_included ?? true),
     signedAt: raw.signedAt ?? raw.signed_at ?? "",
+    signatureIp: raw.signatureIp ?? raw.signature_ip ?? "",
+    signatureStatus: raw.signatureStatus ?? raw.signature_status ?? (clientSignature ? "signed" : "unsigned"),
     notes: raw.notes ?? "",
     signatureClient: clientSignature,
     signatureAdmin: agencySignature,
@@ -90,6 +92,10 @@ export const contractsService = {
   },
   get: async (id: string | number) => normalizeContract(await api.get<Contract>(`/contracts/${id}`)),
   verify: async (id: string | number) => normalizeContract(await api.get<Contract>(`/contracts/verify/${encodeURIComponent(String(id))}`)),
+  getSignatureContract: async (id: string | number) =>
+    normalizeContract(await api.get<Contract>(`/contracts/signature/${encodeURIComponent(String(id))}`)),
+  sign: async (id: string | number, signature: string) =>
+    normalizeContract(await api.post<Contract>(`/contracts/signature/${encodeURIComponent(String(id))}`, { signature })),
   create: async (payload: ContractPayload) => normalizeContract(await api.post<Contract>("/contracts", payload)),
   update: async (id: string | number, payload: ContractPayload) => normalizeContract(await api.put<Contract>(`/contracts/${id}`, payload)),
   remove: (id: string | number) => api.delete<{ message?: string }>(`/contracts/${id}`),

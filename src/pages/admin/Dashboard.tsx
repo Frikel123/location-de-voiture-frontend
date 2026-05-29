@@ -53,6 +53,7 @@ const Dashboard = () => {
     const occupancy = cars.length > 0 ? Math.round((occupiedCarIds.size / cars.length) * 100) : 0;
 
     const activeContracts = contracts.filter((contract) => normalizeContractStatus(contract.status) === "Confirmé");
+    const signedContracts = contracts.filter((contract) => contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé");
     const expiredContracts = contracts.filter(
       (contract) => normalizeContractStatus(contract.status) === "Terminé" || (new Date(contract.reservationEndDate) < now && normalizeContractStatus(contract.status) !== "Annulé")
     );
@@ -87,6 +88,7 @@ const Dashboard = () => {
       revenueMonths,
       bookingDays,
       activeContracts: activeContracts.length,
+      signedContracts: signedContracts.length,
       expiredContracts: expiredContracts.length,
       contractRevenue,
     };
@@ -100,6 +102,7 @@ const Dashboard = () => {
     { label: "Total voitures", value: cars.length, icon: Car, trend: "+12%", tone: "from-emerald-500 to-cyan-500" },
     { label: "Reservations actives", value: analytics.activeBookings.length, icon: CalendarDays, trend: "+8%", tone: "from-sky-500 to-indigo-500" },
     { label: "Contrats actifs", value: analytics.activeContracts, icon: Shield, trend: "+9%", tone: "from-cyan-500 to-sky-500" },
+    { label: "Contrats signes", value: analytics.signedContracts, icon: Shield, trend: "+9%", tone: "from-emerald-500 to-teal-500" },
     { label: "Contrats expirés", value: analytics.expiredContracts, icon: Sparkles, trend: "+4%", tone: "from-violet-500 to-fuchsia-500" },
     { label: "Revenus contrats", value: `${money(analytics.contractRevenue)} DH`, icon: Wallet, trend: "+18%", tone: "from-amber-500 to-orange-500" },
     { label: "Taux occupation", value: `${analytics.occupancy}%`, icon: Zap, trend: "+11%", tone: "from-rose-500 to-pink-500" },

@@ -23,6 +23,7 @@ const Contracts = lazy(() => import("./pages/admin/Contracts"));
 const ContractDetail = lazy(() => import("./pages/admin/ContractDetail"));
 const Settings = lazy(() => import("./pages/admin/Settings"));
 const PublicContractVerification = lazy(() => import("./pages/contracts/PublicContractVerification"));
+const PublicContractSignature = lazy(() => import("./pages/contracts/PublicContractSignature"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,7 @@ const App = () => (
               <Suspense fallback={<div className="min-h-screen bg-background p-8 text-sm text-muted-foreground">Chargement...</div>}>
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  <Route path="/signature/:id" element={<PublicContractSignature />} />
                   <Route path="/contracts/verify/:id" element={<PublicContractVerification />} />
                   <Route path="/contracts/:id" element={<PublicContractVerification />} />
                   <Route path="/admin/login" element={<Login />} />

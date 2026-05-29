@@ -37,6 +37,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
           </div>
           <p className="mt-3 text-sm text-slate-300">Emission: {formatDate(contract.createdAt)}</p>
           <p className="text-sm text-slate-300">Signature: {formatDate(contract.signedAt)}</p>
+          <p className="text-sm text-slate-300">Statut signature: {contract.signatureStatus === "signed" ? "Signe" : "Non signe"}</p>
         </div>
       </div>
     </header>
@@ -106,6 +107,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
       <section className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-2xl border border-border/70 p-4">
           <p className="text-sm font-semibold">Signature client</p>
+          <p className="mt-1 text-xs text-muted-foreground">Date: {formatDate(contract.signedAt)} | IP: {contract.signatureIp || "-"}</p>
           {clientSignature ? <img src={clientSignature} alt="Signature client" className="mt-4 h-24 w-full object-contain" /> : <div className="mt-12 border-t border-dashed" />}
         </div>
         <div className="rounded-2xl border border-border/70 p-4">

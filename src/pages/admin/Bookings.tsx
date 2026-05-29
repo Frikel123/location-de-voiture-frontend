@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAfter, isBefore, isWithinInterval, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { api, Booking, BookingPayload, Car } from "@/lib/api";
+import { api, Booking, BookingPayload, Car, Contract } from "@/lib/api";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useAdminSearch } from "@/components/admin/AdminSearchContext";
 import { Badge } from "@/components/ui/badge";
@@ -64,6 +64,11 @@ const Bookings = () => {
   const { data: cars = [], isLoading: carsLoading } = useQuery({
     queryKey: ["admin-cars"],
     queryFn: () => api.get<Car[]>("/cars"),
+  });
+
+  const { data: contracts = [] } = useQuery({
+    queryKey: ["admin-contracts-list"],
+    queryFn: () => api.get<Contract[]>("/contracts"),
   });
 
   const invalidateBookings = () => {
@@ -177,6 +182,7 @@ const Bookings = () => {
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, pageCount);
   const rows = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const selectedContract = selected ? contracts.find((contract) => Number(contract.bookingId) === selected.id) : null;
 
   return (
     <div className="space-y-6">
@@ -332,6 +338,13 @@ const Bookings = () => {
               <Detail label="Voiture" value={selected.car?.name ?? "-"} />
               <Detail label="Dates" value={`${selected.startDate} - ${selected.endDate}`} />
               <Detail label="Status" value={getStatus(selected)} />
+              <Detail label="Contrat" value={selectedContract?.contractNumber ?? "Non genere"} />
+              <Detail
+                label="Signature"
+                value={selectedContract?.signatureStatus === "signed" || selectedContract?.status === "Signé" ? "Contrat signe" : "Non signe"}
+              />
+              {selectedContract?.signedAt && <Detail label="Date signature" value={selectedContract.signedAt} />}
+              {selectedContract?.signatureIp && <Detail label="IP client" value={selectedContract.signatureIp} />}
               <Detail label="Prix total" value={`${selected.totalPrice} DH`} strong />
             </div>
           )}

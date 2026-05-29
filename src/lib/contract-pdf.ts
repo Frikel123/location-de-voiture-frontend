@@ -187,8 +187,8 @@ export const generateContractPdf = async (contract: Contract) => {
   const clientSignature = pdfContract.clientSignature ?? pdfContract.signatureClient;
   const agencySignature = pdfContract.agencySignature ?? pdfContract.signatureAdmin;
 
-  if (!isSignatureImage(clientSignature) || !isSignatureImage(agencySignature)) {
-    throw new Error("Les signatures client et agence sont obligatoires avant de generer le PDF.");
+  if (!isSignatureImage(clientSignature)) {
+    throw new Error("La signature client est obligatoire avant de generer le PDF.");
   }
 
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -321,16 +321,16 @@ export const generateContractPdf = async (contract: Contract) => {
   );
   y += 146;
 
-  sectionTitle(doc, "Verification numerique", margin, y);
+  sectionTitle(doc, "Signature numerique", margin, y);
   y += 16;
   card(doc, margin, y, contentWidth, 92);
   doc.addImage(qrCodeData, "PNG", margin + 16, y + 14, 64, 64);
   setFont(doc, "bold", 11, palette.ink);
-  doc.text("Scanner pour verifier l'authenticite du contrat", margin + 96, y + 34);
+  doc.text("Scanner pour signer ou consulter le contrat", margin + 96, y + 34);
   setFont(doc, "normal", 8, palette.muted);
   addWrapped(doc, publicUrl, margin + 96, y + 52, contentWidth - 116, 10);
   setFont(doc, "normal", 7.5, palette.muted);
-  doc.text("Le QR code ouvre la page publique de verification et confirme l'existence du contrat dans le systeme.", margin + 96, y + 76);
+  doc.text("Le QR code ouvre la page publique de signature electronique du contrat.", margin + 96, y + 76);
 
   footer(doc, pageWidth, pageHeight, pdfContract.contractNumber);
 
