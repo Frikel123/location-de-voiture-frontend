@@ -95,7 +95,7 @@ const Bookings = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "nayscar_reservations_export.csv";
+    link.download = "atlascars_reservations_export.csv";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

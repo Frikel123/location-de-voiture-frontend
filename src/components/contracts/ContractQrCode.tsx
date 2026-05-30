@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const logoDataUrl =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="#020617"/><text x="48" y="44" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#fff">NAYS</text><text x="48" y="62" text-anchor="middle" font-family="Arial" font-size="15" font-weight="700" fill="#38bdf8">CAR</text></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="#020617"/><text x="48" y="44" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#fff">ATLAS</text><text x="48" y="62" text-anchor="middle" font-family="Arial" font-size="15" font-weight="700" fill="#38bdf8">CARS</text></svg>`,
   );
 
 export const ContractQrCode = ({

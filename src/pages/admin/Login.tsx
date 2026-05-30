@@ -52,7 +52,7 @@ const Login = () => {
           <div className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground font-bold text-xl">
             N
           </div>
-          <CardTitle>NAYS CAR Admin</CardTitle>
+          <CardTitle>Atlas Cars Admin</CardTitle>
           <CardDescription>Connectez-vous a votre compte</CardDescription>
         </CardHeader>
 

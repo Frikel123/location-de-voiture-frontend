@@ -46,11 +46,15 @@ export const Navbar = () => {
             : "border-white/10 bg-white/10 text-white backdrop-blur-xl"
         }`}
       >
-        <a href="#accueil" className="group flex items-center gap-3 font-bold text-xl">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-elegant transition-transform group-hover:scale-105">
-            N
+        <a href="#accueil" className="group flex items-center gap-3 font-bold">
+          <span className="relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-gradient-primary text-primary-foreground shadow-elegant ring-1 ring-white/30 transition-transform group-hover:scale-105">
+            <span className="absolute inset-x-1 top-1 h-px bg-white/60" />
+            AC
           </span>
-          <span className="tracking-tight">NAYS CAR</span>
+          <span className="leading-none">
+            <span className="block text-lg tracking-tight sm:text-xl">Atlas</span>
+            <span className="block text-xs font-semibold uppercase tracking-[0.28em] text-primary">Cars</span>
+          </span>
         </a>
 
         <nav className="hidden items-center gap-2 md:flex">

@@ -30,12 +30,12 @@ type SettingsState = {
   weeklyReport: boolean;
 };
 
-const storageKey = "nays-car-admin-settings";
+const storageKey = "atlas-cars-admin-settings";
 
 const defaultSettings: SettingsState = {
-  companyName: "NAYS CAR",
-  phone: "+212 6 00 00 00 00",
-  whatsapp: "+212 6 00 00 00 00",
+  companyName: "Atlas Cars",
+  phone: "06 50 95 86 75",
+  whatsapp: "06 50 95 86 75",
   address: "Casablanca, Maroc",
   currency: "MAD",
   language: "fr",

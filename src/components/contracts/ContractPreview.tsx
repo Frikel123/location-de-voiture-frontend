@@ -26,7 +26,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
     <header className="bg-slate-950 px-6 py-6 text-white print:bg-slate-950">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.32em] text-cyan-200">NAYS CAR</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-cyan-200">ATLAS CARS</p>
           <h2 className="mt-3 text-2xl font-semibold">Contrat de location</h2>
           <p className="mt-1 text-sm text-slate-300">Contrat #{contract.contractNumber}</p>
         </div>
@@ -46,9 +46,9 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
       <section>
         <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">Agence</h3>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          <Field label="Nom" value={contract.agencyName || "NAYS CAR"} />
+          <Field label="Nom" value={contract.agencyName || "Atlas Cars"} />
           <Field label="Adresse" value={contract.agencyAddress || "Casablanca, Maroc"} />
-          <Field label="Telephone" value={contract.agencyPhone || "+212 6 00 00 00 00"} />
+          <Field label="Telephone" value={contract.agencyPhone || "06 50 95 86 75"} />
         </div>
       </section>
 

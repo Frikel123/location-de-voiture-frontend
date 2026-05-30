@@ -18,11 +18,15 @@ export const Footer = () => {
     <footer className="bg-[#05070b] text-white">
       <div className="container grid gap-10 py-14 lg:grid-cols-[1.2fr_0.8fr_1fr]">
         <div>
-          <a href="#accueil" className="inline-flex items-center gap-3 text-2xl font-bold">
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-elegant">
-              N
+          <a href="#accueil" className="inline-flex items-center gap-3 font-bold">
+            <span className="relative inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-gradient-primary text-primary-foreground shadow-elegant ring-1 ring-white/25">
+              <span className="absolute inset-x-1 top-1 h-px bg-white/60" />
+              AC
             </span>
-            NAYS CAR
+            <span className="leading-none">
+              <span className="block text-2xl tracking-tight">Atlas</span>
+              <span className="block text-xs font-semibold uppercase tracking-[0.32em] text-primary">Cars</span>
+            </span>
           </a>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">{t("footer.tagline")}</p>
           <div className="mt-6 flex gap-2">
@@ -72,7 +76,7 @@ export const Footer = () => {
       </div>
       <div className="border-t border-white/10 py-5">
         <div className="container flex flex-col gap-3 text-sm text-white/48 md:flex-row md:items-center md:justify-between">
-          <p>&copy; {new Date().getFullYear()} NAYS CAR. {t("footer.rights")}</p>
+          <p>&copy; {new Date().getFullYear()} Atlas Cars. {t("footer.rights")}</p>
           <div className="flex gap-4">
             <a href="#contact" className="hover:text-primary">{isFr ? "Mentions legales" : "Legal"}</a>
             <a href="#contact" className="hover:text-primary">{isFr ? "Confidentialite" : "Privacy"}</a>

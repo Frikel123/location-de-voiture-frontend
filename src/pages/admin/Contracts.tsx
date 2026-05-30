@@ -61,9 +61,9 @@ const toPayload = (contract: Contract): ContractPayload => ({
   reservationDeposit: contract.reservationDeposit ?? 0,
   reservationTotalTTC: contract.reservationTotalTTC ?? 0,
   reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espèces",
-  agencyName: contract.agencyName ?? "NAYS CAR",
+  agencyName: contract.agencyName ?? "Atlas Cars",
   agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
-  agencyPhone: contract.agencyPhone ?? "+212 6 00 00 00 00",
+  agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
   insuranceName: contract.insuranceName ?? "Assurance tous risques",
   insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
   insuranceIncluded: contract.insuranceIncluded ?? true,
@@ -236,7 +236,7 @@ const Contracts = () => {
     );
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, sheet, "Contrats");
-    writeFile(workbook, `nayscar_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    writeFile(workbook, `atlascars_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   const printContract = (contract: Contract) => {

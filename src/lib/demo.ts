@@ -4,6 +4,6 @@ export const AUTH_BYPASS = DEMO_MODE || SKIP_AUTH;
 
 export const DEMO_USER = {
   id: "demo-admin",
-  email: "demo@nayscar.ma",
+  email: "demo@atlascars.ma",
   role: "admin",
 };

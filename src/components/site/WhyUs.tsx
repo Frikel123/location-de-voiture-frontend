@@ -33,7 +33,7 @@ export const WhyUs = () => {
           className="mb-12 max-w-3xl"
         >
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            {isFr ? "Experience NAYS CAR" : "NAYS CAR experience"}
+            {isFr ? "Experience Atlas Cars" : "Atlas Cars experience"}
           </p>
           <h2 className="text-balance text-3xl font-bold tracking-tight md:text-5xl">{t("why.title")}</h2>
           <p className="mt-4 text-base leading-7 text-white/65 md:text-lg">{t("why.subtitle")}</p>

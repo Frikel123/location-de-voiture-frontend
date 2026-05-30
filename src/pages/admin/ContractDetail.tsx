@@ -75,9 +75,9 @@ const ContractDetail = () => {
       reservationDeposit: contract.reservationDeposit ?? 0,
       reservationTotalTTC: contract.reservationTotalTTC ?? 0,
       reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espèces",
-      agencyName: contract.agencyName ?? "NAYS CAR",
+      agencyName: contract.agencyName ?? "Atlas Cars",
       agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
-      agencyPhone: contract.agencyPhone ?? "+212 6 00 00 00 00",
+      agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,
@@ -131,14 +131,14 @@ const ContractDetail = () => {
   const sendWhatsApp = () => {
     if (!contract) return;
     const phone = contract.clientPhone.replace(/\D/g, "");
-    const text = `Bonjour ${contract.clientFullName}, votre contrat NAYS CAR ${contract.contractNumber} est pret.`;
+    const text = `Bonjour ${contract.clientFullName}, votre contrat Atlas Cars ${contract.contractNumber} est pret.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const sendEmail = () => {
     if (!contract) return;
-    const subject = `Votre contrat NAYS CAR ${contract.contractNumber}`;
-    const body = `Bonjour ${contract.clientFullName},%0D%0AVotre contrat de location NAYS CAR est disponible.`;
+    const subject = `Votre contrat Atlas Cars ${contract.contractNumber}`;
+    const body = `Bonjour ${contract.clientFullName},%0D%0AVotre contrat de location Atlas Cars est disponible.`;
     window.location.href = `mailto:${contract.clientEmail}?subject=${encodeURIComponent(subject)}&body=${body}`;
   };
 

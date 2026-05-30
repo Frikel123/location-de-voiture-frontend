@@ -114,7 +114,7 @@ const Dashboard = () => {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Badge className="mb-4 rounded-full bg-white/10 text-white hover:bg-white/15">Dashboard premium</Badge>
-            <h2 className="max-w-3xl text-3xl font-semibold tracking-tight lg:text-4xl">Pilotage complet des locations NAYS CAR</h2>
+            <h2 className="max-w-3xl text-3xl font-semibold tracking-tight lg:text-4xl">Pilotage complet des locations Atlas Cars</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">
               Suivez la flotte, les reservations et les revenus avec une lecture claire et rapide.
             </p>

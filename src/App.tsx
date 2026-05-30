@@ -38,7 +38,7 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="nays-car-theme">
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="atlas-cars-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner richColors position="top-right" />

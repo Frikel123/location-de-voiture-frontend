@@ -80,7 +80,7 @@ export const AdminLayout = () => {
   }, []);
 
   const initials = useMemo(() => {
-    const email = user?.email ?? "admin@nayscar.ma";
+    const email = user?.email ?? "admin@atlascars.ma";
     return email.slice(0, 2).toUpperCase();
   }, [user?.email]);
 
@@ -91,7 +91,7 @@ export const AdminLayout = () => {
 
   const currentTitle =
     pageTitles[location.pathname] ??
-    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "NAYS CAR Admin");
+    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "Atlas Cars Admin");
 
   const breadcrumbs = useMemo(() => {
     const segments = location.pathname.replace(/^\//, "").split("/").filter(Boolean);
@@ -121,16 +121,16 @@ export const AdminLayout = () => {
         <div className="flex items-center justify-between gap-3 px-1">
           <div className="flex items-center gap-3">
             <div className="relative grid h-12 w-12 place-items-center rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-sm font-black text-white shadow-xl shadow-cyan-500/20">
-              NC
+              AC
               <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-emerald-400 ring-4 ring-slate-950" />
             </div>
             {!collapsed ? (
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300">NAYS CAR</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300">Atlas Cars</p>
                 <p className="text-xs text-slate-400">Admin cockpit</p>
               </div>
             ) : (
-              <span className="sr-only">NAYS CAR admin</span>
+              <span className="sr-only">Atlas Cars admin</span>
             )}
           </div>
           <Button

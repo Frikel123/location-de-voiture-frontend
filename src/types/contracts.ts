@@ -44,9 +44,9 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationDeposit: 0,
   reservationTotalTTC: 0,
   reservationPaymentMethod: "Espèces",
-  agencyName: "NAYS CAR",
+  agencyName: "Atlas Cars",
   agencyAddress: "Casablanca, Maroc",
-  agencyPhone: "+212 6 00 00 00 00",
+  agencyPhone: "06 50 95 86 75",
   insuranceName: "Assurance tous risques",
   insurancePolicyNumber: "",
   insuranceIncluded: true,
@@ -60,7 +60,7 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
 export const buildContractNumber = () => {
   const date = new Date();
   const ymd = date.toISOString().slice(0, 10).replace(/-/g, "");
-  return `NC-${ymd}-${String(date.getTime()).slice(-5)}`;
+  return `AC-${ymd}-${String(date.getTime()).slice(-5)}`;
 };
 
 export const buildContractToken = (contractNumber: string) =>
