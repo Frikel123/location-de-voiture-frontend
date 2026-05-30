@@ -125,9 +125,16 @@ const PublicContractSignature = () => {
 
   useEffect(() => {
     syncCanvasSize();
+    const firstFrame = window.requestAnimationFrame(syncCanvasSize);
+    const timeout = window.setTimeout(syncCanvasSize, 250);
 
     const shell = canvasShellRef.current;
-    if (!shell) return undefined;
+    if (!shell) {
+      return () => {
+        window.cancelAnimationFrame(firstFrame);
+        window.clearTimeout(timeout);
+      };
+    }
 
     const resizeObserver = new ResizeObserver(() => {
       window.requestAnimationFrame(syncCanvasSize);
@@ -136,10 +143,12 @@ const PublicContractSignature = () => {
     window.addEventListener("orientationchange", syncCanvasSize);
 
     return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.clearTimeout(timeout);
       resizeObserver.disconnect();
       window.removeEventListener("orientationchange", syncCanvasSize);
     };
-  }, [syncCanvasSize]);
+  }, [syncCanvasSize, contract?.contractNumber]);
 
   const signContract = useMutation({
     mutationFn: (signatureDataUrl: string) => contractsService.sign(id ?? "", signatureDataUrl),
@@ -165,7 +174,7 @@ const PublicContractSignature = () => {
       return;
     }
 
-    signContract.mutate(pad.getCanvas().toDataURL("image/png"));
+    signContract.mutate(pad.toDataURL("image/png"));
   };
 
   const notFound = isError && error instanceof ApiError && error.status === 404;
@@ -314,7 +323,13 @@ const PublicContractSignature = () => {
                   ) : (
                     <div className="space-y-4">
                       <div className="rounded-lg border border-slate-200 bg-white p-2 shadow-inner">
-                        <div ref={canvasShellRef} className="h-56 w-full overflow-hidden rounded-md bg-white sm:h-64">
+                        <div
+                          ref={canvasShellRef}
+                          className="h-56 w-full overflow-hidden rounded-md bg-white sm:h-64"
+                          onPointerDown={() => setHasInk(true)}
+                          onTouchStart={() => setHasInk(true)}
+                          onMouseDown={() => setHasInk(true)}
+                        >
                           <ReactSignatureCanvas
                             ref={signatureRef}
                             clearOnResize={false}
@@ -330,9 +345,13 @@ const PublicContractSignature = () => {
                                 width: `${canvasSize.width}px`,
                                 height: `${canvasSize.height}px`,
                                 maxWidth: "100%",
+                                touchAction: "none",
+                                pointerEvents: "auto",
+                                cursor: "crosshair",
                               },
                               "aria-label": "Zone de signature client",
                             }}
+                            onBegin={() => setHasInk(true)}
                             onEnd={() => setHasInk(Boolean(signatureRef.current && !signatureRef.current.isEmpty()))}
                           />
                         </div>
@@ -342,7 +361,7 @@ const PublicContractSignature = () => {
                           <Eraser className="mr-2 h-4 w-4" />
                           Effacer signature
                         </Button>
-                        <Button onClick={confirmSignature} disabled={!hasInk || signContract.isPending} className="h-11 rounded-lg">
+                        <Button onClick={confirmSignature} disabled={signContract.isPending} className="h-11 rounded-lg">
                           {signContract.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
                           Confirmer signature
                         </Button>
