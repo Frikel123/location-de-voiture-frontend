@@ -16,9 +16,11 @@ import {
   Settings,
   Sun,
   Users,
+  Wrench,
   Zap,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -44,6 +46,7 @@ const items = [
   { to: "/admin/bookings", label: "Reservations", icon: CalendarDays },
   { to: "/admin/contracts", label: "Contrats", icon: FileText },
   { to: "/admin/clients", label: "Clients", icon: Users },
+  { to: "/admin/maintenance", label: "Maintenance", icon: Wrench },
   { to: "/admin/revenue", label: "Revenus", icon: CreditCard },
   { to: "/admin/settings", label: "Parametres", icon: Settings },
 ];
@@ -54,30 +57,58 @@ const pageTitles: Record<string, string> = {
   "/admin/bookings": "Reservations",
   "/admin/contracts": "Contrats",
   "/admin/clients": "Clients",
+  "/admin/maintenance": "Maintenance",
   "/admin/revenue": "Revenus",
   "/admin/settings": "Parametres",
 };
-
-const notifications = [
-  { title: "Reservation urgente", description: "2 clients attendent confirmation", time: "1m" },
-  { title: "Nouveau profil client", description: "Une nouvelle inscription sur le site", time: "12m" },
-  { title: "Mise a jour vehicule", description: "Maintenance planifiee pour 4 voitures", time: "1h" },
-];
 
 export const AdminLayout = () => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
   const { query, setQuery, clearQuery } = useAdminSearch();
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [now, setNow] = useState(new Date());
+  const [notificationsState, setNotificationsState] = useState([
+    { id: "1", title: "Nouvelle reservation", description: "Un client a reserve une voiture ce matin.", time: "2 min", unread: true },
+    { id: "2", title: "Contrat signe", description: "Contrat #C-204 a ete signe.", time: "14 min", unread: true },
+    { id: "3", title: "Paiement recu", description: "Paiement confirme pour la reservation du 20 juin.", time: "1h", unread: false },
+  ]);
+  const [focusedResult, setFocusedResult] = useState(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30000);
     return () => window.clearInterval(timer);
   }, []);
+
+  const searchResults = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    if (term.length < 2) return [];
+
+    const safeQueryData = (key: string) => {
+      const data = queryClient.getQueryData<any[]>([key]);
+      return Array.isArray(data) ? data : [];
+    };
+
+    const cars = safeQueryData("admin-cars").filter((car) => car.name?.toLowerCase().includes(term));
+    const bookings = safeQueryData("admin-bookings").filter((booking) => booking.customerName?.toLowerCase().includes(term) || booking.phone?.includes(term));
+    const contracts = safeQueryData("admin-contracts").filter((contract) => contract.contractNumber?.toLowerCase().includes(term) || contract.clientFullName?.toLowerCase().includes(term));
+    const clients = safeQueryData("admin-clients").filter((client) => client.name?.toLowerCase().includes(term) || client.phone?.includes(term) || client.email?.toLowerCase().includes(term));
+
+    const results = [
+      ...cars.slice(0, 2).map((car) => ({ type: "Voiture", label: car.name, path: "/admin/cars", detail: car.category || car.model || "Fleet" })),
+      ...bookings.slice(0, 2).map((booking) => ({ type: "Reservation", label: booking.customerName, path: "/admin/bookings", detail: booking.car?.name ?? booking.phone })),
+      ...contracts.slice(0, 2).map((contract) => ({ type: "Contrat", label: contract.contractNumber, path: `/admin/contracts/${contract.id}`, detail: contract.clientFullName })),
+      ...clients.slice(0, 2).map((client) => ({ type: "Client", label: client.name, path: "/admin/clients", detail: client.phone })),
+    ];
+
+    return results.slice(0, 5);
+  }, [query, queryClient]);
+
+  const unreadCount = notificationsState.filter((item) => item.unread).length;
 
   const initials = useMemo(() => {
     const email = user?.email ?? "admin@atlascars.ma";
@@ -213,7 +244,10 @@ export const AdminLayout = () => {
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
+                  onChange={(event) => {
+                    setQuery(event.target.value);
+                    setFocusedResult(0);
+                  }}
                   placeholder="Rechercher toute la plateforme..."
                   className="h-11 rounded-full border-border/70 bg-secondary/80 pl-12 pr-4 shadow-sm"
                 />
@@ -225,6 +259,27 @@ export const AdminLayout = () => {
                   >
                     Effacer
                   </button>
+                )}
+                {searchResults.length > 0 && (
+                  <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-3xl border border-white/10 bg-card/95 shadow-2xl backdrop-blur-2xl">
+                    {searchResults.map((result, index) => (
+                      <button
+                        key={`${result.label}-${index}`}
+                        type="button"
+                        onClick={() => {
+                          setQuery(result.label);
+                          navigate(result.path);
+                        }}
+                        className={`flex w-full items-start gap-3 border-b border-white/5 px-4 py-3 text-left transition hover:bg-white/5 ${index === focusedResult ? "bg-white/5" : ""}`}
+                      >
+                        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{result.type}</span>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-foreground">{result.label}</p>
+                          <p className="truncate text-xs text-slate-400">{result.detail}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -250,17 +305,32 @@ export const AdminLayout = () => {
                     <DropdownMenuItem onClick={() => navigate("/admin/revenue")}>Analyser les revenus</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <DropdownMenu>
+                <DropdownMenu onOpenChange={(open) => {
+                    if (open) {
+                      setNotificationsState((items) => items.map((item) => ({ ...item, unread: false })));
+                    }
+                  }}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon" className="relative rounded-2xl" aria-label="Notifications du systeme">
                       <Bell className="h-4 w-4" />
-                      <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-rose-400 ring-2 ring-background" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white shadow-md">
+                          {unreadCount}
+                        </span>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-72 rounded-3xl border border-white/10 bg-card/95 shadow-2xl">
-                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                    {notifications.map((notification) => (
-                      <DropdownMenuItem key={notification.title} className="flex flex-col gap-1">
+                  <DropdownMenuContent align="end" className="w-80 rounded-3xl border border-white/10 bg-card/95 shadow-2xl">
+                    <DropdownMenuLabel className="flex items-center justify-between gap-3">
+                      <span>Notifications</span>
+                      {unreadCount > 0 ? <Badge className="rounded-full bg-rose-500/10 text-rose-400">{unreadCount} non lues</Badge> : <span className="text-xs text-muted-foreground">Toutes lues</span>}
+                    </DropdownMenuLabel>
+                    {notificationsState.map((notification) => (
+                      <DropdownMenuItem
+                        key={notification.id}
+                        className={`flex flex-col gap-1 ${notification.unread ? "bg-white/5" : ""}`}
+                        onClick={() => setNotificationsState((items) => items.map((item) => (item.id === notification.id ? { ...item, unread: false } : item)))}
+                      >
                         <span className="text-sm font-semibold">{notification.title}</span>
                         <span className="text-xs text-muted-foreground">{notification.description}</span>
                         <span className="text-[11px] text-slate-500">{notification.time}</span>

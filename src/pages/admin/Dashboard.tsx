@@ -1,8 +1,10 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { addDays, eachMonthOfInterval, format, isAfter, isBefore, isWithinInterval, parseISO, startOfMonth, subMonths } from "date-fns";
 import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { jsPDF } from "jspdf";
+import { utils, writeFile } from "xlsx";
 import { api, Booking, Car as CarType, Contract } from "@/lib/api";
 import { normalizeContractStatus } from "@/types/contracts";
 import { Badge } from "@/components/ui/badge";
@@ -94,6 +96,26 @@ const Dashboard = () => {
     };
   }, [bookings, cars, contracts]);
 
+  const downloadDashboardPdf = useCallback(() => {
+    const doc = new jsPDF({ format: "a4", unit: "pt" });
+    doc.setFontSize(20);
+    doc.text("Atlas Cars Dashboard Report", 40, 50);
+    doc.setFontSize(12);
+    doc.text(`Revenus mensuels: ${money(analytics.monthlyRevenue)} DH`, 40, 90);
+    doc.text(`Taux d'occupation: ${analytics.occupancy}%`, 40, 110);
+    doc.text(`Clients: ${analytics.customers}`, 40, 130);
+    doc.text(`Contrats signes: ${analytics.signedContracts}`, 40, 150);
+    doc.save("atlascars_dashboard_report.pdf");
+  }, [analytics]);
+
+  const downloadDashboardExcel = useCallback(() => {
+    const rows = analytics.revenueMonths.map((row) => ({ Mois: row.month, Revenus: row.revenue }));
+    const worksheet = utils.json_to_sheet(rows);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Revenus");
+    writeFile(workbook, "atlascars_revenue_report.xlsx");
+  }, [analytics]);
+
   const latest = [...bookings]
     .sort((a, b) => new Date(b.createdAt ?? b.startDate).getTime() - new Date(a.createdAt ?? a.startDate).getTime())
     .slice(0, 6);
@@ -119,7 +141,8 @@ const Dashboard = () => {
               Suivez la flotte, les reservations et les revenus avec une lecture claire et rapide.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="grid gap-3 sm:grid-cols-[1fr_auto] text-sm">
+          <div className="grid grid-cols-2 gap-3">
             <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
               <p className="text-white/60">CA mensuel</p>
               <p className="mt-1 text-2xl font-bold">{money(analytics.monthlyRevenue)} DH</p>
@@ -129,6 +152,11 @@ const Dashboard = () => {
               <p className="mt-1 text-2xl font-bold">{analytics.occupancy}%</p>
             </div>
           </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Button onClick={downloadDashboardPdf} variant="secondary" className="rounded-2xl px-5 py-3 text-sm">Exporter PDF</Button>
+            <Button onClick={downloadDashboardExcel} variant="outline" className="rounded-2xl px-5 py-3 text-sm">Exporter Excel</Button>
+          </div>
+        </div>
         </div>
       </section>
 
