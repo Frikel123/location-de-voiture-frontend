@@ -3,13 +3,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import { useNavigate } from "react-router-dom";
 import { waLink } from "@/lib/whatsapp";
+
+const languageOptions = ["fr", "en", "de"] as const;
+
+type LanguageCode = (typeof languageOptions)[number];
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#accueil");
   const [scrolled, setScrolled] = useState(false);
-  const { language, t, toggleLanguage } = useI18n();
+  const navigate = useNavigate();
+  const { language, setLanguage, t } = useI18n();
 
   const links = useMemo(
     () => [
@@ -20,6 +26,14 @@ export const Navbar = () => {
     ],
     [t],
   );
+
+  const currentIndex = languageOptions.indexOf(language as LanguageCode);
+  const nextLanguage = languageOptions[(currentIndex + 1) % languageOptions.length];
+
+  const handleLanguage = () => {
+    setLanguage(nextLanguage);
+    navigate(`/${nextLanguage}`);
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -83,11 +97,11 @@ export const Navbar = () => {
             type="button"
             variant="outline"
             size="sm"
-            onClick={toggleLanguage}
+            onClick={handleLanguage}
             className="rounded-full bg-transparent"
             aria-label={t("aria.language")}
           >
-            {language === "fr" ? "EN" : "FR"}
+            {language.toUpperCase()}
           </Button>
           <Button asChild size="sm" className="rounded-full px-4 shadow-elegant">
             <a href={waLink(t("wa.reserve"))} target="_blank" rel="noopener">
@@ -121,21 +135,31 @@ export const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <Button asChild className="w-full rounded-xl">
-                <a href={waLink(t("wa.reserve"))} target="_blank" rel="noopener">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  {t("nav.bookWhatsapp")}
-                </a>
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full rounded-xl"
-                onClick={toggleLanguage}
-                aria-label={t("aria.language")}
-              >
-                {language === "fr" ? "English" : "Francais"}
-              </Button>
+              <div className="grid gap-2">
+                <Button asChild className="w-full rounded-xl">
+                  <a href={waLink(t("wa.reserve"))} target="_blank" rel="noopener">
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    {t("nav.bookWhatsapp")}
+                  </a>
+                </Button>
+                <div className="grid grid-cols-3 gap-2">
+                  {languageOptions.map((lang) => (
+                    <Button
+                      key={lang}
+                      type="button"
+                      variant={lang === language ? "default" : "outline"}
+                      className="rounded-xl"
+                      onClick={() => {
+                        setLanguage(lang);
+                        navigate(`/${lang}`);
+                        setOpen(false);
+                      }}
+                    >
+                      {lang.toUpperCase()}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

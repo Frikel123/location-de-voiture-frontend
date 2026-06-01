@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/hooks/useAuth";
-import { I18nProvider } from "@/lib/i18n";
+import { I18nProvider, useI18n } from "@/lib/i18n";
 import { ApiError } from "@/lib/api";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import { AdminSearchProvider } from "./components/admin/AdminSearchContext";
@@ -24,6 +24,30 @@ const ContractDetail = lazy(() => import("./pages/admin/ContractDetail"));
 const Settings = lazy(() => import("./pages/admin/Settings"));
 const PublicContractVerification = lazy(() => import("./pages/contracts/PublicContractVerification"));
 const PublicContractSignature = lazy(() => import("./pages/contracts/PublicContractSignature"));
+
+const supportedLanguages = ["fr", "en", "de"] as const;
+
+type LanguageCode = (typeof supportedLanguages)[number];
+
+const isSupportedLanguage = (value: string | undefined): value is LanguageCode =>
+  Boolean(value && supportedLanguages.includes(value as LanguageCode));
+
+const LanguageIndex = () => {
+  const { lang } = useParams<{ lang: string }>();
+  const { setLanguage } = useI18n();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSupportedLanguage(lang)) {
+      setLanguage(lang);
+      return;
+    }
+
+    navigate("/fr", { replace: true });
+  }, [lang, setLanguage, navigate]);
+
+  return <Index />;
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,12 +71,22 @@ const App = () => (
             <AuthProvider>
               <Suspense fallback={<div className="min-h-screen bg-background p-8 text-sm text-muted-foreground">Chargement...</div>}>
                 <Routes>
-                  <Route path="/" element={<Index />} />
+                  <Route path="/" element={<Navigate to="/fr" replace />} />
+                  <Route path="/:lang" element={<LanguageIndex />} />
                   <Route path="/signature/:id" element={<PublicContractSignature />} />
                   <Route path="/contracts/verify/:id" element={<PublicContractVerification />} />
                   <Route path="/contracts/:id" element={<PublicContractVerification />} />
                   <Route path="/admin/login" element={<Login />} />
-                  <Route path="/admin" element={<ProtectedRoute><AdminSearchProvider><AdminLayout /></AdminSearchProvider></ProtectedRoute>}>
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <AdminSearchProvider>
+                          <AdminLayout />
+                        </AdminSearchProvider>
+                      </ProtectedRoute>
+                    }
+                  >
                     <Route index element={<Navigate to="dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="cars" element={<Cars />} />

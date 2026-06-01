@@ -4,6 +4,8 @@ import { CarsSection } from "@/components/site/CarsSection";
 import { Testimonials } from "@/components/site/Testimonials";
 import { TrustSection } from "@/components/site/TrustSection";
 import { WhyUs } from "@/components/site/WhyUs";
+import { BlogSection } from "@/components/site/BlogSection";
+import { FAQ } from "@/components/site/FAQ";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
@@ -18,6 +20,8 @@ const Index = () => {
         <CarsSection />
         <WhyUs />
         <Testimonials />
+        <BlogSection />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
