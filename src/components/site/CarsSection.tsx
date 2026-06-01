@@ -295,15 +295,15 @@ export const CarsSection = () => {
 
       <Dialog open={Boolean(selectedCar)} onOpenChange={(open) => !open && setSelectedCar(null)}>
         {selectedCar && (
-          <DialogContent className="max-w-3xl overflow-hidden rounded-3xl border-border/70 p-0">
-            <div className="grid md:grid-cols-[1fr_0.9fr]">
+          <DialogContent className="max-w-5xl overflow-hidden rounded-3xl border-border/70 p-0">
+            <div className="grid min-w-0 md:grid-cols-[1fr_0.9fr]">
               <CarImageSlider
                 images={resolveCarImages(selectedCar).length ? resolveCarImages(selectedCar) : [fallbackImage(selectedCar.name)]}
                 alt={selectedCar.name}
                 fallbackImage={fallbackImage(selectedCar.name)}
-                className="h-full min-h-[320px]"
+                className="w-full min-h-[320px] max-h-[520px] md:max-h-[620px]"
               />
-              <div className="p-6">
+              <div className="p-6 min-w-0">
                 <DialogHeader>
                   <DialogTitle className="text-2xl">{selectedCar.name}</DialogTitle>
                   <p className="mt-2 text-sm text-muted-foreground">

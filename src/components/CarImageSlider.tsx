@@ -41,7 +41,7 @@ export const CarImageSlider = ({ images, alt, fallbackImage, className }: CarIma
   }
 
   return (
-    <div className={cn("relative aspect-[4/3] overflow-hidden bg-secondary", className)}>
+    <div className={cn("relative overflow-hidden bg-secondary", className)}>
       {slides.map((image, index) => (
         <img
           key={`${image.slice(0, 32)}-${index}`}
