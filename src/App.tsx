@@ -14,6 +14,8 @@ import { ProtectedRoute } from "./components/admin/ProtectedRoute";
 
 const Index = lazy(() => import("./pages/Index.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const VehicleDetails = lazy(() => import("./pages/VehicleDetails"));
+const BookingFlow = lazy(() => import("./pages/BookingFlow"));
 const Login = lazy(() => import("./pages/admin/Login"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Cars = lazy(() => import("./pages/admin/Cars"));
@@ -74,6 +76,8 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Navigate to="/fr" replace />} />
                   <Route path="/:lang" element={<LanguageIndex />} />
+                  <Route path="/:lang/cars/:slug" element={<VehicleDetails />} />
+                  <Route path="/:lang/booking" element={<BookingFlow />} />
                   <Route path="/signature/:id" element={<PublicContractSignature />} />
                   <Route path="/contracts/verify/:id" element={<PublicContractVerification />} />
                   <Route path="/contracts/:id" element={<PublicContractVerification />} />
