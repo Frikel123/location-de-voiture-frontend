@@ -1,45 +1,189 @@
 import { useCallback, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { addDays, eachMonthOfInterval, format, isAfter, isBefore, isWithinInterval, parseISO, startOfMonth, subMonths } from "date-fns";
-import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  addDays,
+  eachMonthOfInterval,
+  endOfDay,
+  format,
+  isAfter,
+  isBefore,
+  isWithinInterval,
+  parseISO,
+  startOfDay,
+  startOfMonth,
+  subDays,
+  subMonths,
+  subYears,
+} from "date-fns";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { jsPDF } from "jspdf";
 import { utils, writeFile } from "xlsx";
 import { api, Booking, Car as CarType, Contract } from "@/lib/api";
 import { normalizeContractStatus } from "@/types/contracts";
+import {
+  buildAlerts,
+  buildCustomerRows,
+  buildRevenueMonths,
+  buildVehicleRevenue,
+  money,
+} from "@/lib/admin-analytics";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CalendarDays, Car, Shield, Sparkles, TrendingUp, Users, Wallet, Zap } from "lucide-react";
+import {
+  CalendarDays,
+  Car,
+  Plus,
+  RefreshCcw,
+  Shield,
+  Sparkles,
+  TrendingUp,
+  Users,
+  Wallet,
+} from "lucide-react";
+
+const rangeOptions = [
+  { value: "today", label: "Aujourd'hui" },
+  { value: "7d", label: "7 jours" },
+  { value: "30d", label: "30 jours" },
+  { value: "12m", label: "12 mois" },
+] as const;
+
+type RangeKey = (typeof rangeOptions)[number]["value"];
+
+const formatMoney = (value: number) => money(value) + " DH";
+
+const rangeLabels: Record<RangeKey, string> = {
+  today: "Aujourd'hui",
+  "7d": "7 derniers jours",
+  "30d": "30 derniers jours",
+  "12m": "12 derniers mois",
+};
 
 const statusForBooking = (booking: Booking) => {
   const today = new Date();
   const start = parseISO(booking.startDate);
   const end = parseISO(booking.endDate);
+  if (isWithinInterval(today, { start, end })) return "Confirmée";
   if (isAfter(start, today)) return "En attente";
-  if (isBefore(end, today)) return "Terminee";
-  return "Confirmee";
+  return "Terminée";
 };
 
-const money = (value: number) => new Intl.NumberFormat("fr-MA").format(value);
+const filterBookingsByRange = (bookings: Booking[], range: RangeKey) => {
+  const today = new Date();
+  const rangeStart =
+    range === "today"
+      ? startOfDay(today)
+      : range === "7d"
+      ? subDays(startOfDay(today), 6)
+      : range === "30d"
+      ? subDays(startOfDay(today), 29)
+      : subYears(startOfDay(today), 1);
+  const rangeEnd = endOfDay(today);
+
+  return bookings.filter((booking) => {
+    const start = parseISO(booking.startDate);
+    const end = parseISO(booking.endDate);
+    return (
+      isWithinInterval(start, { start: rangeStart, end: rangeEnd }) ||
+      isWithinInterval(end, { start: rangeStart, end: rangeEnd }) ||
+      (isBefore(start, rangeStart) && isAfter(end, rangeEnd))
+    );
+  });
+};
+
+const buildReservationTrend = (bookings: Booking[]) => {
+  const now = new Date();
+  return Array.from({ length: 14 }).map((_, index) => {
+    const date = addDays(now, -13 + index);
+    const key = format(date, "yyyy-MM-dd");
+    return {
+      date: format(date, "dd MMM"),
+      count: bookings.filter((booking) => booking.startDate === key).length,
+    };
+  });
+};
+
+const buildCustomerGrowth = (bookings: Booking[]) => {
+  const now = new Date();
+  return eachMonthOfInterval({ start: startOfMonth(subMonths(now, 5)), end: startOfMonth(now) }).map((month) => {
+    const count = new Set(
+      bookings
+        .filter((booking) => {
+          const start = parseISO(booking.startDate);
+          return start.getMonth() === month.getMonth() && start.getFullYear() === month.getFullYear();
+        })
+        .map((booking) => booking.phone)
+    ).size;
+    return { month: format(month, "MMM"), customers: count };
+  });
+};
+
+const getTopVehicle = (cars: CarType[], bookings: Booking[], contracts: Contract[]) => {
+  const vehicleRevenue = buildVehicleRevenue(cars, bookings, contracts);
+  return vehicleRevenue[0] || { vehicle: "-", revenue: 0, rentals: 0 };
+};
 
 const Dashboard = () => {
-  const { data: cars = [], isLoading: carsLoading, isError: carsError } = useQuery({
+  const queryClient = useQueryClient();
+  const [range, setRange] = useState<RangeKey>("30d");
+
+  const {
+    data: cars = [],
+    isLoading: carsLoading,
+    isError: carsError,
+    refetch: refetchCars,
+  } = useQuery({
     queryKey: ["admin-cars"],
     queryFn: () => api.get<CarType[]>("/cars"),
   });
 
-  const { data: bookings = [], isLoading, isError, error } = useQuery({
+  const {
+    data: bookings = [],
+    isLoading: bookingsLoading,
+    isError: bookingsError,
+    error,
+    refetch: refetchBookings,
+  } = useQuery({
     queryKey: ["admin-bookings"],
     queryFn: () => api.get<Booking[]>("/bookings"),
   });
 
-  const { data: contracts = [], isLoading: contractsLoading } = useQuery({
+  const {
+    data: contracts = [],
+    isLoading: contractsLoading,
+    isError: contractsError,
+    refetch: refetchContracts,
+  } = useQuery({
     queryKey: ["admin-contracts"],
     queryFn: () => api.get<Contract[]>("/contracts"),
   });
+
+  const isLoading = carsLoading || bookingsLoading || contractsLoading;
+  const isError = carsError || bookingsError || contractsError;
+
+  const filteredBookings = useMemo(() => filterBookingsByRange(bookings, range), [bookings, range]);
 
   const analytics = useMemo(() => {
     const now = new Date();
@@ -47,64 +191,73 @@ const Dashboard = () => {
       isWithinInterval(now, { start: parseISO(booking.startDate), end: parseISO(booking.endDate) })
     );
     const currentMonth = now.getMonth();
-    const monthlyBookings = bookings.filter((booking) => parseISO(booking.startDate).getMonth() === currentMonth);
-    const monthlyRevenue = monthlyBookings.reduce((sum, booking) => sum + Number(booking.totalPrice || 0), 0);
+    const currentMonthBookings = bookings.filter((booking) => parseISO(booking.startDate).getMonth() === currentMonth);
+    const currentMonthRevenue = currentMonthBookings.reduce((sum, booking) => sum + Number(booking.totalPrice || 0), 0);
+    const previousMonthRevenue = bookings
+      .filter((booking) => parseISO(booking.startDate).getMonth() === currentMonth - 1)
+      .reduce((sum, booking) => sum + Number(booking.totalPrice || 0), 0);
     const customers = new Set(bookings.map((booking) => booking.phone)).size;
     const occupiedCarIds = new Set(activeBookings.map((booking) => booking.car?.id).filter(Boolean));
     const availableCars = Math.max(cars.length - occupiedCarIds.size, 0);
     const occupancy = cars.length > 0 ? Math.round((occupiedCarIds.size / cars.length) * 100) : 0;
-
     const activeContracts = contracts.filter((contract) => normalizeContractStatus(contract.status) === "Confirmé");
-    const signedContracts = contracts.filter((contract) => contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé");
+    const signedContracts = contracts.filter(
+      (contract) => contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé"
+    );
     const expiredContracts = contracts.filter(
       (contract) => normalizeContractStatus(contract.status) === "Terminé" || (new Date(contract.reservationEndDate) < now && normalizeContractStatus(contract.status) !== "Annulé")
     );
     const contractRevenue = contracts.reduce((sum, contract) => sum + Number(contract.reservationTotalTTC || 0), 0);
-
-    const revenueMonths = eachMonthOfInterval({ start: startOfMonth(subMonths(now, 5)), end: startOfMonth(now) }).map((month) => {
-      const revenue = bookings
-        .filter((booking) => {
-          const date = parseISO(booking.startDate);
-          return date.getMonth() === month.getMonth() && date.getFullYear() === month.getFullYear();
-        })
-        .reduce((sum, booking) => sum + Number(booking.totalPrice || 0), 0);
-
-      return { month: format(month, "MMM"), revenue };
-    });
-
-    const bookingDays = Array.from({ length: 7 }).map((_, i) => {
-      const date = addDays(now, i);
-      const key = format(date, "yyyy-MM-dd");
-      return {
-        day: format(date, "dd/MM"),
-        reservations: bookings.filter((booking) => booking.startDate === key).length,
-      };
-    });
+    const revenueMonths = buildRevenueMonths(bookings, contracts);
+    const reservationTrend = buildReservationTrend(filteredBookings);
+    const customerGrowth = buildCustomerGrowth(bookings);
+    const topVehicle = getTopVehicle(cars, bookings, contracts);
+    const returningCustomers = bookings.filter((booking, index, arr) => arr.indexOf(booking.phone) !== index).length;
 
     return {
       activeBookings,
-      monthlyRevenue,
+      currentMonthRevenue,
+      previousMonthRevenue,
       customers,
       availableCars,
       occupancy,
       revenueMonths,
-      bookingDays,
-      activeContracts: activeContracts.length,
+      reservationTrend,
+      customerGrowth,
+      topVehicle,
       signedContracts: signedContracts.length,
+      activeContracts: activeContracts.length,
       expiredContracts: expiredContracts.length,
       contractRevenue,
+      cancelledReservations: bookings.filter((booking) => isBefore(parseISO(booking.endDate), now) && !isWithinInterval(now, { start: parseISO(booking.startDate), end: parseISO(booking.endDate) })).length,
+      pendingReservations: bookings.filter((booking) => isAfter(parseISO(booking.startDate), now)).length,
+      returningCustomers,
+      newCustomersThisMonth: new Set(currentMonthBookings.map((booking) => booking.phone)).size,
+      growthPercentage:
+        previousMonthRevenue > 0 ? Math.round(((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100) : currentMonthRevenue > 0 ? 100 : 0,
+      forecastRevenue: Math.round(currentMonthRevenue * 1.08),
     };
-  }, [bookings, cars, contracts]);
+  }, [bookings, cars, contracts, filteredBookings]);
+
+  const topCustomers = useMemo(() => buildCustomerRows(bookings, contracts).slice(0, 6), [bookings, contracts]);
+  const alerts = useMemo(() => buildAlerts(cars, bookings, contracts).slice(0, 5), [cars, bookings, contracts]);
+
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([refetchCars(), refetchBookings(), refetchContracts()]);
+    queryClient.invalidateQueries(["admin-cars"]);
+    queryClient.invalidateQueries(["admin-bookings"]);
+    queryClient.invalidateQueries(["admin-contracts"]);
+  }, [queryClient, refetchCars, refetchBookings, refetchContracts]);
 
   const downloadDashboardPdf = useCallback(() => {
     const doc = new jsPDF({ format: "a4", unit: "pt" });
     doc.setFontSize(20);
     doc.text("Atlas Cars Dashboard Report", 40, 50);
     doc.setFontSize(12);
-    doc.text(`Revenus mensuels: ${money(analytics.monthlyRevenue)} DH`, 40, 90);
+    doc.text(`Revenus mensuels: ${formatMoney(analytics.currentMonthRevenue)}`, 40, 90);
     doc.text(`Taux d'occupation: ${analytics.occupancy}%`, 40, 110);
     doc.text(`Clients: ${analytics.customers}`, 40, 130);
-    doc.text(`Contrats signes: ${analytics.signedContracts}`, 40, 150);
+    doc.text(`Contrats signés: ${analytics.signedContracts}`, 40, 150);
     doc.save("atlascars_dashboard_report.pdf");
   }, [analytics]);
 
@@ -114,76 +267,128 @@ const Dashboard = () => {
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Revenus");
     writeFile(workbook, "atlascars_revenue_report.xlsx");
-  }, [analytics]);
+  }, [analytics.revenueMonths]);
 
-  const latest = [...bookings]
-    .sort((a, b) => new Date(b.createdAt ?? b.startDate).getTime() - new Date(a.createdAt ?? a.startDate).getTime())
-    .slice(0, 6);
+  const downloadDashboardCsv = useCallback(() => {
+    const rows = ["Mois,Revenus", ...analytics.revenueMonths.map((row) => `${row.month},${row.revenue}`)];
+    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", "atlascars_revenue_report.csv");
+    link.click();
+  }, [analytics.revenueMonths]);
 
-  const stats = [
-    { label: "Total voitures", value: cars.length, icon: Car, trend: "+12%", tone: "from-emerald-500 to-cyan-500" },
-    { label: "Reservations actives", value: analytics.activeBookings.length, icon: CalendarDays, trend: "+8%", tone: "from-sky-500 to-indigo-500" },
-    { label: "Contrats actifs", value: analytics.activeContracts, icon: Shield, trend: "+9%", tone: "from-cyan-500 to-sky-500" },
-    { label: "Contrats signes", value: analytics.signedContracts, icon: Shield, trend: "+9%", tone: "from-emerald-500 to-teal-500" },
-    { label: "Contrats expirés", value: analytics.expiredContracts, icon: Sparkles, trend: "+4%", tone: "from-violet-500 to-fuchsia-500" },
-    { label: "Revenus contrats", value: `${money(analytics.contractRevenue)} DH`, icon: Wallet, trend: "+18%", tone: "from-amber-500 to-orange-500" },
-    { label: "Taux occupation", value: `${analytics.occupancy}%`, icon: Zap, trend: "+11%", tone: "from-rose-500 to-pink-500" },
-  ];
+  const latest = useMemo(
+    () =>
+      [...bookings]
+        .sort((a, b) => new Date(b.createdAt ?? b.startDate).getTime() - new Date(a.createdAt ?? a.startDate).getTime())
+        .slice(0, 6),
+    [bookings]
+  );
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-[2rem] bg-gradient-hero p-6 text-white premium-ring lg:p-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <Badge className="mb-4 rounded-full bg-white/10 text-white hover:bg-white/15">Dashboard premium</Badge>
-            <h2 className="max-w-3xl text-3xl font-semibold tracking-tight lg:text-4xl">Pilotage complet des locations Atlas Cars</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">
-              Suivez la flotte, les reservations et les revenus avec une lecture claire et rapide.
+      <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-8">
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div className="max-w-2xl">
+            <Badge className="mb-4 rounded-full bg-emerald-500/10 text-emerald-300">Dashboard premium</Badge>
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Atlas Cars Executive Overview</h1>
+            <p className="mt-3 text-sm leading-6 text-slate-300">
+              Une vue centralisée, conçue pour accompagner les agences de location les plus exigeantes.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-[1fr_auto] text-sm">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p className="text-white/60">CA mensuel</p>
-              <p className="mt-1 text-2xl font-bold">{money(analytics.monthlyRevenue)} DH</p>
+
+          <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Revenu mensuel</p>
+                <p className="mt-3 text-3xl font-semibold text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
+                <p className="mt-2 text-sm text-emerald-300">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`} vs. mois précédent</p>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Taux d'occupation</p>
+                <p className="mt-3 text-3xl font-semibold text-white">{analytics.occupancy}%</p>
+                <p className="mt-2 text-sm text-slate-400">Prévision +6% sur 12 mois</p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
-              <p className="text-white/60">Occupation</p>
-              <p className="mt-1 text-2xl font-bold">{analytics.occupancy}%</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Button onClick={handleRefresh} variant="secondary" size="sm" className="rounded-2xl px-5 py-3 text-sm">
+                <RefreshCcw className="mr-2 h-4 w-4" /> Rafraîchir
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="rounded-2xl px-5 py-3 text-sm">
+                    Exporter
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 rounded-3xl border border-white/10 bg-slate-950/95 p-2 shadow-2xl">
+                  <DropdownMenuLabel>Exporter</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={downloadDashboardPdf}>Exporter PDF</DropdownMenuItem>
+                  <DropdownMenuItem onClick={downloadDashboardExcel}>Exporter Excel</DropdownMenuItem>
+                  <DropdownMenuItem onClick={downloadDashboardCsv}>Exporter CSV</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <Button onClick={downloadDashboardPdf} variant="secondary" className="rounded-2xl px-5 py-3 text-sm">Exporter PDF</Button>
-            <Button onClick={downloadDashboardExcel} variant="outline" className="rounded-2xl px-5 py-3 text-sm">Exporter Excel</Button>
           </div>
         </div>
+
+        <div className="mt-8 flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Période</p>
+            <div className="flex flex-wrap gap-2">
+              {rangeOptions.map((option) => (
+                <Button
+                  key={option.value}
+                  onClick={() => setRange(option.value)}
+                  variant={option.value === range ? "secondary" : "outline"}
+                  size="sm"
+                  className="rounded-full px-4 py-2 text-sm"
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Comparaison</p>
+              <p className="mt-2 text-xl font-semibold text-white">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`}</p>
+              <p className="mt-1 text-sm text-slate-400">{rangeLabels[range]}</p>
+            </div>
+            <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-4">
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Performance</p>
+              <p className="mt-2 text-xl font-semibold text-white">{filteredBookings.length} réservations</p>
+              <p className="mt-1 text-sm text-slate-400">Filtrées sur la période</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {(isError || carsError) && (
+      {isError && (
         <Card className="border-destructive/50 bg-destructive/5">
           <CardContent className="p-4 text-sm text-destructive">
-            {error instanceof Error ? error.message : "Impossible de charger les donnees du dashboard."}
+            {error instanceof Error ? error.message : "Impossible de charger les données du dashboard."}
           </CardContent>
         </Card>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {stats.map((stat, index) => (
+      <div className="grid gap-4 xl:grid-cols-4">
+        {[
+          { label: "Total véhicules", value: cars.length, icon: Car, tone: "from-emerald-500 to-cyan-500" },
+          { label: "Disponibles", value: analytics.availableCars, icon: Shield, tone: "from-sky-500 to-indigo-500" },
+          { label: "Réservations actives", value: analytics.activeBookings.length, icon: CalendarDays, tone: "from-cyan-500 to-sky-500" },
+          { label: "Maintenance", value: Math.max(0, cars.length - analytics.availableCars - analytics.activeBookings.length), icon: Sparkles, tone: "from-violet-500 to-fuchsia-500" },
+        ].map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
-            <Card className="group overflow-hidden border-border/70 bg-card/90 shadow-card transition-all hover:-translate-y-1 hover:shadow-elegant">
+            <Card className="overflow-hidden border-border/70 bg-card/90 shadow-card transition-all hover:-translate-y-1 hover:shadow-xl">
               <CardContent className="p-5">
-                {isLoading || carsLoading ? (
+                {isLoading ? (
                   <Skeleton className="h-24 rounded-2xl" />
                 ) : (
                   <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
+                    <div>
                       <p className="text-sm text-muted-foreground">{stat.label}</p>
-                      <p className="mt-2 truncate text-3xl font-bold tracking-tight">{stat.value}</p>
-                      <div className="mt-4 flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-300">
-                        <TrendingUp className="h-3.5 w-3.5" />
-                        {stat.trend} ce mois
-                      </div>
+                      <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
                     </div>
                     <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${stat.tone} text-white shadow-lg`}>
                       <stat.icon className="h-6 w-6" />
@@ -196,38 +401,84 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="grid gap-6">
-        <Card className="border-border/70 shadow-card">
+      <div className="grid gap-6 xl:grid-cols-3">
+        <Card className="xl:col-span-2 border-border/70 shadow-card">
           <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <CardTitle>Revenus</CardTitle>
-              <p className="text-sm text-muted-foreground">Evolution par mois et comparaison avancee.</p>
+              <CardTitle>Revenue par mois</CardTitle>
+              <p className="text-sm text-muted-foreground">Évolution sur les derniers mois.</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: "7 jours", active: false },
-                { label: "30 jours", active: false },
-                { label: "6 mois", active: true },
-              ].map((option) => (
-                <Button key={option.label} variant={option.active ? "secondary" : "outline"} size="sm" className="rounded-full">
-                  {option.label}
-                </Button>
-              ))}
-            </div>
+            <Badge className="rounded-full bg-emerald-500/10 text-emerald-300">12 mois</Badge>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analytics.revenueMonths} margin={{ top: 12, right: 18, left: -10, bottom: 0 }}>
+              <AreaChart data={analytics.revenueMonths} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} formatter={(value) => [`${value} DH`, "Revenus"]} />
-                <Area type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" strokeWidth={3} fill="url(#revenueGradient)" />
+                <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
+                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} formatter={(value) => [`${value} DH`, "Revenus"]} />
+                <Area type="monotone" dataKey="revenue" stroke="#38bdf8" strokeWidth={3} fill="url(#revenueGradient)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 shadow-card">
+          <CardHeader>
+            <CardTitle>Réservation trend</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={analytics.reservationTrend} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
+                <XAxis dataKey="date" stroke="#94a3b8" tickLine={false} axisLine={false} />
+                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
+                <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        <Card className="border-border/70 shadow-card">
+          <CardHeader>
+            <CardTitle>Clients</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-3xl bg-slate-950/70 p-4">
+              <p className="text-sm text-muted-foreground">Nouveaux ce mois</p>
+              <p className="mt-3 text-3xl font-semibold text-white">{analytics.newCustomersThisMonth}</p>
+            </div>
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-muted-foreground">Retour clients</p>
+              <p className="mt-3 text-3xl font-semibold text-white">{analytics.returningCustomers}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="xl:col-span-2 border-border/70 shadow-card">
+          <CardHeader>
+            <CardTitle>Croissance clients</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={analytics.customerGrowth} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="customerGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
+                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
+                <Area type="monotone" dataKey="customers" stroke="#a78bfa" strokeWidth={3} fill="url(#customerGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -237,118 +488,101 @@ const Dashboard = () => {
       <div className="grid gap-6 xl:grid-cols-3">
         <Card className="border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Reservation rate</CardTitle>
+            <CardTitle>Contrats</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="text-sm text-muted-foreground">Nombres de reservations confirmées</p>
-              <p className="mt-3 text-2xl font-semibold text-foreground">{analytics.activeBookings.length}</p>
+            <div className="rounded-3xl bg-slate-950/70 p-4">
+              <p className="text-sm text-muted-foreground">Actifs</p>
+              <p className="mt-3 text-3xl font-semibold text-white">{analytics.activeContracts}</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="text-sm text-muted-foreground">Voitures disponibles</p>
-              <p className="mt-3 text-2xl font-semibold text-foreground">{analytics.availableCars}</p>
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-muted-foreground">Signés</p>
+              <p className="mt-3 text-3xl font-semibold text-white">{analytics.signedContracts}</p>
+            </div>
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-muted-foreground">Expirés</p>
+              <p className="mt-3 text-3xl font-semibold text-white">{analytics.expiredContracts}</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Evolution clients</CardTitle>
+            <CardTitle>Revenu contrat</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="text-sm text-muted-foreground">Clients total</p>
-              <p className="mt-3 text-2xl font-semibold text-foreground">{analytics.customers}</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="text-sm text-muted-foreground">Croissance mensuelle</p>
-              <p className="mt-3 text-2xl font-semibold text-foreground">+14%</p>
-            </div>
+          <CardContent>
+            <p className="text-3xl font-semibold">{formatMoney(analytics.contractRevenue)}</p>
+            <p className="mt-2 text-sm text-muted-foreground">Revenus prévisionnels de tous les contrats.</p>
           </CardContent>
         </Card>
 
         <Card className="border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Alertes maintenance</CardTitle>
+            <CardTitle>Génération rapide</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="font-medium text-foreground">Controle des freins</p>
-              <p>1 voiture nécessite une revision.</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-card/80 p-4">
-              <p className="font-medium text-foreground">Vidange a planifier</p>
-              <p>2 Logan a verifier cette semaine.</p>
-            </div>
+          <CardContent className="space-y-3">
+            {[
+              { title: "Créer un contrat", description: "Accès direct au module de contrat." },
+              { title: "Ajouter une réservation", description: "Lancer une réservation en un clic." },
+            ].map((item) => (
+              <div key={item.title} className="rounded-3xl border border-white/10 bg-white/5 p-4">
+                <p className="font-semibold text-white">{item.title}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <Card className="border-border/70 shadow-card">
+        <Card className="xl:col-span-2 border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Reservations 7 jours</CardTitle>
+            <CardTitle>Activité récente</CardTitle>
           </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={analytics.bookingDays} margin={{ top: 10, right: 12, left: -16, bottom: 0 }}>
-                <XAxis dataKey="day" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis allowDecimals={false} stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
-                <Bar dataKey="reservations" fill="hsl(var(--primary))" radius={[10, 10, 0, 0]} minPointSize={4} />
-              </BarChart>
-            </ResponsiveContainer>
+          <CardContent className="space-y-4">
+            {latest.length === 0 ? (
+              <div className="rounded-3xl border border-dashed border-white/10 p-6 text-center text-sm text-muted-foreground">Aucune activité récente.</div>
+            ) : (
+              latest.map((booking) => (
+                <div key={booking.id} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 transition hover:border-cyan-500/30 hover:bg-slate-900/80">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-white">Nouvelle réservation</p>
+                      <p className="mt-1 text-sm text-slate-400">{booking.customerName} • {booking.car?.name ?? "Véhicule"}</p>
+                    </div>
+                    <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs uppercase tracking-[0.18em] text-emerald-300">{statusForBooking(booking)}</span>
+                  </div>
+                  <p className="mt-3 text-sm text-muted-foreground">Dates: {booking.startDate} – {booking.endDate}</p>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
 
-        <Card className="xl:col-span-2 border-border/70 shadow-card">
+        <Card className="border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Dernieres reservations</CardTitle>
+            <CardTitle>Notifications</CardTitle>
           </CardHeader>
-          <CardContent className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Client</TableHead>
-                  <TableHead>Voiture</TableHead>
-                  <TableHead>Dates</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Prix</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {latest.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell className="font-medium">{booking.customerName}</TableCell>
-                    <TableCell>{booking.car?.name ?? "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{booking.startDate} - {booking.endDate}</TableCell>
-                    <TableCell><StatusBadge status={statusForBooking(booking)} /></TableCell>
-                    <TableCell className="text-right font-semibold">{money(booking.totalPrice)} DH</TableCell>
-                  </TableRow>
-                ))}
-                {!isLoading && latest.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">Aucune reservation pour le moment.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+          <CardContent className="space-y-4">
+            {alerts.length === 0 ? (
+              <div className="rounded-3xl border border-dashed border-white/10 p-6 text-sm text-muted-foreground">Aucune alerte en attente.</div>
+            ) : (
+              alerts.map((alert) => (
+                <div key={alert.id} className="rounded-3xl border border-white/10 bg-white/5 p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-semibold text-white">{alert.title}</p>
+                    <Badge className="rounded-full bg-slate-800/70 text-slate-200">{alert.type}</Badge>
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">{alert.description}</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-slate-500">Prévu le {format(parseISO(alert.dueDate), "dd MMM")}</p>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>
     </div>
   );
-};
-
-const StatusBadge = ({ status }: { status: string }) => {
-  const className =
-    status === "Confirmee"
-      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-      : status === "En attente"
-        ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
-        : "bg-slate-500/10 text-slate-600 border-slate-500/20";
-
-  return <Badge variant="outline" className={`rounded-full ${className}`}>{status}</Badge>;
 };
 
 export default Dashboard;
