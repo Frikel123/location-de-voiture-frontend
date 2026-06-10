@@ -103,7 +103,7 @@ const Contracts = () => {
   const deleteContract = useDeleteContract();
   const computedDays =
     form.reservationStartDate && form.reservationEndDate
-      ? Math.max(1, differenceInCalendarDays(parseISO(form.reservationEndDate), parseISO(form.reservationStartDate)) + 1)
+      ? Math.max(1, differenceInCalendarDays(parseISO(form.reservationEndDate), parseISO(form.reservationStartDate)))
       : 0;
   const computedTotal = form.reservationDailyRate * computedDays + form.reservationDeposit;
 
