@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --lux-navy: #0A1225;
+  --lux-gold: #D4AF37;
+  --lux-gold-2: #fff2b7;
+  --lux-white: #FFFFFF;
+  --card-bg: rgba(255,255,255,0.03);
+}
+
+.admin-root {
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--lux-navy);
+  color: var(--lux-white);
+}
+
+.admin-root h1,
+.admin-root h2,
+.admin-root .font-serif,
+.admin-root .brand-heading {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+
+.admin-root .brand-gold {
+  color: var(--lux-gold) !important;
+}
+
+.admin-root .glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.admin-root .kpi {
+  border-radius: 12px;
+  padding: 10px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.04), rgba(255,242,183,0.02));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+}
+
+/* Compact utility to reduce large paddings for denser layout */
+.admin-root .compact-hero {
+  padding: 12px !important;
+}
+
+.admin-root .compact-section {
+  padding: 10px !important;
+}
+
+.admin-root .small-text {
+  font-size: 0.85rem;
+}
+
+.admin-root .gold-gradient {
+  background: linear-gradient(90deg, var(--lux-gold), var(--lux-gold-2));
+  color: #081226;
+}
+
+/* Make tables and cards slightly denser */
+.admin-root .card-dense > * {
+  padding: 10px !important;
+}
+
+/* Sidebar specific tweaks */
+.admin-root aside {
+  background: linear-gradient(180deg, rgba(10,18,37,1) 0%, rgba(6,20,38,0.95) 100%);
+}
+
+/* Utility to keep headings elegant and spaced */
+.admin-root .hero-title {
+  font-size: 1.5rem;
+  line-height: 1.05;
+}
+
+@media (min-width: 1024px) {
+  .admin-root .hero-title { font-size: 1.9rem; }
+}

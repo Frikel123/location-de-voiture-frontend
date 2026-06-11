@@ -23,6 +23,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import "@/styles/admin.css";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -144,11 +145,11 @@ export const AdminLayout = () => {
   }).format(now);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,242,183,0.12)_0,_transparent_28%),hsl(var(--background))] text-foreground">
+    <div className="admin-root min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,242,183,0.12)_0,_transparent_28%),hsl(var(--background))] text-foreground">
       {open && <div className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-white/10 bg-[#061426]/90 bg-[length:200%] bg-[top] p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 ${collapsed ? "w-20" : "w-[18rem]"} ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-white/10 bg-[#0A1225]/95 bg-[length:200%] bg-[top] p-3 shadow-2xl backdrop-blur-xl transition-all duration-300 ${collapsed ? "w-20" : "w-[16rem]"} ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="flex items-center justify-between gap-3 px-1">
           <div className="flex items-center gap-3">
@@ -227,7 +228,7 @@ export const AdminLayout = () => {
 
       <div className="min-h-screen lg:pl-[18rem]">
         <header className="sticky top-0 z-20 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-          <div className="flex flex-col gap-4 px-4 py-4 lg:px-8">
+          <div className="flex flex-col gap-2 px-4 py-3 lg:px-6">
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" onClick={() => setOpen(true)} className="lg:hidden" aria-label="Ouvrir le menu">
                 <Menu className="h-5 w-5" />

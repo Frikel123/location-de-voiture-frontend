@@ -287,12 +287,12 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-8">
+      <section className="overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 compact-hero glass shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-6">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
             <BrandLogo className="mb-5" markClassName="h-16 w-16" textClassName="text-white" />
             <Badge className="mb-4 rounded-full bg-primary/10 text-primary">Luxury command center</Badge>
-            <h1 className="font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">Welcome to N1 Lux Cars Administration</h1>
+            <h1 className="brand-heading hero-title font-semibold tracking-tight text-white">Welcome to N1 Lux Cars Administration</h1>
             <p className="mt-3 text-sm leading-6 text-slate-300">
               Premium analytics for fleet performance, reservations, revenue, and client experience.
             </p>
@@ -372,14 +372,14 @@ const Dashboard = () => {
         </Card>
       )}
 
-      <div className="grid gap-4 xl:grid-cols-4">
+      <div className="grid grid-cols-12 gap-4">
         {[
           { label: "Total Cars", value: cars.length, icon: Car, tone: "from-[#d4af37] to-[#fff2b7]" },
           { label: "Active Reservations", value: analytics.activeBookings.length, icon: CalendarDays, tone: "from-[#d4af37] to-[#b78922]" },
           { label: "Monthly Revenue", value: formatMoney(analytics.currentMonthRevenue), icon: Wallet, tone: "from-[#fff2b7] to-[#d4af37]" },
           { label: "Fleet Occupancy Rate", value: `${analytics.occupancy}%`, icon: TrendingUp, tone: "from-[#d4af37] to-[#fff2b7]" },
         ].map((stat, index) => (
-          <motion.div key={stat.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
+          <motion.div key={stat.label} className="col-span-12 sm:col-span-6 xl:col-span-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
             <Card className="overflow-hidden border-border/70 bg-card/90 shadow-card transition-all hover:-translate-y-1 hover:shadow-xl">
               <CardContent className="p-5">
                 {isLoading ? (
