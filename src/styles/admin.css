@@ -28,15 +28,16 @@
 .admin-root .glass {
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.06);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
 .admin-root .kpi {
   border-radius: 12px;
   padding: 10px;
-  background: linear-gradient(135deg, rgba(212,175,55,0.04), rgba(255,242,183,0.02));
-  box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+  background: linear-gradient(135deg, rgba(212,175,55,0.03), rgba(255,242,183,0.01));
+  box-shadow: 0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
 /* Compact utility to reduce large paddings for denser layout */
@@ -57,6 +58,20 @@
   color: #081226;
 }
 
+/* Buttons and accents */
+.admin-root .btn-gold {
+  background: linear-gradient(90deg, rgba(212,175,55,1), rgba(255,242,183,0.95));
+  color: #081226;
+  border: none;
+  box-shadow: 0 6px 20px rgba(212,175,55,0.14), 0 1px 0 rgba(255,255,255,0.03) inset;
+}
+
+.admin-root .btn-outline-gold {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.18);
+  color: var(--lux-gold-2);
+}
+
 /* Make tables and cards slightly denser */
 .admin-root .card-dense > * {
   padding: 10px !important;
@@ -64,15 +79,36 @@
 
 /* Sidebar specific tweaks */
 .admin-root aside {
-  background: linear-gradient(180deg, rgba(10,18,37,1) 0%, rgba(6,20,38,0.95) 100%);
+  background: linear-gradient(180deg, #061126 0%, #071327 60%, #041020 100%);
 }
 
 /* Utility to keep headings elegant and spaced */
 .admin-root .hero-title {
-  font-size: 1.5rem;
-  line-height: 1.05;
+  font-size: 1.6rem;
+  line-height: 1.02;
 }
 
 @media (min-width: 1024px) {
-  .admin-root .hero-title { font-size: 1.9rem; }
+  .admin-root .hero-title { font-size: 2.1rem; }
 }
+
+/* Active nav glow */
+.admin-root nav a[aria-current="true"],
+.admin-root nav a[aria-current="page"] {
+  box-shadow: 0 10px 30px rgba(212,175,55,0.18);
+}
+
+/* Card background darker for contrast */
+.admin-root .card-dense,
+.admin-root .card,
+.admin-root .bg-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Reduce large margins for denser layout */
+.admin-root .mt-8 { margin-top: 1.25rem !important; }
+.admin-root .p-6 { padding: 0.9rem !important; }
+
+/* Table row subtle hover */
+.admin-root table tr:hover { background: rgba(212,175,55,0.02); }
