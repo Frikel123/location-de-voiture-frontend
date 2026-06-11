@@ -148,16 +148,16 @@ const Settings = () => {
               </CardHeader>
               <CardContent className="space-y-5">
                 <div className="grid gap-4 md:grid-cols-2">
-                  <button onClick={() => setTheme("light")} className={`rounded-3xl border p-5 text-left transition hover:bg-muted/50 ${theme === "light" ? "border-primary bg-primary/5" : ""}`}>
+                  <div className="rounded-3xl border border-primary/20 bg-primary/5 p-5 text-left">
                     <Sun className="mb-4 h-6 w-6 text-primary" />
                     <p className="font-semibold">Light mode</p>
-                    <p className="text-sm text-muted-foreground">Interface claire et lisible.</p>
-                  </button>
-                  <button onClick={() => setTheme("dark")} className={`rounded-3xl border p-5 text-left transition hover:bg-muted/50 ${theme === "dark" ? "border-primary bg-primary/5" : ""}`}>
+                    <p className="text-sm text-muted-foreground">Non disponible dans ce dashboard.</p>
+                  </div>
+                  <div className="rounded-3xl border border-primary bg-primary/5 p-5 text-left shadow-sm">
                     <Moon className="mb-4 h-6 w-6 text-primary" />
                     <p className="font-semibold">Dark mode</p>
-                    <p className="text-sm text-muted-foreground">Interface sombre premium.</p>
-                  </button>
+                    <p className="text-sm text-muted-foreground">Mode sombre premium activé.</p>
+                  </div>
                 </div>
                 <Separator />
                 <div className="space-y-2">
