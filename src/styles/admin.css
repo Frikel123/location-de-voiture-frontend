@@ -202,26 +202,28 @@
   background: linear-gradient(180deg, #07142a 0%, #061126 100%) !important;
 }
 
-/* Ensure links and interactive text are visible */
+/* Ensure links and interactive text are visible in light mode (black) */
 .light .admin-root a,
 .light .admin-root .truncate,
 .light .admin-root .text-foreground {
-  color: #081226 !important;
+  color: #000000 !important;
 }
 
-/* Final aggressive override for any remaining white text/icons in light mode (exclude sidebar) */
+/* Aggressive override: force black for any remaining text/SVG in admin content (exclude sidebar) */
 .light .admin-root :not(aside) * {
-  color: #081226 !important;
-  fill: #081226 !important;
-  stroke: #081226 !important;
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
 }
 
-/* But keep gold accents intact */
+/* Preserve gold accents for branded elements */
 .light .admin-root :not(aside) .brand-gold,
 .light .admin-root :not(aside) .gold-icon,
 .light .admin-root :not(aside) .btn-gold,
 .light .admin-root :not(aside) .gold-gradient {
-  color: #081226 !important;
+  color: #D4AF37 !important;
+  fill: #D4AF37 !important;
+  stroke: #D4AF37 !important;
 }
 
 
