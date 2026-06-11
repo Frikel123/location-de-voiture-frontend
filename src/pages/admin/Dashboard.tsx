@@ -17,10 +17,6 @@ import {
   subYears,
 } from "date-fns";
 import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -28,6 +24,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import RevenueChart from "@/components/admin/RevenueChart";
 import { jsPDF } from "jspdf";
 import { utils, writeFile } from "xlsx";
 import { api, Booking, Car as CarType, Contract } from "@/lib/api";
@@ -52,6 +49,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BrandLogo } from "@/components/BrandLogo";
+import FleetOverview from "@/components/admin/FleetOverview";
+import KpiCard from "@/components/admin/KpiCard";
 import {
   CalendarDays,
   Car,
@@ -374,31 +373,37 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-12 gap-4">
         {[
-          { label: "Total Cars", value: cars.length, icon: Car, tone: "from-[#d4af37] to-[#fff2b7]" },
-          { label: "Active Reservations", value: analytics.activeBookings.length, icon: CalendarDays, tone: "from-[#d4af37] to-[#b78922]" },
-          { label: "Monthly Revenue", value: formatMoney(analytics.currentMonthRevenue), icon: Wallet, tone: "from-[#fff2b7] to-[#d4af37]" },
-          { label: "Fleet Occupancy Rate", value: `${analytics.occupancy}%`, icon: TrendingUp, tone: "from-[#d4af37] to-[#fff2b7]" },
+          { label: "Total Vehicles", value: cars.length, icon: Car, spark: analytics.revenueMonths?.map((r) => ({ value: Math.max(0, Math.round(r.revenue / 1000)) })) ?? analytics.reservationTrend?.map((r) => ({ value: r.count })) ?? null },
+          { label: "Available Vehicles", value: analytics.availableCars ?? cars.length, icon: Car, spark: analytics.revenueMonths?.map((r) => ({ value: Math.max(0, Math.round((r.revenue / 1000) * 0.6)) })) ?? analytics.reservationTrend?.map((r) => ({ value: Math.max(0, Math.round(r.count * 0.6)) })) ?? null },
+          { label: "Active Reservations", value: analytics.activeBookings.length, icon: CalendarDays, spark: analytics.reservationTrend?.map((r) => ({ value: r.count })) ?? null },
+          { label: "Monthly Revenue", value: formatMoney(analytics.currentMonthRevenue), icon: Wallet, spark: analytics.revenueMonths?.map((r) => ({ value: r.revenue })) ?? null },
         ].map((stat, index) => (
-          <motion.div key={stat.label} className="col-span-12 sm:col-span-6 xl:col-span-3" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
-            <Card className="overflow-hidden border-border/70 bg-card/90 shadow-card transition-all hover:-translate-y-1 hover:shadow-xl">
-              <CardContent className="p-5">
-                {isLoading ? (
+          <motion.div
+            key={stat.label}
+            className="col-span-12 sm:col-span-6 xl:col-span-3"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.04 }}
+          >
+            {isLoading ? (
+              <Card className="overflow-hidden border-border/70 bg-card/90 shadow-card card-dense">
+                <CardContent className="p-5">
                   <Skeleton className="h-24 rounded-2xl" />
-                ) : (
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">{stat.label}</p>
-                      <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
-                    </div>
-                    <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${stat.tone} text-[#0B1F3A] shadow-lg`}>
-                      <stat.icon className="h-6 w-6" />
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <KpiCard label={stat.label} value={stat.value} icon={stat.icon} sparkData={stat.spark} />
+            )}
           </motion.div>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Aperçu de la flotte</h2>
+          <div className="text-sm text-muted-foreground">{cars.length} véhicules</div>
+        </div>
+        <FleetOverview cars={cars} loading={isLoading} />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
@@ -411,20 +416,9 @@ const Dashboard = () => {
             <Badge className="rounded-full bg-primary/10 text-primary">12 mois</Badge>
           </CardHeader>
           <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analytics.revenueMonths} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} formatter={(value) => [`${value} DH`, "Revenus"]} />
-                <Area type="monotone" dataKey="revenue" stroke="#D4AF37" strokeWidth={3} fill="url(#revenueGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
+                <div className="h-full">
+                  <RevenueChart data={analytics.revenueMonths} />
+                </div>
           </CardContent>
         </Card>
 
@@ -535,29 +529,16 @@ const Dashboard = () => {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <Card className="xl:col-span-2 border-border/70 shadow-card">
-          <CardHeader>
-            <CardTitle>Activité récente</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {latest.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-white/10 p-6 text-center text-sm text-muted-foreground">Aucune activité récente.</div>
-            ) : (
-              latest.map((booking) => (
-                <div key={booking.id} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 transition hover:border-primary/40 hover:bg-slate-900/80">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="font-semibold text-white">Nouvelle réservation</p>
-                      <p className="mt-1 text-sm text-slate-400">{booking.customerName} • {booking.car?.name ?? "Véhicule"}</p>
-                    </div>
-                    <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs uppercase tracking-[0.18em] text-emerald-300">{statusForBooking(booking)}</span>
-                  </div>
-                  <p className="mt-3 text-sm text-muted-foreground">Dates: {booking.startDate} – {booking.endDate}</p>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+        <div className="xl:col-span-2">
+          <Card className="border-border/70 shadow-card">
+            <CardHeader>
+              <CardTitle>Réservations récentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RecentReservations bookings={latest} />
+            </CardContent>
+          </Card>
+        </div>
 
         <Card className="border-border/70 shadow-card">
           <CardHeader>

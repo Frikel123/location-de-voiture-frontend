@@ -65,6 +65,22 @@
   box-shadow: 0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
+.admin-root .gold-icon {
+  background: linear-gradient(90deg, #D4AF37, #fff2b7);
+  color: #081226;
+  box-shadow: 0 8px 20px rgba(212,175,55,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.admin-root .vehicle-card img { filter: saturate(1.05) contrast(1.02); }
+
+/* Chart tooltip container tweak */
+.admin-root .recharts-default-tooltip {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.admin-root .kpi .recharts-wrapper { height: 40px !important; }
+
 /* Compact utility to reduce large paddings for denser layout */
 .admin-root .compact-hero {
   padding: 12px !important;
@@ -137,3 +153,35 @@
 
 /* Table row subtle hover */
 .admin-root table tr:hover { background: rgba(212,175,55,0.02); }
+
+/* Fix overly light utility classes inside admin scope (Tailwind utilities) */
+.admin-root [class*="bg-white/5"],
+.admin-root [class*="bg-white/10"],
+.admin-root [class*="bg-slate-950/70"],
+.admin-root [class*="bg-secondary/80"],
+.admin-root [class*="bg-card/95"] {
+  background: rgba(6,18,36,0.68) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  color: #E6EEF8 !important;
+}
+
+/* Tone down very bright rounded containers */
+.admin-root .rounded-\[2rem\],
+.admin-root .rounded-3xl {
+  border-radius: 12px !important;
+}
+
+/* Make hero info columns denser */
+.admin-root .compact-hero .grid > * {
+  padding: 0.6rem !important;
+}
+
+/* Ensure buttons remain visible */
+.admin-root .btn-gold, .admin-root button.btn-gold, .admin-root .gold-gradient {
+  color: #081226 !important;
+}
+
+/* Ensure small badges contrast */
+.admin-root .Badge, .admin-root .badge, .admin-root .rounded-full {
+  color: #081226 !important;
+}
