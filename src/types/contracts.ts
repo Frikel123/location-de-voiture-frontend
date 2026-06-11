@@ -1,15 +1,15 @@
-ï»¿import type { Contract, ContractPayload, ContractStatus, LegacyContractStatus } from "@/lib/api";
+import type { Contract, ContractPayload, ContractStatus, LegacyContractStatus } from "@/lib/api";
 
-export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "ConfirmÃ©", "SignÃ©", "TerminÃ©", "AnnulÃ©"];
+export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "Confirmé", "Signé", "Terminé", "Annulé"];
 
 export type ContractSortKey = "date" | "client" | "amount" | "status";
 
 export const normalizeContractStatus = (status: Contract["status"]): ContractStatus => {
-  if (status === "En attente" || status === "Actif") return "ConfirmÃ©";
-  if (status === "Confirm\u00c3\u00a9") return "ConfirmÃ©";
-  if (status === "Sign\u00c3\u00a9") return "SignÃ©";
-  if (status === "Termin\u00c3\u00a9") return "TerminÃ©";
-  if (status === "Annul\u00c3\u00a9") return "AnnulÃ©";
+  if (status === "En attente" || status === "Actif") return "Confirmé";
+  if (status === "Confirm\u00c3\u00a9") return "Confirmé";
+  if (status === "Sign\u00c3\u00a9") return "Signé";
+  if (status === "Termin\u00c3\u00a9") return "Terminé";
+  if (status === "Annul\u00c3\u00a9") return "Annulé";
   return status as ContractStatus;
 };
 
@@ -43,8 +43,8 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationDailyRate: 0,
   reservationDeposit: 0,
   reservationTotalTTC: 0,
-  reservationPaymentMethod: "EspÃ¨ces",
-  agencyName: "Atlas Cars",
+  reservationPaymentMethod: "Espèces",
+  agencyName: "N1 Lux Cars",
   agencyAddress: "Casablanca, Maroc",
   agencyPhone: "06 50 95 86 75",
   insuranceName: "Assurance tous risques",

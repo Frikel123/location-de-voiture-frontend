@@ -33,7 +33,7 @@ type SettingsState = {
 const storageKey = "atlas-cars-admin-settings";
 
 const defaultSettings: SettingsState = {
-  companyName: "Atlas Cars",
+  companyName: "N1 Lux Cars",
   phone: "06 50 95 86 75",
   whatsapp: "06 50 95 86 75",
   address: "Casablanca, Maroc",

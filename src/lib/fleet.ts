@@ -136,9 +136,9 @@ export const demoFleet: Vehicle[] = [
 ];
 
 const inferVehicle = (car: Car, index: number): Vehicle => {
-  const name = car.name || "Atlas Cars Vehicle";
+  const name = car.name || "N1 Lux Cars Vehicle";
   const lower = name.toLowerCase();
-  const brand = name.split(" ")[0] || "Atlas";
+  const brand = name.split(" ")[0] || "N1";
   const category = lower.includes("suv") || lower.includes("cross") ? "SUV" : lower.includes("logan") ? "Sedan" : lower.includes("i10") ? "Economy" : "Compact";
   const transmission = lower.includes("manual") ? "Manual" : "Automatic";
   const fuel = lower.includes("hybrid") ? "Hybrid" : lower.includes("diesel") ? "Diesel" : "Petrol";

@@ -122,7 +122,7 @@ export const CarsSection = () => {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Button asChild className="rounded-2xl"><Link to={`/${language}/booking?vehicle=${vehicle.slug}`} onClick={() => remember(vehicle)}>Instant booking</Link></Button>
           <Button asChild variant="outline" className="rounded-2xl">
-            <a href={waLink(`Hello Atlas Cars, I want to reserve ${vehicle.name} at ${vehicle.price} DH/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
+            <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} at ${vehicle.price} DH/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
           </Button>
         </div>
       </div>

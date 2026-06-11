@@ -95,7 +95,7 @@ const Bookings = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "atlascars_reservations_export.csv";
+    link.download = "n1-lux-cars_reservations_export.csv";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -186,11 +186,11 @@ const Bookings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-gradient-to-br from-[#0B1F3A] to-[#061426] p-5 text-white shadow-elegant sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <Badge variant="outline" className="mb-3 rounded-full">Operations</Badge>
-          <h2 className="text-3xl font-semibold tracking-tight">Reservations</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Recherche, tri, filtres et gestion complete des demandes.</p>
+          <Badge variant="outline" className="mb-3 rounded-full border-primary/40 bg-primary/10 text-primary">Booking Management</Badge>
+          <h2 className="font-serif text-3xl font-semibold tracking-tight">Modern Reservation Timeline</h2>
+          <p className="mt-1 text-sm text-white/65">Colored status indicators, customer details, and luxury fleet assignments.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="outline" onClick={() => downloadCsv(filtered)} className="rounded-2xl">
@@ -212,7 +212,7 @@ const Bookings = () => {
 
       <Card className="border-border/70 shadow-card">
         <CardHeader className="gap-4">
-          <CardTitle className="flex items-center gap-2"><CalendarPlus className="h-5 w-5 text-primary" /> Table reservations</CardTitle>
+          <CardTitle className="flex items-center gap-2"><CalendarPlus className="h-5 w-5 text-primary" /> Reservation desk</CardTitle>
           <div className="grid gap-3 md:grid-cols-[1fr_180px_180px]">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -239,26 +239,31 @@ const Bookings = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto rounded-2xl border">
+          <div className="overflow-x-auto rounded-2xl border border-border/70 shadow-sm">
             {isLoading ? (
               <div className="space-y-2 p-4">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-12 rounded-xl" />)}</div>
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead>Client</TableHead>
-                    <TableHead>Voiture</TableHead>
-                    <TableHead>Telephone</TableHead>
-                    <TableHead>Dates</TableHead>
-                    <TableHead>Prix</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                  <TableRow className="bg-[#0B1F3A] hover:bg-[#0B1F3A]">
+                    <TableHead className="text-white">Client</TableHead>
+                    <TableHead className="text-white">Voiture</TableHead>
+                    <TableHead className="text-white">Telephone</TableHead>
+                    <TableHead className="text-white">Dates</TableHead>
+                    <TableHead className="text-white">Prix</TableHead>
+                    <TableHead className="text-white">Status</TableHead>
+                    <TableHead className="text-right text-white">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {rows.map((booking, index) => (
-                    <motion.tr key={booking.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.025 }} className="border-b transition-colors hover:bg-muted/45">
-                      <TableCell className="font-medium">{booking.customerName}</TableCell>
+                    <motion.tr key={booking.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.025 }} className="border-b transition-colors hover:bg-primary/5">
+                      <TableCell className="font-medium">
+                        <div className="flex items-center gap-3">
+                          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10 text-xs font-semibold text-primary">{booking.customerName.slice(0, 2).toUpperCase()}</span>
+                          <span>{booking.customerName}</span>
+                        </div>
+                      </TableCell>
                       <TableCell>{booking.car?.name ?? "-"}</TableCell>
                       <TableCell>{booking.phone}</TableCell>
                       <TableCell className="min-w-[190px] text-muted-foreground">{booking.startDate} - {booking.endDate}</TableCell>
@@ -330,14 +335,18 @@ const Bookings = () => {
 
       <Dialog open={!!selected} onOpenChange={(isOpen) => !isOpen && setSelected(null)}>
         <DialogContent className="rounded-3xl">
-          <DialogHeader><DialogTitle>Details reservation</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Reservation timeline</DialogTitle></DialogHeader>
           {selected && (
             <div className="grid gap-3 text-sm">
-              <Detail label="Client" value={selected.customerName} />
-              <Detail label="Telephone" value={selected.phone} />
-              <Detail label="Voiture" value={selected.car?.name ?? "-"} />
-              <Detail label="Dates" value={`${selected.startDate} - ${selected.endDate}`} />
-              <Detail label="Status" value={getStatus(selected)} />
+              <div className="rounded-3xl border border-primary/20 bg-primary/10 p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-primary">Customer</p>
+                <p className="mt-2 font-serif text-2xl font-semibold">{selected.customerName}</p>
+                <p className="mt-1 text-muted-foreground">{selected.phone}</p>
+              </div>
+              <TimelineDetail label="Vehicle assigned" value={selected.car?.name ?? "-"} tone="gold" />
+              <TimelineDetail label="Pickup" value={selected.startDate} tone="blue" />
+              <TimelineDetail label="Return" value={selected.endDate} tone="blue" />
+              <TimelineDetail label="Status" value={getStatus(selected)} tone="gold" />
               <Detail label="Contrat" value={selectedContract?.contractNumber ?? "Non genere"} />
               <Detail
                 label="Signature"
@@ -383,12 +392,22 @@ const Detail = ({ label, value, strong = false }: { label: string; value: string
   </div>
 );
 
+const TimelineDetail = ({ label, value, tone }: { label: string; value: string; tone: "gold" | "blue" }) => (
+  <div className="grid grid-cols-[auto_1fr] gap-3 rounded-2xl border bg-muted/20 p-3">
+    <span className={`mt-1 h-3 w-3 rounded-full ${tone === "gold" ? "bg-primary" : "bg-[#0B1F3A]"}`} />
+    <div>
+      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
+      <p className="mt-1 font-medium">{value}</p>
+    </div>
+  </div>
+);
+
 const StatusBadge = ({ status }: { status: string }) => {
   const className =
     status === "Confirmee"
-      ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600"
+      ? "border-primary/30 bg-primary/10 text-primary"
       : status === "En attente"
-        ? "border-amber-500/20 bg-amber-500/10 text-amber-600"
+        ? "border-amber-500/25 bg-amber-500/10 text-amber-600"
         : status === "Terminee"
           ? "border-slate-500/20 bg-slate-500/10 text-slate-600"
           : "border-red-500/20 bg-red-500/10 text-red-600";

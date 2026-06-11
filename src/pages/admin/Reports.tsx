@@ -23,7 +23,7 @@ const Reports = () => {
   const exportPdf = useCallback(() => {
     const doc = new jsPDF({ format: "a4", unit: "pt" });
     doc.setFontSize(20);
-    doc.text("Atlas Cars advanced reports", 40, 48);
+    doc.text("N1 Lux Cars advanced reports", 40, 48);
     doc.setFontSize(12);
     doc.text(`Revenue this month: ${money(revenueMonths.at(-1)?.revenue ?? 0)} DH`, 40, 86);
     doc.text(`Top vehicle: ${vehicleRevenue[0]?.vehicle ?? "-"}`, 40, 106);

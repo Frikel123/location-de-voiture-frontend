@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { useNavigate } from "react-router-dom";
 import { waLink } from "@/lib/whatsapp";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const languageOptions = ["fr", "en", "de"] as const;
 
@@ -60,15 +61,8 @@ export const Navbar = () => {
             : "border-white/10 bg-white/10 text-white backdrop-blur-xl"
         }`}
       >
-        <a href="#accueil" className="group flex items-center gap-3 font-bold">
-          <span className="relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-gradient-primary text-primary-foreground shadow-elegant ring-1 ring-white/30 transition-transform group-hover:scale-105">
-            <span className="absolute inset-x-1 top-1 h-px bg-white/60" />
-            AC
-          </span>
-          <span className="leading-none">
-            <span className="block text-lg tracking-tight sm:text-xl">Atlas</span>
-            <span className="block text-xs font-semibold uppercase tracking-[0.28em] text-primary">Cars</span>
-          </span>
+        <a href="#accueil" className="group font-bold">
+          <BrandLogo markClassName="h-11 w-11 transition-transform group-hover:scale-105" textClassName={scrolled ? "text-foreground" : "text-white"} />
         </a>
 
         <nav className="hidden items-center gap-2 md:flex">

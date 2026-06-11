@@ -51,13 +51,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { BrandLogo } from "@/components/BrandLogo";
 import {
   CalendarDays,
   Car,
   Plus,
   RefreshCcw,
-  Shield,
-  Sparkles,
   TrendingUp,
   Users,
   Wallet,
@@ -252,13 +251,13 @@ const Dashboard = () => {
   const downloadDashboardPdf = useCallback(() => {
     const doc = new jsPDF({ format: "a4", unit: "pt" });
     doc.setFontSize(20);
-    doc.text("Atlas Cars Dashboard Report", 40, 50);
+    doc.text("N1 Lux Cars Dashboard Report", 40, 50);
     doc.setFontSize(12);
     doc.text(`Revenus mensuels: ${formatMoney(analytics.currentMonthRevenue)}`, 40, 90);
     doc.text(`Taux d'occupation: ${analytics.occupancy}%`, 40, 110);
     doc.text(`Clients: ${analytics.customers}`, 40, 130);
     doc.text(`Contrats signés: ${analytics.signedContracts}`, 40, 150);
-    doc.save("atlascars_dashboard_report.pdf");
+    doc.save("n1-lux-cars_dashboard_report.pdf");
   }, [analytics]);
 
   const downloadDashboardExcel = useCallback(() => {
@@ -266,7 +265,7 @@ const Dashboard = () => {
     const worksheet = utils.json_to_sheet(rows);
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Revenus");
-    writeFile(workbook, "atlascars_revenue_report.xlsx");
+    writeFile(workbook, "n1-lux-cars_revenue_report.xlsx");
   }, [analytics.revenueMonths]);
 
   const downloadDashboardCsv = useCallback(() => {
@@ -274,7 +273,7 @@ const Dashboard = () => {
     const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", "atlascars_revenue_report.csv");
+    link.setAttribute("download", "n1-lux-cars_revenue_report.csv");
     link.click();
   }, [analytics.revenueMonths]);
 
@@ -291,10 +290,11 @@ const Dashboard = () => {
       <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-8">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <Badge className="mb-4 rounded-full bg-emerald-500/10 text-emerald-300">Dashboard premium</Badge>
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Atlas Cars Executive Overview</h1>
+            <BrandLogo className="mb-5" markClassName="h-16 w-16" textClassName="text-white" />
+            <Badge className="mb-4 rounded-full bg-primary/10 text-primary">Luxury command center</Badge>
+            <h1 className="font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">Welcome to N1 Lux Cars Administration</h1>
             <p className="mt-3 text-sm leading-6 text-slate-300">
-              Une vue centralisée, conçue pour accompagner les agences de location les plus exigeantes.
+              Premium analytics for fleet performance, reservations, revenue, and client experience.
             </p>
           </div>
 
@@ -303,7 +303,7 @@ const Dashboard = () => {
               <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Revenu mensuel</p>
                 <p className="mt-3 text-3xl font-semibold text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
-                <p className="mt-2 text-sm text-emerald-300">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`} vs. mois précédent</p>
+                <p className="mt-2 text-sm text-primary">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`} vs. mois précédent</p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Taux d'occupation</p>
@@ -374,10 +374,10 @@ const Dashboard = () => {
 
       <div className="grid gap-4 xl:grid-cols-4">
         {[
-          { label: "Total véhicules", value: cars.length, icon: Car, tone: "from-emerald-500 to-cyan-500" },
-          { label: "Disponibles", value: analytics.availableCars, icon: Shield, tone: "from-sky-500 to-indigo-500" },
-          { label: "Réservations actives", value: analytics.activeBookings.length, icon: CalendarDays, tone: "from-cyan-500 to-sky-500" },
-          { label: "Maintenance", value: Math.max(0, cars.length - analytics.availableCars - analytics.activeBookings.length), icon: Sparkles, tone: "from-violet-500 to-fuchsia-500" },
+          { label: "Total Cars", value: cars.length, icon: Car, tone: "from-[#d4af37] to-[#fff2b7]" },
+          { label: "Active Reservations", value: analytics.activeBookings.length, icon: CalendarDays, tone: "from-[#d4af37] to-[#b78922]" },
+          { label: "Monthly Revenue", value: formatMoney(analytics.currentMonthRevenue), icon: Wallet, tone: "from-[#fff2b7] to-[#d4af37]" },
+          { label: "Fleet Occupancy Rate", value: `${analytics.occupancy}%`, icon: TrendingUp, tone: "from-[#d4af37] to-[#fff2b7]" },
         ].map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
             <Card className="overflow-hidden border-border/70 bg-card/90 shadow-card transition-all hover:-translate-y-1 hover:shadow-xl">
@@ -390,7 +390,7 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
                     </div>
-                    <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${stat.tone} text-white shadow-lg`}>
+                    <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${stat.tone} text-[#0B1F3A] shadow-lg`}>
                       <stat.icon className="h-6 w-6" />
                     </div>
                   </div>
@@ -408,21 +408,21 @@ const Dashboard = () => {
               <CardTitle>Revenue par mois</CardTitle>
               <p className="text-sm text-muted-foreground">Évolution sur les derniers mois.</p>
             </div>
-            <Badge className="rounded-full bg-emerald-500/10 text-emerald-300">12 mois</Badge>
+            <Badge className="rounded-full bg-primary/10 text-primary">12 mois</Badge>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={analytics.revenueMonths} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
                 <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} formatter={(value) => [`${value} DH`, "Revenus"]} />
-                <Area type="monotone" dataKey="revenue" stroke="#38bdf8" strokeWidth={3} fill="url(#revenueGradient)" />
+                <Area type="monotone" dataKey="revenue" stroke="#D4AF37" strokeWidth={3} fill="url(#revenueGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -438,7 +438,7 @@ const Dashboard = () => {
                 <XAxis dataKey="date" stroke="#94a3b8" tickLine={false} axisLine={false} />
                 <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
-                <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} dot={false} />
+                <Line type="monotone" dataKey="count" stroke="#D4AF37" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -471,14 +471,14 @@ const Dashboard = () => {
               <AreaChart data={analytics.customerGrowth} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="customerGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.28} />
+                    <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
                 <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
-                <Area type="monotone" dataKey="customers" stroke="#a78bfa" strokeWidth={3} fill="url(#customerGradient)" />
+                <Area type="monotone" dataKey="customers" stroke="#D4AF37" strokeWidth={3} fill="url(#customerGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -544,7 +544,7 @@ const Dashboard = () => {
               <div className="rounded-3xl border border-dashed border-white/10 p-6 text-center text-sm text-muted-foreground">Aucune activité récente.</div>
             ) : (
               latest.map((booking) => (
-                <div key={booking.id} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 transition hover:border-cyan-500/30 hover:bg-slate-900/80">
+                <div key={booking.id} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 transition hover:border-primary/40 hover:bg-slate-900/80">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="font-semibold text-white">Nouvelle réservation</p>

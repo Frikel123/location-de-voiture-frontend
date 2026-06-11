@@ -39,6 +39,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminSearch } from "@/components/admin/AdminSearchContext";
 import { DEMO_MODE } from "@/lib/demo";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const items = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -111,7 +112,7 @@ export const AdminLayout = () => {
   const unreadCount = notificationsState.filter((item) => item.unread).length;
 
   const initials = useMemo(() => {
-    const email = user?.email ?? "admin@atlascars.ma";
+    const email = user?.email ?? "admin@n1-lux-cars.ma";
     return email.slice(0, 2).toUpperCase();
   }, [user?.email]);
 
@@ -122,7 +123,7 @@ export const AdminLayout = () => {
 
   const currentTitle =
     pageTitles[location.pathname] ??
-    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "Atlas Cars Admin");
+    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "N1 Lux Cars Admin");
 
   const breadcrumbs = useMemo(() => {
     const segments = location.pathname.replace(/^\//, "").split("/").filter(Boolean);
@@ -143,25 +144,22 @@ export const AdminLayout = () => {
   }).format(now);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(168,85,247,0.14)_0,_transparent_28%),hsl(var(--background))] text-foreground">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,242,183,0.12)_0,_transparent_28%),hsl(var(--background))] text-foreground">
       {open && <div className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-white/10 bg-slate-950/80 bg-[length:200%] bg-[top] p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 ${collapsed ? "w-20" : "w-[18rem]"} ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-white/10 bg-[#061426]/90 bg-[length:200%] bg-[top] p-4 shadow-2xl backdrop-blur-xl transition-all duration-300 ${collapsed ? "w-20" : "w-[18rem]"} ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         <div className="flex items-center justify-between gap-3 px-1">
           <div className="flex items-center gap-3">
-            <div className="relative grid h-12 w-12 place-items-center rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-sm font-black text-white shadow-xl shadow-cyan-500/20">
-              AC
-              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-emerald-400 ring-4 ring-slate-950" />
-            </div>
+            <BrandLogo showText={false} markClassName="h-12 w-12" />
             {!collapsed ? (
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-300">Atlas Cars</p>
-                <p className="text-xs text-slate-400">Admin cockpit</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">N1 Lux Cars</p>
+                <p className="text-xs text-slate-400">Luxury administration</p>
               </div>
             ) : (
-              <span className="sr-only">Atlas Cars admin</span>
+              <span className="sr-only">N1 Lux Cars admin</span>
             )}
           </div>
           <Button
@@ -185,7 +183,7 @@ export const AdminLayout = () => {
                   className={({ isActive }) =>
                     `group relative flex items-center gap-3 overflow-hidden rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_16px_36px_-24px_rgba(14,116,144,0.45)]"
+                        ? "bg-gradient-to-r from-[#d4af37] to-[#fff2b7] text-[#0B1F3A] shadow-[0_16px_36px_-24px_rgba(212,175,55,0.65)]"
                         : "text-slate-300/85 hover:bg-white/10 hover:text-white"
                     } ${collapsed ? "justify-center px-0" : ""}`
                   }
@@ -218,10 +216,10 @@ export const AdminLayout = () => {
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Performance</p>
                 <p className="mt-1 text-sm font-semibold text-white">Taux d'occupation</p>
               </div>
-              <Badge className="rounded-full bg-emerald-400/10 text-emerald-300">75%</Badge>
+              <Badge className="rounded-full bg-primary/10 text-primary">75%</Badge>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500" />
+              <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-primary to-[#fff2b7] transition-all duration-500" />
             </div>
           </div>
         )}
@@ -236,7 +234,7 @@ export const AdminLayout = () => {
               </Button>
 
               <div className="min-w-0">
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Administration</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-primary">N1 Lux Cars</p>
                 <h1 className="truncate text-xl font-semibold md:text-2xl">{currentTitle}</h1>
               </div>
 
@@ -348,7 +346,7 @@ export const AdminLayout = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-11 gap-2 rounded-2xl px-2">
                       <Avatar className="h-8 w-8 border border-border">
-                        <AvatarFallback className="bg-gradient-to-br from-cyan-500 to-blue-600 text-xs font-bold text-white">{initials}</AvatarFallback>
+                        <AvatarFallback className="bg-gradient-to-br from-primary to-[#fff2b7] text-xs font-bold text-[#0B1F3A]">{initials}</AvatarFallback>
                       </Avatar>
                       <span className="hidden max-w-[150px] truncate text-sm md:inline">{user?.email ?? "Admin"}</span>
                       <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />

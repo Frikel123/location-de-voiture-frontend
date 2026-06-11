@@ -47,8 +47,8 @@ const BookingFlow = () => {
 
   useEffect(() => {
     setSeo({
-      title: "Online car booking | Atlas Cars",
-      description: "Complete your Atlas Cars rental in five steps with vehicle selection, customer details, rental options, contract preview and confirmation.",
+      title: "Online car booking | N1 Lux Cars",
+      description: "Complete your N1 Lux Cars rental in five steps with vehicle selection, customer details, rental options, contract preview and confirmation.",
       canonical: `/${lang}/booking`,
     });
   }, [lang]);
@@ -60,7 +60,7 @@ const BookingFlow = () => {
     event.preventDefault();
     if (step < steps.length - 1) return next();
     window.open(
-      waLink(`Atlas Cars booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} DH.`),
+      waLink(`N1 Lux Cars booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} DH.`),
       "_blank",
       "noopener,noreferrer",
     );
@@ -72,7 +72,7 @@ const BookingFlow = () => {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <Badge className="mb-3 rounded-full">Secure online booking</Badge>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Reserve your Atlas Cars vehicle</h1>
+            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Reserve your N1 Lux Cars vehicle</h1>
             <p className="mt-3 max-w-2xl text-muted-foreground">A clear five-step flow with pricing, contract preview and instant WhatsApp confirmation.</p>
           </div>
           <Button asChild variant="outline" className="rounded-full"><Link to={`/${lang}#voitures`}>Back to fleet</Link></Button>
@@ -136,7 +136,7 @@ const BookingFlow = () => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
                 <h2 className="text-2xl font-semibold">Step 4: Contract preview</h2>
                 <div className="mt-5 rounded-3xl border bg-background p-6">
-                  <div className="flex items-center gap-3"><ShieldCheck className="h-6 w-6 text-primary" /><strong>Atlas Cars rental agreement preview</strong></div>
+                  <div className="flex items-center gap-3"><ShieldCheck className="h-6 w-6 text-primary" /><strong>N1 Lux Cars rental agreement preview</strong></div>
                   <div className="mt-5 grid gap-3 text-sm md:grid-cols-2">
                     <p><span className="text-muted-foreground">Vehicle:</span> {selectedVehicle.name}</p>
                     <p><span className="text-muted-foreground">Customer:</span> {form.fullName || "To be completed"}</p>
@@ -153,7 +153,7 @@ const BookingFlow = () => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
                 <CheckCircle2 className="mx-auto h-16 w-16 text-primary" />
                 <h2 className="mt-4 text-3xl font-semibold">Step 5: Confirmation</h2>
-                <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Review complete. Submit to send the booking request to Atlas Cars on WhatsApp for final confirmation.</p>
+                <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Review complete. Submit to send the booking request to N1 Lux Cars on WhatsApp for final confirmation.</p>
               </motion.div>
             )}
 

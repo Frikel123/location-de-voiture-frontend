@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 210 36% 98%;
-    --foreground: 222 49% 7%;
+    --background: 218 48% 97%;
+    --foreground: 214 68% 9%;
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 8%;
@@ -13,10 +13,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 8%;
 
-    /* WhatsApp green */
-    --primary: 160 84% 34%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 190 95% 42%;
+    --primary: 45 65% 52%;
+    --primary-foreground: 214 68% 9%;
+    --primary-glow: 45 91% 75%;
 
     --secondary: 216 28% 95%;
     --secondary-foreground: 222 47% 11%;
@@ -24,31 +23,31 @@
     --muted: 220 18% 94%;
     --muted-foreground: 220 9% 42%;
 
-    --accent: 164 72% 93%;
-    --accent-foreground: 164 80% 20%;
+    --accent: 45 73% 92%;
+    --accent-foreground: 214 68% 12%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 18% 88%;
     --input: 220 18% 88%;
-    --ring: 142 70% 39%;
+    --ring: 45 65% 52%;
 
     --radius: 0.75rem;
 
-    --gradient-hero: linear-gradient(135deg, hsl(222 49% 7%) 0%, hsl(216 42% 11%) 46%, hsl(164 68% 18%) 100%);
+    --gradient-hero: linear-gradient(135deg, #061426 0%, #0B1F3A 45%, #142f54 100%);
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --shadow-card: 0 24px 70px -45px hsl(222 49% 7% / 0.42);
-    --shadow-elegant: 0 24px 70px -30px hsl(var(--primary) / 0.38);
+    --shadow-elegant: 0 24px 70px -30px hsl(var(--primary) / 0.42);
 
-    --sidebar-background: 222 47% 7%;
+    --sidebar-background: 214 68% 9%;
     --sidebar-foreground: 214 32% 91%;
-    --sidebar-primary: 160 84% 39%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 29% 14%;
+    --sidebar-primary: 45 65% 52%;
+    --sidebar-primary-foreground: 214 68% 9%;
+    --sidebar-accent: 215 54% 16%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 220 29% 16%;
-    --sidebar-ring: 160 84% 39%;
+    --sidebar-ring: 45 65% 52%;
   }
 
   .dark {
@@ -58,25 +57,25 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 160 84% 45%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 45 65% 52%;
+    --primary-foreground: 214 68% 9%;
     --secondary: 220 29% 14%;
     --secondary-foreground: 0 0% 98%;
     --muted: 220 29% 14%;
     --muted-foreground: 215 16% 68%;
-    --accent: 168 50% 16%;
-    --accent-foreground: 168 70% 80%;
+    --accent: 45 39% 18%;
+    --accent-foreground: 45 91% 75%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 29% 17%;
     --input: 220 29% 17%;
-    --ring: 160 84% 45%;
+    --ring: 45 65% 52%;
   }
 }
 
 @layer base {
   * { @apply border-border; }
-  body { @apply bg-background text-foreground antialiased; font-feature-settings: "ss01"; }
+  body { @apply bg-background text-foreground antialiased; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-feature-settings: "ss01"; }
   html { scroll-behavior: smooth; }
 }
 
@@ -86,6 +85,7 @@
   .bg-gradient-hero { background-image: var(--gradient-hero); }
   .bg-gradient-primary { background-image: var(--gradient-primary); }
   .glass-panel { @apply border border-white/60 bg-white/80 shadow-card backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]; }
+  .gold-text { background: linear-gradient(135deg, #fff2b7 0%, #d4af37 38%, #f4dc84 72%, #b78922 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .premium-ring { box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.12), 0 24px 60px -36px hsl(222 47% 8% / 0.55); }
   .luxury-surface { @apply border border-white/10 bg-white/[0.06] backdrop-blur-2xl; box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.08), 0 30px 80px -45px hsl(0 0% 0% / 0.75); }
   .text-balance { text-wrap: balance; }

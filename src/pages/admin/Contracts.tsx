@@ -1,4 +1,4 @@
-ï»¿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { differenceInCalendarDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
@@ -60,8 +60,8 @@ const toPayload = (contract: Contract): ContractPayload => ({
   reservationDailyRate: contract.reservationDailyRate ?? 0,
   reservationDeposit: contract.reservationDeposit ?? 0,
   reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-  reservationPaymentMethod: contract.reservationPaymentMethod ?? "EspÃ¨ces",
-  agencyName: contract.agencyName ?? "Atlas Cars",
+  reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espèces",
+  agencyName: contract.agencyName ?? "N1 Lux Cars",
   agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
   agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
   insuranceName: contract.insuranceName ?? "Assurance tous risques",
@@ -150,8 +150,8 @@ const Contracts = () => {
   const metrics = useMemo(
     () => ({
       total: contracts.length,
-      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "SignÃ©").length,
-      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "ConfirmÃ©").length,
+      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Signé").length,
+      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Confirmé").length,
       revenue: contracts.reduce((sum, contract) => sum + Number(contract.reservationTotalTTC || 0), 0),
     }),
     [contracts],
@@ -207,7 +207,7 @@ const Contracts = () => {
         qrCode: getContractPublicUrl(contractNumber),
         reservationDays: computedDays,
         reservationTotalTTC: computedTotal,
-        signedAt: form.status === "SignÃ©" && !form.signedAt ? new Date().toISOString() : form.signedAt,
+        signedAt: form.status === "Signé" && !form.signedAt ? new Date().toISOString() : form.signedAt,
       },
       {
         onSuccess: () => {
@@ -236,7 +236,7 @@ const Contracts = () => {
     );
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, sheet, "Contrats");
-    writeFile(workbook, `atlascars_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    writeFile(workbook, `n1-lux-cars_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   const printContract = (contract: Contract) => {
@@ -437,7 +437,7 @@ const Contracts = () => {
                 <Select value={form.reservationPaymentMethod} onValueChange={(value) => setForm((prev) => ({ ...prev, reservationPaymentMethod: value }))}>
                   <SelectTrigger className="h-11 rounded-2xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="EspÃ¨ces">Especes</SelectItem>
+                    <SelectItem value="Espèces">Especes</SelectItem>
                     <SelectItem value="Carte bancaire">Carte bancaire</SelectItem>
                     <SelectItem value="Virement">Virement</SelectItem>
                   </SelectContent>

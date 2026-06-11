@@ -124,7 +124,7 @@ const PublicContractVerification = () => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <Badge className="mb-3 rounded-full bg-slate-950 text-white hover:bg-slate-950">
-                Verification officielle Atlas Cars
+                Verification officielle N1 Lux Cars
               </Badge>
               <h1 className="break-words text-2xl font-bold tracking-tight sm:text-4xl">
                 Contrat {contract?.contractNumber || id}
@@ -161,7 +161,7 @@ const PublicContractVerification = () => {
               <div>
                 <h2 className="text-2xl font-semibold">Contrat introuvable</h2>
                 <p className="mt-2 max-w-md text-sm text-slate-600">
-                  Le QR code scanne ne correspond a aucun contrat valide dans le systeme Atlas Cars.
+                  Le QR code scanne ne correspond a aucun contrat valide dans le systeme N1 Lux Cars.
                 </p>
               </div>
             </CardContent>
@@ -182,7 +182,7 @@ const PublicContractVerification = () => {
                     </div>
                     <div>
                       <h2 className="text-lg font-bold text-slate-950">Contrat vérifié</h2>
-                      <p className="text-sm text-slate-600">Ce document existe dans la base officielle Atlas Cars.</p>
+                      <p className="text-sm text-slate-600">Ce document existe dans la base officielle N1 Lux Cars.</p>
                     </div>
                   </div>
                   <Badge className={cn("w-fit rounded-full px-3 py-1 ring-1 hover:bg-transparent", getStatusTone(displayStatus))}>
@@ -269,7 +269,7 @@ const PublicContractVerification = () => {
                 <CardContent className="space-y-3 p-5">
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-sm text-slate-500">Agence</span>
-                    <span className="text-right text-sm font-semibold">{contract.agencyName || "Atlas Cars"}</span>
+                    <span className="text-right text-sm font-semibold">{contract.agencyName || "N1 Lux Cars"}</span>
                   </div>
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-sm text-slate-500">Créé le</span>

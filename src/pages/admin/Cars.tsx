@@ -44,8 +44,8 @@ const inferCarSpecs = (car: Car, occupiedCarIds: Set<number>): CarSpecs => {
 
 const statusClassName = (status: FleetStatus) =>
   status === "Disponible"
-    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-    : "border-slate-200 bg-slate-100 text-slate-700";
+    ? "border-primary/40 bg-primary/10 text-primary"
+    : "border-slate-400/30 bg-slate-950/10 text-slate-600 dark:text-slate-300";
 
 const compressImage = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -247,10 +247,11 @@ const Cars = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 rounded-3xl border border-border/70 bg-card/95 p-5 shadow-sm md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 rounded-3xl border border-border/70 bg-gradient-to-br from-[#0B1F3A] to-[#061426] p-5 text-white shadow-elegant md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight">Gestion de flotte</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Un inventaire clair, simple et pret pour l'exploitation quotidienne.</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-primary">Fleet Management</p>
+          <h2 className="mt-2 font-serif text-2xl font-semibold tracking-tight">Luxury Vehicle Collection</h2>
+          <p className="mt-1 text-sm text-white/65">Premium inventory, image previews, and live availability status.</p>
         </div>
         <Button onClick={openNew} className="rounded-2xl">
           <Plus className="mr-2 h-4 w-4" /> Ajouter une voiture
@@ -299,14 +300,14 @@ const Cars = () => {
             const specs = inferCarSpecs(car, occupiedCarIds);
 
             return (
-              <Card key={car.id} className="overflow-hidden rounded-3xl border-border/70 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md">
-                <div className="aspect-[16/10] bg-secondary">
+              <Card key={car.id} className="group overflow-hidden rounded-3xl border-border/70 bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#0B1F3A]">
                   {imageSrc ? (
                     <img
                       src={imageSrc}
                       alt={car.name}
                       loading="lazy"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       onError={() =>
                         setBrokenImageIds((ids) => {
                           const next = new Set(ids);
@@ -318,12 +319,14 @@ const Cars = () => {
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">Aucune image</div>
                   )}
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#061426]/85 to-transparent" />
+                  <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.18em] text-white backdrop-blur">N1 Lux Fleet</div>
                 </div>
 
                 <CardContent className="space-y-4 p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="truncate text-lg font-semibold tracking-tight">{car.name}</h3>
+                      <h3 className="truncate font-serif text-lg font-semibold tracking-tight">{car.name}</h3>
                       <p className="mt-1 text-sm font-medium text-primary">{car.price} DH / jour</p>
                     </div>
                     <Badge variant="outline" className={`shrink-0 rounded-full px-3 py-1 ${statusClassName(specs.status)}`}>
@@ -420,7 +423,7 @@ const Cars = () => {
 };
 
 const Spec = ({ icon: Icon, label }: { icon: typeof Gauge; label: string }) => (
-  <div className="flex min-w-0 items-center gap-2 rounded-2xl bg-muted/45 px-3 py-2 text-muted-foreground">
+  <div className="flex min-w-0 items-center gap-2 rounded-2xl border border-border/70 bg-muted/45 px-3 py-2 text-muted-foreground">
     <Icon className="h-4 w-4 shrink-0 text-primary" />
     <span className="truncate">{label}</span>
   </div>

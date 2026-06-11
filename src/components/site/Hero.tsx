@@ -38,23 +38,23 @@ export const Hero = () => {
     { value: "12 min", label: "confirmation" },
   ];
 
-  const message = `Hello Atlas Cars, I want to check availability. City: ${pickupCity}. Dates: ${startDate} - ${endDate}. Category: ${category}. Budget: ${priceRange} DH/day. Estimate: ${estimate} DH.`;
+  const message = `Hello N1 Lux Cars, I want to check availability. City: ${pickupCity}. Dates: ${startDate} - ${endDate}. Category: ${category}. Budget: ${priceRange} DH/day. Estimate: ${estimate} DH.`;
 
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-[#05070b] pt-20 text-white">
-      <img src={heroCar} alt="Atlas Cars premium rental vehicle" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-50" loading="eager" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(8,155,117,0.24),transparent_24%),radial-gradient(circle_at_85%_35%,rgba(34,211,238,0.14),transparent_22%),linear-gradient(90deg,rgba(4,7,12,0.96),rgba(4,7,12,0.72)_45%,rgba(4,7,12,0.38))]" />
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-cyan-300 to-primary animate-gradient-shift" />
+      <img src={heroCar} alt="N1 Lux Cars premium rental vehicle" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover opacity-50" loading="eager" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(212,175,55,0.22),transparent_24%),radial-gradient(circle_at_85%_35%,rgba(255,242,183,0.14),transparent_22%),linear-gradient(90deg,rgba(4,10,20,0.96),rgba(11,31,58,0.74)_45%,rgba(11,31,58,0.42))]" />
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-[#fff2b7] to-primary animate-gradient-shift" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
 
       <div className="container relative z-10 grid min-h-[calc(100vh-5rem)] items-center gap-10 py-12 lg:grid-cols-[1.05fr_0.95fr]">
         <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/85 backdrop-blur-xl">
-            <Sparkles className="h-4 w-4 text-primary" /> Verified premium car rental in Fez
+            <Sparkles className="h-4 w-4 text-primary" /> N1 Lux Cars Morocco
           </div>
-          <h1 className="text-balance text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl lg:text-7xl">Atlas Cars premium rental, booked in minutes.</h1>
+          <h1 className="text-balance font-serif text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl lg:text-7xl">Premium Car Rental Experience in Morocco</h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
-            Search live availability, compare vehicles, preview pricing and reserve with instant WhatsApp support.
+            Drive Excellence with N1 Lux Cars
           </p>
 
           <div className="mt-10 grid gap-3 sm:grid-cols-2">
@@ -76,10 +76,10 @@ export const Hero = () => {
 
           <div className="mt-12 flex flex-col gap-4 sm:flex-row">
             <Button asChild size="lg" className="rounded-full px-8 py-4 text-base shadow-elegant">
-              <a href="#voitures"><Search className="mr-2 h-5 w-5" />Explore fleet</a>
+              <a href="#voitures"><Search className="mr-2 h-5 w-5" />Explore Luxury Fleet</a>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full border-white/20 bg-white/10 px-8 py-4 text-base text-white hover:bg-white/15">
-              <a href={waLink(message)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-5 w-5" />Reserve on WhatsApp</a>
+              <a href={waLink(message)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-5 w-5" />Reserve Premium Drive</a>
             </Button>
           </div>
         </motion.div>

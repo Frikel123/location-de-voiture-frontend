@@ -16,16 +16,16 @@ import { setSeo } from "@/lib/seo";
 const Index = () => {
   useEffect(() => {
     setSeo({
-      title: "Atlas Cars - Premium car rental in Fez",
-      description: "Premium car rental platform in Fez with live availability, instant booking, WhatsApp reservations, airport delivery and insured vehicles.",
+      title: "N1 Lux Cars - Premium car rental experience in Morocco",
+      description: "Premium luxury car rental platform in Morocco with live availability, instant booking, WhatsApp reservations, airport delivery and insured vehicles.",
       canonical: "/fr",
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "AutoRental",
-        name: "Atlas Cars",
-        areaServed: "Fez, Morocco",
+        name: "N1 Lux Cars",
+        areaServed: "Morocco",
         telephone: "+212650958675",
-        url: "https://atlascars.ma",
+        url: "https://n1-lux-cars.ma",
       },
     });
   }, []);

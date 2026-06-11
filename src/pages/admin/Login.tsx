@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { api, LoginResponse } from "@/lib/api";
 import { AUTH_BYPASS } from "@/lib/demo";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,20 +47,19 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4">
-      <Card className="w-full max-w-md shadow-elegant border-border/60">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-hero p-4">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.22),transparent_28%),radial-gradient(circle_at_80%_15%,rgba(255,255,255,0.08),transparent_24%)]" />
+      <Card className="relative w-full max-w-md border-white/10 bg-white/[0.08] text-white shadow-elegant backdrop-blur-2xl">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground font-bold text-xl">
-            N
-          </div>
-          <CardTitle>Atlas Cars Admin</CardTitle>
-          <CardDescription>Connectez-vous a votre compte</CardDescription>
+          <BrandLogo className="mx-auto mb-3 justify-center" markClassName="h-20 w-20" textClassName="text-white text-left" />
+          <CardTitle className="font-serif text-2xl gold-text">N1 Lux Cars Admin</CardTitle>
+          <CardDescription className="text-white/65">Connectez-vous a votre compte premium</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-white/80">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -70,7 +70,7 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe</Label>
+              <Label htmlFor="password" className="text-white/80">Mot de passe</Label>
               <Input
                 id="password"
                 type="password"
@@ -80,7 +80,7 @@ const Login = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={busy}>
+            <Button type="submit" className="w-full shadow-elegant" disabled={busy}>
               {busy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Se connecter
             </Button>
@@ -92,3 +92,5 @@ const Login = () => {
 };
 
 export default Login;
+                className="border-white/10 bg-white/10 text-white"
+                className="border-white/10 bg-white/10 text-white"

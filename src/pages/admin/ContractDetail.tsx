@@ -1,4 +1,4 @@
-ï»¿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Download, FileText, Mail, MessageCircle, Printer, Save, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
@@ -74,14 +74,14 @@ const ContractDetail = () => {
       reservationDailyRate: contract.reservationDailyRate ?? 0,
       reservationDeposit: contract.reservationDeposit ?? 0,
       reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-      reservationPaymentMethod: contract.reservationPaymentMethod ?? "EspÃ¨ces",
-      agencyName: contract.agencyName ?? "Atlas Cars",
+      reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espèces",
+      agencyName: contract.agencyName ?? "N1 Lux Cars",
       agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
       agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,
-      signedAt: signedAt || (status === "SignÃ©" ? new Date().toISOString() : ""),
+      signedAt: signedAt || (status === "Signé" ? new Date().toISOString() : ""),
       signatureIp: contract.signatureIp ?? "",
       signatureStatus: contract.signatureStatus ?? (clientSignature ? "signed" : "unsigned"),
       notes,
@@ -96,7 +96,7 @@ const ContractDetail = () => {
 
   const save = () => {
     if (!payload) return;
-    if (status === "SignÃ©" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
+    if (status === "Signé" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
       toast.error("Les signatures client et agence sont requises avant de signer le contrat.");
       return;
     }
@@ -131,14 +131,14 @@ const ContractDetail = () => {
   const sendWhatsApp = () => {
     if (!contract) return;
     const phone = contract.clientPhone.replace(/\D/g, "");
-    const text = `Bonjour ${contract.clientFullName}, votre contrat Atlas Cars ${contract.contractNumber} est pret.`;
+    const text = `Bonjour ${contract.clientFullName}, votre contrat N1 Lux Cars ${contract.contractNumber} est pret.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const sendEmail = () => {
     if (!contract) return;
-    const subject = `Votre contrat Atlas Cars ${contract.contractNumber}`;
-    const body = `Bonjour ${contract.clientFullName},%0D%0AVotre contrat de location Atlas Cars est disponible.`;
+    const subject = `Votre contrat N1 Lux Cars ${contract.contractNumber}`;
+    const body = `Bonjour ${contract.clientFullName},%0D%0AVotre contrat de location N1 Lux Cars est disponible.`;
     window.location.href = `mailto:${contract.clientEmail}?subject=${encodeURIComponent(subject)}&body=${body}`;
   };
 
@@ -209,7 +209,7 @@ const ContractDetail = () => {
                 <CardTitle>Controle du contrat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "SignÃ©" ? (
+                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé" ? (
                   <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
                     <p className="font-semibold">Contrat signe</p>
                     <p className="mt-1">Date: {contract.signedAt || "-"} | IP client: {contract.signatureIp || "-"}</p>

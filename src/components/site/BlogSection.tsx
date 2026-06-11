@@ -44,7 +44,7 @@ export const BlogSection = () => {
           <div>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary">{isFr ? "Conseils premium" : language === "de" ? "Premium-Tipps" : "Premium insights"}</p>
             <h2 className="text-balance text-3xl font-bold tracking-tight md:text-5xl">
-              {isFr ? "Le blog Atlas Cars" : language === "de" ? "Atlas Cars Blog" : "Atlas Cars blog"}
+              {isFr ? "Le blog N1 Lux Cars" : language === "de" ? "N1 Lux Cars Blog" : "N1 Lux Cars blog"}
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
               {isFr

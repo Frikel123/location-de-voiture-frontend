@@ -178,7 +178,7 @@ const footer = (doc: jsPDF, pageWidth: number, pageHeight: number, contractNumbe
   doc.setDrawColor(...palette.line);
   doc.line(40, pageHeight - 38, pageWidth - 40, pageHeight - 38);
   setFont(doc, "normal", 7.5, palette.muted);
-  doc.text(`Atlas Cars - Contrat ${contractNumber} - Document numerique verifiable`, 40, pageHeight - 22);
+  doc.text(`N1 Lux Cars - Contrat ${contractNumber} - Document numerique verifiable`, 40, pageHeight - 22);
   doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth - 40, pageHeight - 22, { align: "right" });
 };
 
@@ -208,10 +208,10 @@ export const generateContractPdf = async (contract: Contract) => {
   logo(doc, margin + 20, 50);
 
   setFont(doc, "bold", 22, [255, 255, 255]);
-  doc.text(pdfContract.agencyName || "Atlas Cars", margin + 84, 68);
+  doc.text(pdfContract.agencyName || "N1 Lux Cars", margin + 84, 68);
   setFont(doc, "normal", 8.5, [203, 213, 225]);
   doc.text(pdfContract.agencyAddress || "Casablanca, Maroc", margin + 84, 88);
-  doc.text(`${pdfContract.agencyPhone || "06 50 95 86 75"}  |  ${pdfContract.agencyEmail || "contact@atlascars.ma"}`, margin + 84, 104);
+  doc.text(`${pdfContract.agencyPhone || "06 50 95 86 75"}  |  ${pdfContract.agencyEmail || "contact@n1-lux-cars.ma"}`, margin + 84, 104);
   doc.text(`ICE: ${pdfContract.agencyIce || "000000000000000"}  |  RC: ${pdfContract.agencyRc || "000000"}`, margin + 84, 120);
 
   doc.setFillColor(255, 255, 255);
@@ -283,9 +283,9 @@ export const generateContractPdf = async (contract: Contract) => {
   addFieldGrid(
     doc,
     [
-      ["Agence", pdfContract.agencyName || "Atlas Cars"],
+      ["Agence", pdfContract.agencyName || "N1 Lux Cars"],
       ["Telephone", pdfContract.agencyPhone || "06 50 95 86 75"],
-      ["Email", pdfContract.agencyEmail || "contact@atlascars.ma"],
+      ["Email", pdfContract.agencyEmail || "contact@n1-lux-cars.ma"],
       ["Adresse", pdfContract.agencyAddress || "Casablanca, Maroc"],
       ["ICE", pdfContract.agencyIce || "000000000000000"],
       ["RC", pdfContract.agencyRc || "000000"],
@@ -370,7 +370,7 @@ export const generateContractPdf = async (contract: Contract) => {
   doc.text("Agence", margin + halfWidth + halfGap + 16, y + 24);
   setFont(doc, "normal", 7.5, palette.muted);
   doc.text(pdfContract.clientFullName || "-", margin + 16, y + 38);
-  doc.text(pdfContract.agencyName || "Atlas Cars", margin + halfWidth + halfGap + 16, y + 38);
+  doc.text(pdfContract.agencyName || "N1 Lux Cars", margin + halfWidth + halfGap + 16, y + 38);
 
   addSignatureImage(doc, clientSignature, margin + 18, y + 48, halfWidth - 36, 48);
   addSignatureImage(doc, agencySignature, margin + halfWidth + halfGap + 18, y + 48, halfWidth - 36, 48);

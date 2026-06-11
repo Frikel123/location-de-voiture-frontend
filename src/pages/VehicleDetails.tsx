@@ -41,8 +41,8 @@ const VehicleDetails = () => {
   useEffect(() => {
     if (!vehicle) return;
     setSeo({
-      title: `${vehicle.name} rental in Fez | Atlas Cars`,
-      description: `Book the ${vehicle.name} with instant availability, WhatsApp confirmation, insurance and delivery in Fez.`,
+      title: `${vehicle.name} rental in Morocco | N1 Lux Cars`,
+      description: `Book the ${vehicle.name} with instant availability, WhatsApp confirmation, insurance and delivery in Morocco.`,
       canonical: `/${lang}/cars/${vehicle.slug}`,
       image: vehicle.gallery[0],
       jsonLd: {
@@ -116,7 +116,7 @@ const VehicleDetails = () => {
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button asChild className="rounded-2xl"><Link to={`/${lang}/booking?vehicle=${vehicle.slug}`}>Instant booking</Link></Button>
                   <Button asChild variant="outline" className="rounded-2xl">
-                    <a href={waLink(`Hello Atlas Cars, I want to reserve ${vehicle.name} from ${startDate} to ${endDate}. Total estimate: ${total} DH.`)} target="_blank" rel="noopener">
+                    <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} from ${startDate} to ${endDate}. Total estimate: ${total} DH.`)} target="_blank" rel="noopener">
                       <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp
                     </a>
                   </Button>
