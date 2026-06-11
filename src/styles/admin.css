@@ -155,6 +155,36 @@
   border: 1px solid rgba(8,18,38,0.03) !important;
 }
 
+/* Aggressive light-mode text overrides to fix washed-out white text */
+.light .admin-root :not(aside) .text-white,
+.light .admin-root :not(aside) .text-foreground,
+.light .admin-root :not(aside) .font-serif,
+.light .admin-root :not(aside) .brand-heading,
+.light .admin-root :not(aside) .text-muted-foreground,
+.light .admin-root :not(aside) .text-slate-300,
+.light .admin-root :not(aside) .text-slate-400,
+.light .admin-root :not(aside) .text-slate-500,
+.light .admin-root :not(aside) .text-slate-600 {
+  color: #081226 !important;
+  opacity: 1 !important;
+}
+
+/* Ensure headings styled with utility classes are visible in hero */
+.light .admin-root :not(aside) h1,
+.light .admin-root :not(aside) h2,
+.light .admin-root :not(aside) h3,
+.light .admin-root :not(aside) .hero-title,
+.light .admin-root :not(aside) .brand-heading {
+  color: #081226 !important;
+}
+
+/* Make sure badges and labels have visible text */
+.light .admin-root :not(aside) .Badge,
+.light .admin-root :not(aside) .badge,
+.light .admin-root :not(aside) .rounded-full {
+  color: #081226 !important;
+}
+
 .light .admin-root .gold-icon {
   background: linear-gradient(90deg, #D4AF37, #fff2b7) !important;
   color: #081226 !important;
