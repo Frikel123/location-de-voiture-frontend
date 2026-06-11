@@ -11,7 +11,32 @@
 .admin-root {
   font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--lux-navy);
-  color: var(--lux-white);
+  color: #F8FAFC;
+}
+
+/* Improve overall text contrast for readability */
+.admin-root .text-muted-foreground,
+.admin-root .text-slate-400,
+.admin-root .text-slate-300,
+.admin-root .text-slate-500,
+.admin-root .text-slate-600 {
+  color: rgba(248,250,252,0.72) !important;
+}
+
+.admin-root h1,
+.admin-root h2,
+.admin-root h3,
+.admin-root p,
+.admin-root span,
+.admin-root label,
+.admin-root a {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+.admin-root .brand-heading,
+.admin-root .font-serif {
+  color: #FFFFFF !important;
 }
 
 .admin-root h1,
