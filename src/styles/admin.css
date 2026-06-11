@@ -209,6 +209,21 @@
   color: #081226 !important;
 }
 
+/* Final aggressive override for any remaining white text/icons in light mode (exclude sidebar) */
+.light .admin-root :not(aside) * {
+  color: #081226 !important;
+  fill: #081226 !important;
+  stroke: #081226 !important;
+}
+
+/* But keep gold accents intact */
+.light .admin-root :not(aside) .brand-gold,
+.light .admin-root :not(aside) .gold-icon,
+.light .admin-root :not(aside) .btn-gold,
+.light .admin-root :not(aside) .gold-gradient {
+  color: #081226 !important;
+}
+
 
 /* Compact utility to reduce large paddings for denser layout */
 .admin-root .compact-hero {
