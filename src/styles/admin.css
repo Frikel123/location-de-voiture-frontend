@@ -81,6 +81,105 @@
 
 .admin-root .kpi .recharts-wrapper { height: 40px !important; }
 
+/* Light mode adjustments to keep the premium look when theme=light */
+.light .admin-root {
+  background: linear-gradient(180deg, #F7F7F9 0%, #FFFFFF 100%);
+  color: #081226;
+}
+
+.light .admin-root .brand-heading,
+.light .admin-root .hero-title,
+.light .admin-root h1,
+.light .admin-root h2,
+.light .admin-root h3 {
+  color: #081226 !important;
+}
+
+.light .admin-root .card-dense,
+.light .admin-root .card,
+.light .admin-root .bg-card {
+  background: linear-gradient(180deg, #FFFFFF, #F6F7F9) !important;
+  border: 1px solid rgba(8,18,38,0.06) !important;
+  box-shadow: 0 8px 24px rgba(8,18,38,0.06) !important;
+  color: #081226 !important;
+}
+
+.light .admin-root .glass {
+  background: linear-gradient(180deg, rgba(8,18,38,0.02), rgba(8,18,38,0.01));
+  border: 1px solid rgba(8,18,38,0.04);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Fix utility classes forced to dark earlier when in light mode */
+.light .admin-root [class*="bg-white/5"],
+.light .admin-root [class*="bg-white/10"],
+.light .admin-root [class*="bg-slate-950/70"],
+.light .admin-root [class*="bg-secondary/80"],
+.light .admin-root [class*="bg-card/95"] {
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(8,18,38,0.04) !important;
+  color: #081226 !important;
+}
+
+.light .admin-root .text-muted-foreground,
+.light .admin-root .text-slate-400,
+.light .admin-root .text-slate-300,
+.light .admin-root .text-slate-500,
+.light .admin-root .text-slate-600 {
+  color: rgba(8,18,38,0.65) !important;
+}
+
+/* Hero and hero buttons refinement for light mode */
+.light .admin-root .compact-hero {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FCFCFD 100%) !important;
+  border: 1px solid rgba(8,18,38,0.04) !important;
+  box-shadow: 0 12px 30px rgba(8,18,38,0.06) !important;
+}
+
+.light .admin-root .btn-hero-action {
+  background: linear-gradient(180deg, rgba(8,18,38,0.02), rgba(8,18,38,0.01));
+  border: 1px solid rgba(8,18,38,0.06) !important;
+  color: #081226 !important;
+  box-shadow: 0 6px 18px rgba(8,18,38,0.04) !important;
+}
+
+.light .admin-root .btn-hero-action:hover {
+  background: linear-gradient(180deg, rgba(8,18,38,0.04), rgba(8,18,38,0.02));
+}
+
+/* Reduce extreme white wash in hero inner panels */
+.light .admin-root .compact-hero .rounded-\[2rem\],
+.light .admin-root .compact-hero .rounded-3xl {
+  background: linear-gradient(180deg, #FFFFFF, #FBFBFC) !important;
+  border: 1px solid rgba(8,18,38,0.03) !important;
+}
+
+.light .admin-root .gold-icon {
+  background: linear-gradient(90deg, #D4AF37, #fff2b7) !important;
+  color: #081226 !important;
+  box-shadow: 0 6px 18px rgba(212,175,55,0.12), inset 0 1px 0 rgba(255,255,255,0.6) !important;
+}
+
+.light .admin-root .btn-gold,
+.light .admin-root button.btn-gold,
+.light .admin-root .gold-gradient {
+  color: #081226 !important;
+}
+
+/* Sidebar remains deep for brand contrast in light mode */
+.light .admin-root aside {
+  background: linear-gradient(180deg, #07142a 0%, #061126 100%) !important;
+}
+
+/* Ensure links and interactive text are visible */
+.light .admin-root a,
+.light .admin-root .truncate,
+.light .admin-root .text-foreground {
+  color: #081226 !important;
+}
+
+
 /* Compact utility to reduce large paddings for denser layout */
 .admin-root .compact-hero {
   padding: 12px !important;

@@ -311,12 +311,12 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Button onClick={handleRefresh} variant="secondary" size="sm" className="rounded-2xl px-5 py-3 text-sm">
+              <Button onClick={handleRefresh} variant="secondary" size="sm" className="rounded-2xl px-5 py-3 text-sm btn-hero-action">
                 <RefreshCcw className="mr-2 h-4 w-4" /> Rafraîchir
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="rounded-2xl px-5 py-3 text-sm">
+                  <Button variant="outline" size="sm" className="rounded-2xl px-5 py-3 text-sm btn-hero-action">
                     Exporter
                   </Button>
                 </DropdownMenuTrigger>
