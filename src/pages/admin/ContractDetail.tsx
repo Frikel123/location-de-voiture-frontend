@@ -18,6 +18,26 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, Download, FileText, Mail, MessageCircle, Printer, Save, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { ContractPayload, ContractStatus } from "@/lib/api";
+import { generateContractPdf } from "@/lib/contract-pdf";
+import { getContractPublicUrl } from "@/lib/contract-url";
+import { SignatureCanvas } from "@/components/admin/SignatureCanvas";
+import { ContractPreview } from "@/components/contracts/ContractPreview";
+import { ContractStatusBadge } from "@/components/contracts/ContractStatusBadge";
+import { useContract, useSaveContract } from "@/hooks/contracts/useContracts";
+import { buildContractToken, CONTRACT_STATUSES, normalizeContractStatus } from "@/types/contracts";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 const formatMoney = (value: number) => new Intl.NumberFormat("fr-MA").format(Number(value) || 0);
 const hasSignature = (value?: string | null) => Boolean(value?.startsWith("data:image/"));
@@ -74,14 +94,14 @@ const ContractDetail = () => {
       reservationDailyRate: contract.reservationDailyRate ?? 0,
       reservationDeposit: contract.reservationDeposit ?? 0,
       reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-      reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espèces",
+      reservationPaymentMethod: contract.reservationPaymentMethod ?? "Espï¿½ces",
       agencyName: contract.agencyName ?? "N1 Lux Cars",
       agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
       agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,
-      signedAt: signedAt || (status === "Signé" ? new Date().toISOString() : ""),
+      signedAt: signedAt || (status === "Signï¿½" ? new Date().toISOString() : ""),
       signatureIp: contract.signatureIp ?? "",
       signatureStatus: contract.signatureStatus ?? (clientSignature ? "signed" : "unsigned"),
       notes,
@@ -96,7 +116,7 @@ const ContractDetail = () => {
 
   const save = () => {
     if (!payload) return;
-    if (status === "Signé" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
+    if (status === "Signï¿½" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
       toast.error("Les signatures client et agence sont requises avant de signer le contrat.");
       return;
     }
@@ -209,7 +229,7 @@ const ContractDetail = () => {
                 <CardTitle>Controle du contrat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signé" ? (
+                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Signï¿½" ? (
                   <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
                     <p className="font-semibold">Contrat signe</p>
                     <p className="mt-1">Date: {contract.signedAt || "-"} | IP client: {contract.signatureIp || "-"}</p>
