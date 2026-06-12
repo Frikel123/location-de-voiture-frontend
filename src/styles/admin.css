@@ -331,3 +331,67 @@
 .admin-root .Badge, .admin-root .badge, .admin-root .rounded-full {
   color: #081226 !important;
 }
+
+/* Final light-mode pass. Keep this at the end so it wins over dark admin utilities. */
+html.light .admin-root,
+.admin-root.admin-theme-light {
+  background: linear-gradient(180deg, #f6f7fb 0%, #ffffff 100%) !important;
+  color: #081226 !important;
+}
+
+html.light .admin-root header,
+.admin-root.admin-theme-light header {
+  background: rgba(248, 250, 252, 0.88) !important;
+}
+
+html.light .admin-root main,
+.admin-root.admin-theme-light main {
+  color: #081226 !important;
+}
+
+html.light .admin-root main :where(h1, h2, h3, h4, p, span, label, a, button, td, th, li, div),
+.admin-root.admin-theme-light main :where(h1, h2, h3, h4, p, span, label, a, button, td, th, li, div),
+html.light .admin-root header :where(h1, h2, h3, h4, p, span, label, a, button, div),
+.admin-root.admin-theme-light header :where(h1, h2, h3, h4, p, span, label, a, button, div) {
+  color: #081226 !important;
+  opacity: 1 !important;
+}
+
+html.light .admin-root main :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+.admin-root.admin-theme-light main :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+html.light .admin-root header :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+.admin-root.admin-theme-light header :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: #4b5565 !important;
+}
+
+html.light .admin-root main :where(.compact-hero, .card, .bg-card, [class*="bg-white/5"], [class*="bg-white/10"], [class*="bg-slate-950/70"], [class*="bg-secondary/80"], [class*="bg-card/95"]),
+.admin-root.admin-theme-light main :where(.compact-hero, .card, .bg-card, [class*="bg-white/5"], [class*="bg-white/10"], [class*="bg-slate-950/70"], [class*="bg-secondary/80"], [class*="bg-card/95"]),
+html.light .admin-root header :where(.bg-card, [class*="bg-secondary/80"], [class*="bg-card/70"], [class*="bg-card/95"]),
+.admin-root.admin-theme-light header :where(.bg-card, [class*="bg-secondary/80"], [class*="bg-card/70"], [class*="bg-card/95"]) {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(8, 18, 38, 0.1) !important;
+  color: #081226 !important;
+}
+
+html.light .admin-root main .compact-hero,
+.admin-root.admin-theme-light main .compact-hero {
+  box-shadow: 0 18px 44px rgba(8, 18, 38, 0.12) !important;
+}
+
+html.light .admin-root main .brand-gold,
+.admin-root.admin-theme-light main .brand-gold,
+html.light .admin-root main .text-primary,
+.admin-root.admin-theme-light main .text-primary,
+html.light .admin-root header .text-primary,
+.admin-root.admin-theme-light header .text-primary {
+  color: #b98900 !important;
+}
+
+html.light .admin-root main svg,
+.admin-root.admin-theme-light main svg,
+html.light .admin-root header svg,
+.admin-root.admin-theme-light header svg {
+  color: currentColor !important;
+  fill: none !important;
+  stroke: currentColor !important;
+}

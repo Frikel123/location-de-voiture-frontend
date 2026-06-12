@@ -122,6 +122,8 @@ export const AdminLayout = () => {
     navigate("/admin/login", { replace: true });
   };
 
+  const isLightTheme = theme === "light";
+
   const currentTitle =
     pageTitles[location.pathname] ??
     (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "N1 Lux Cars Admin");
@@ -145,7 +147,7 @@ export const AdminLayout = () => {
   }).format(now);
 
   return (
-    <div className="admin-root min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,242,183,0.12)_0,_transparent_28%),hsl(var(--background))] text-foreground">
+    <div className={`admin-root ${isLightTheme ? "admin-theme-light" : ""} min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.14)_0,_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,242,183,0.12)_0,_transparent_28%),hsl(var(--background))] text-foreground`}>
       {open && <div className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
 
       <aside
@@ -339,8 +341,14 @@ export const AdminLayout = () => {
                     <DropdownMenuItem onClick={() => navigate("/admin/settings")}>Voir tout</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button variant="outline" size="icon" className="rounded-2xl" aria-label="Theme sombre active" disabled>
-                  <Moon className="h-4 w-4" />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-2xl"
+                  aria-label={isLightTheme ? "Activer le mode sombre" : "Activer le mode clair"}
+                  onClick={() => setTheme(isLightTheme ? "dark" : "light")}
+                >
+                  {isLightTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
