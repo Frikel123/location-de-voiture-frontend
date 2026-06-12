@@ -97,7 +97,7 @@ const ContractDetail = () => {
       reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp�ces",
       agencyName: contract.agencyName ?? "N1 Lux Cars",
       agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
-      agencyPhone: contract.agencyPhone ?? "06 50 95 86 75",
+      agencyPhone: contract.agencyPhone ?? "0646494968",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,

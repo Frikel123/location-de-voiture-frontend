@@ -34,8 +34,8 @@ const storageKey = "atlas-cars-admin-settings";
 
 const defaultSettings: SettingsState = {
   companyName: "N1 Lux Cars",
-  phone: "06 50 95 86 75",
-  whatsapp: "06 50 95 86 75",
+  phone: "0646494968",
+  whatsapp: "0646494968",
   address: "Casablanca, Maroc",
   currency: "MAD",
   language: "fr",

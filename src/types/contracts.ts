@@ -1,15 +1,15 @@
 import type { Contract, ContractPayload, ContractStatus, LegacyContractStatus } from "@/lib/api";
 
-export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "Confirmé", "Signé", "Terminé", "Annulé"];
+export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "Confirmï¿½", "Signï¿½", "Terminï¿½", "Annulï¿½"];
 
 export type ContractSortKey = "date" | "client" | "amount" | "status";
 
 export const normalizeContractStatus = (status: Contract["status"]): ContractStatus => {
-  if (status === "En attente" || status === "Actif") return "Confirmé";
-  if (status === "Confirm\u00c3\u00a9") return "Confirmé";
-  if (status === "Sign\u00c3\u00a9") return "Signé";
-  if (status === "Termin\u00c3\u00a9") return "Terminé";
-  if (status === "Annul\u00c3\u00a9") return "Annulé";
+  if (status === "En attente" || status === "Actif") return "Confirmï¿½";
+  if (status === "Confirm\u00c3\u00a9") return "Confirmï¿½";
+  if (status === "Sign\u00c3\u00a9") return "Signï¿½";
+  if (status === "Termin\u00c3\u00a9") return "Terminï¿½";
+  if (status === "Annul\u00c3\u00a9") return "Annulï¿½";
   return status as ContractStatus;
 };
 
@@ -43,10 +43,10 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationDailyRate: 0,
   reservationDeposit: 0,
   reservationTotalTTC: 0,
-  reservationPaymentMethod: "Espèces",
+  reservationPaymentMethod: "Espï¿½ces",
   agencyName: "N1 Lux Cars",
   agencyAddress: "Casablanca, Maroc",
-  agencyPhone: "06 50 95 86 75",
+  agencyPhone: "0646494968",
   insuranceName: "Assurance tous risques",
   insurancePolicyNumber: "",
   insuranceIncluded: true,
@@ -59,8 +59,10 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
 
 export const buildContractNumber = () => {
   const date = new Date();
-  const ymd = date.toISOString().slice(0, 10).replace(/-/g, "");
-  return `AC-${ymd}-${String(date.getTime()).slice(-5)}`;
+  const year = date.getFullYear();
+  // generate a short sequence from timestamp to simulate sequential id
+  const seq = String(date.getTime()).slice(-5).padStart(5, "0");
+  return `N1-${year}-${seq}`;
 };
 
 export const buildContractToken = (contractNumber: string) =>

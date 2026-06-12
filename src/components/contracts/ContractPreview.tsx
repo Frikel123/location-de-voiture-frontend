@@ -48,7 +48,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <Field label="Nom" value={contract.agencyName || "N1 Lux Cars"} />
           <Field label="Adresse" value={contract.agencyAddress || "Casablanca, Maroc"} />
-          <Field label="Telephone" value={contract.agencyPhone || "06 50 95 86 75"} />
+          <Field label="Telephone" value={contract.agencyPhone || "0646494968"} />
         </div>
       </section>
 

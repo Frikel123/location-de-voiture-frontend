@@ -20,15 +20,14 @@ type PdfContract = Contract & {
 };
 
 const palette = {
-  ink: [15, 23, 42] as const,
-  muted: [100, 116, 139] as const,
-  line: [226, 232, 240] as const,
-  soft: [248, 250, 252] as const,
-  navy: [2, 6, 23] as const,
-  cyan: [8, 145, 178] as const,
-  emerald: [5, 150, 105] as const,
-  amber: [217, 119, 6] as const,
-  rose: [225, 29, 72] as const,
+  ink: [10, 10, 10] as const,
+  muted: [120, 116, 108] as const,
+  line: [60, 60, 60] as const,
+  soft: [245, 244, 242] as const,
+  black: [6, 6, 6] as const,
+  gold: [212, 175, 55] as const,
+  accent: [200, 180, 120] as const,
+  danger: [225, 29, 72] as const,
 };
 
 const formatMoney = (value: number) =>
@@ -70,7 +69,7 @@ const card = (doc: jsPDF, x: number, y: number, width: number, height: number, f
 const sectionTitle = (doc: jsPDF, title: string, x: number, y: number, subtitle?: string) => {
   setFont(doc, "bold", 10.5, palette.ink);
   doc.text(title.toUpperCase(), x, y);
-  doc.setDrawColor(...palette.cyan);
+  doc.setDrawColor(...palette.gold);
   doc.setLineWidth(1.4);
   doc.line(x, y + 6, x + 44, y + 6);
   doc.setLineWidth(0.2);
@@ -113,7 +112,7 @@ const addFieldGrid = (
 const statusBadge = (doc: jsPDF, status: string, x: number, y: number) => {
   const normalized = normalizeContractStatus(status as Contract["status"]);
   const label = normalized === "Confirmé" ? "CONFIRMED" : normalized === "Signé" ? "CONFIRMED" : normalized === "Annulé" ? "EXPIRED" : "PENDING";
-  const color = label === "CONFIRMED" ? palette.emerald : label === "EXPIRED" ? palette.rose : palette.amber;
+  const color = label === "CONFIRMED" ? palette.gold : label === "EXPIRED" ? palette.danger : palette.muted;
   const width = doc.getTextWidth(label) + 24;
 
   doc.setFillColor(...color);
@@ -123,14 +122,22 @@ const statusBadge = (doc: jsPDF, status: string, x: number, y: number) => {
 };
 
 const logo = (doc: jsPDF, x: number, y: number) => {
-  doc.setFillColor(...palette.navy);
-  doc.roundedRect(x, y, 48, 48, 11, 11, "F");
-  doc.setFillColor(...palette.cyan);
-  doc.roundedRect(x + 7, y + 31, 34, 4, 2, 2, "F");
-  setFont(doc, "bold", 12, [255, 255, 255]);
-  doc.text("ATLAS", x + 24, y + 21, { align: "center" });
-  setFont(doc, "bold", 10, [125, 211, 252]);
-  doc.text("CARS", x + 24, y + 34, { align: "center" });
+  // simple elegant logo: gold monogram and text
+  doc.setFillColor(...palette.black);
+  doc.roundedRect(x, y, 56, 56, 10, 10, "F");
+  doc.setFontSize(22);
+  setFont(doc, "bold", 14, palette.gold);
+  // monogram circle
+  doc.setDrawColor(...palette.gold);
+  doc.setFillColor(...palette.gold);
+  doc.circle(x + 28, y + 20, 14, "F");
+  setFont(doc, "bold", 11, [6, 6, 6]);
+  doc.text("N1", x + 28, y + 24, { align: "center" });
+  // text
+  setFont(doc, "bold", 12, palette.gold);
+  doc.text("N1 Lux Cars", x + 74, y + 20);
+  setFont(doc, "normal", 9, palette.muted);
+  doc.text("Premium Rental", x + 74, y + 36);
 };
 
 const dataUrlFromSource = async (source?: string | null) => {
@@ -174,12 +181,29 @@ const addSignatureImage = (doc: jsPDF, signature: string | null | undefined, x: 
 
 const isSignatureImage = (signature?: string | null) => Boolean(signature?.startsWith("data:image/"));
 
-const footer = (doc: jsPDF, pageWidth: number, pageHeight: number, contractNumber: string) => {
-  doc.setDrawColor(...palette.line);
-  doc.line(40, pageHeight - 38, pageWidth - 40, pageHeight - 38);
-  setFont(doc, "normal", 7.5, palette.muted);
-  doc.text(`N1 Lux Cars - Contrat ${contractNumber} - Document numerique verifiable`, 40, pageHeight - 22);
-  doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth - 40, pageHeight - 22, { align: "right" });
+const footer = (doc: jsPDF, pageWidth: number, pageHeight: number, contract: Partial<PdfContract>, qrDataUrl?: string) => {
+  doc.setFillColor(...palette.black);
+  doc.rect(0, pageHeight - 64, pageWidth, 64, "F");
+  doc.setDrawColor(...palette.gold);
+  doc.setLineWidth(0.5);
+  doc.line(40, pageHeight - 64, pageWidth - 40, pageHeight - 64);
+  setFont(doc, "normal", 9, palette.gold);
+  const left = 48;
+  const mid = pageWidth / 2;
+  doc.text("N1 Lux Cars | Contact: " + (contract.agencyPhone ?? "0646494968"), left, pageHeight - 44);
+  doc.text("Website: n1luxcars.netlify.app", left, pageHeight - 28);
+  setFont(doc, "normal", 9, palette.muted);
+  doc.text(`ICE: ${contract.agencyIce ?? "0000000000"}  |  RC: ${contract.agencyRc ?? "000000"}`, mid, pageHeight - 44);
+  setFont(doc, "normal", 8, palette.muted);
+  if (qrDataUrl) {
+    try {
+      doc.addImage(qrDataUrl, "PNG", pageWidth - 120, pageHeight - 56, 48, 48);
+    } catch {}
+    setFont(doc, "normal", 8, palette.muted);
+    doc.text("Contract verification: n1luxcars.netlify.app/verify", pageWidth - 156, pageHeight - 20, { align: "left" });
+  }
+  setFont(doc, "normal", 8, palette.muted);
+  doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth - 40, pageHeight - 20, { align: "right" });
 };
 
 export const generateContractPdf = async (contract: Contract) => {
@@ -203,7 +227,7 @@ export const generateContractPdf = async (contract: Contract) => {
   doc.setFillColor(...palette.soft);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  doc.setFillColor(...palette.navy);
+  doc.setFillColor(...palette.black);
   doc.roundedRect(margin, 28, contentWidth, 112, 14, 14, "F");
   logo(doc, margin + 20, 50);
 
@@ -211,7 +235,7 @@ export const generateContractPdf = async (contract: Contract) => {
   doc.text(pdfContract.agencyName || "N1 Lux Cars", margin + 84, 68);
   setFont(doc, "normal", 8.5, [203, 213, 225]);
   doc.text(pdfContract.agencyAddress || "Casablanca, Maroc", margin + 84, 88);
-  doc.text(`${pdfContract.agencyPhone || "06 50 95 86 75"}  |  ${pdfContract.agencyEmail || "contact@n1-lux-cars.ma"}`, margin + 84, 104);
+  doc.text(`${pdfContract.agencyPhone || "0646494968"}  |  ${pdfContract.agencyEmail || "contact@n1-lux-cars.ma"}`, margin + 84, 104);
   doc.text(`ICE: ${pdfContract.agencyIce || "000000000000000"}  |  RC: ${pdfContract.agencyRc || "000000"}`, margin + 84, 120);
 
   doc.setFillColor(255, 255, 255);
@@ -284,7 +308,7 @@ export const generateContractPdf = async (contract: Contract) => {
     doc,
     [
       ["Agence", pdfContract.agencyName || "N1 Lux Cars"],
-      ["Telephone", pdfContract.agencyPhone || "06 50 95 86 75"],
+      ["Telephone", pdfContract.agencyPhone || "0646494968"],
       ["Email", pdfContract.agencyEmail || "contact@n1-lux-cars.ma"],
       ["Adresse", pdfContract.agencyAddress || "Casablanca, Maroc"],
       ["ICE", pdfContract.agencyIce || "000000000000000"],
@@ -332,7 +356,7 @@ export const generateContractPdf = async (contract: Contract) => {
   setFont(doc, "normal", 7.5, palette.muted);
   doc.text("Le QR code ouvre la page publique de signature electronique du contrat.", margin + 96, y + 76);
 
-  footer(doc, pageWidth, pageHeight, pdfContract.contractNumber);
+  footer(doc, pageWidth, pageHeight, pdfContract, qrCodeData);
 
   doc.addPage();
   doc.setFillColor(...palette.soft);
@@ -395,6 +419,6 @@ export const generateContractPdf = async (contract: Contract) => {
     11,
   );
 
-  footer(doc, pageWidth, pageHeight, pdfContract.contractNumber);
+  footer(doc, pageWidth, pageHeight, pdfContract, qrCodeData);
   doc.save(`contrat-${pdfContract.contractNumber}.pdf`);
 };
