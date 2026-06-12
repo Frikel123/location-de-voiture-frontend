@@ -16,15 +16,32 @@ const getDevelopmentOrigin = () => {
   return `${protocol}//192.168.1.8:${port || "8080"}`;
 };
 
-export const getContractPublicUrl = (contractNumber: string) => {
+const isAbsoluteUrl = (value?: string) => Boolean(value && /^[a-zA-Z][a-zA-Z\d+.-]*:\/\//.test(value));
+
+export const getContractPublicSignatureUrl = (contractNumber: string) => {
   const configuredUrl = import.meta.env.VITE_PUBLIC_APP_URL as string | undefined;
   const origin = normalizeOrigin(configuredUrl) || getDevelopmentOrigin();
 
   return `${origin}/signature/${encodeURIComponent(contractNumber)}`;
 };
 
-export const getContractPublicUrlFromContract = (contract: Pick<Contract, "contractNumber" | "contractToken" | "qrUrl">) =>
-  getContractPublicUrl(contract.contractNumber || contract.contractToken || contract.qrUrl || "");
+export const getContractPublicVerificationUrl = (contractNumber: string) => {
+  const configuredUrl = import.meta.env.VITE_PUBLIC_APP_URL as string | undefined;
+  const origin = normalizeOrigin(configuredUrl) || getDevelopmentOrigin();
+
+  return `${origin}/contracts/verify/${encodeURIComponent(contractNumber)}`;
+};
+
+export const getContractPublicUrlFromContract = (contract: Pick<Contract, "contractNumber" | "contractToken" | "qrUrl">) => {
+  if (contract.qrUrl && isAbsoluteUrl(contract.qrUrl)) {
+    return contract.qrUrl;
+  }
+
+  const publicId = contract.contractNumber || contract.contractToken;
+  if (!publicId) return contract.qrUrl || "";
+
+  return getContractPublicSignatureUrl(publicId);
+};
 
 export const getContractPublicToken = (contract: Pick<Contract, "contractNumber" | "contractToken">) =>
   contract.contractNumber || contract.contractToken;

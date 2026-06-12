@@ -93,9 +93,13 @@ export const Hero = () => {
           <div className="grid gap-4">
             <label className="space-y-2 text-sm text-white/80">
               <span className="flex items-center gap-2"><MapPin className="h-4 w-4" />City</span>
-              <select value={pickupCity} onChange={(event) => setPickupCity(event.target.value)} className="h-12 w-full rounded-2xl border border-white/10 bg-white/10 px-4 text-white outline-none focus:border-primary">
-                {cities.map((city) => <option key={city} value={city} className="bg-[#0d1722] text-white">{city}</option>)}
-              </select>
+              <Input
+                type="text"
+                value={pickupCity}
+                onChange={(event) => setPickupCity(event.target.value)}
+                placeholder="Enter city"
+                className="h-12 rounded-2xl border border-white/10 bg-white/10 px-4 text-white placeholder:text-white/50 outline-none focus:border-primary"
+              />
             </label>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="space-y-2 text-sm text-white/80"><span className="flex items-center gap-2"><CalendarDays className="h-4 w-4" />Pickup date</span><Input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="h-12 rounded-2xl border-white/10 bg-white/10 text-white" /></label>

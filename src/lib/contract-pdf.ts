@@ -181,7 +181,14 @@ const addSignatureImage = (doc: jsPDF, signature: string | null | undefined, x: 
 
 const isSignatureImage = (signature?: string | null) => Boolean(signature?.startsWith("data:image/"));
 
-const footer = (doc: jsPDF, pageWidth: number, pageHeight: number, contract: Partial<PdfContract>, qrDataUrl?: string) => {
+const footer = (
+  doc: jsPDF,
+  pageWidth: number,
+  pageHeight: number,
+  contract: Partial<PdfContract>,
+  qrDataUrl?: string,
+  publicUrl?: string,
+) => {
   doc.setFillColor(...palette.black);
   doc.rect(0, pageHeight - 64, pageWidth, 64, "F");
   doc.setDrawColor(...palette.gold);
@@ -200,7 +207,12 @@ const footer = (doc: jsPDF, pageWidth: number, pageHeight: number, contract: Par
       doc.addImage(qrDataUrl, "PNG", pageWidth - 120, pageHeight - 56, 48, 48);
     } catch {}
     setFont(doc, "normal", 8, palette.muted);
-    doc.text("Contract verification: n1luxcars.netlify.app/verify", pageWidth - 156, pageHeight - 20, { align: "left" });
+    doc.text(
+      `Contract access: ${publicUrl || contract.qrUrl || "n1luxcars.netlify.app/signature"}`,
+      pageWidth - 156,
+      pageHeight - 20,
+      { align: "left" },
+    );
   }
   setFont(doc, "normal", 8, palette.muted);
   doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth - 40, pageHeight - 20, { align: "right" });
@@ -419,6 +431,6 @@ export const generateContractPdf = async (contract: Contract) => {
     11,
   );
 
-  footer(doc, pageWidth, pageHeight, pdfContract, qrCodeData);
+  footer(doc, pageWidth, pageHeight, pdfContract, qrCodeData, publicUrl);
   doc.save(`contrat-${pdfContract.contractNumber}.pdf`);
 };

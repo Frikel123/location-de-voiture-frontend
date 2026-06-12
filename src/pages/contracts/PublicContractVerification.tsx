@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiError, type Contract } from "@/lib/api";
-import { getContractPublicUrlFromContract } from "@/lib/contract-url";
+import { getContractPublicVerificationUrl } from "@/lib/contract-url";
 import { contractsService } from "@/services/contracts/contracts.service";
 import { ContractQrCode } from "@/components/contracts/ContractQrCode";
 import { Badge } from "@/components/ui/badge";
@@ -109,7 +109,13 @@ const PublicContractVerification = () => {
 
   const notFound = isError && error instanceof ApiError && error.status === 404;
   const signature = contract ? getDisplaySignature(contract) : null;
-  const publicUrl = useMemo(() => (contract ? getContractPublicUrlFromContract(contract) : ""), [contract]);
+  const publicUrl = useMemo(
+    () =>
+      contract
+        ? getContractPublicVerificationUrl(contract.contractNumber || contract.contractToken || "")
+        : "",
+    [contract],
+  );
   const displayStatus = contract?.contractStatus || contract?.status || "Validé";
 
   return (
