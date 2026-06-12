@@ -19,7 +19,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({ label, value, icon: Icon, hint
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-xs uppercase tracking-[0.25em] text-slate-400">{label}</p>
+            <p className="admin-stat-label text-xs uppercase tracking-[0.25em] text-gray-600 dark:text-slate-400">{label}</p>
             <p className="mt-2 text-2xl font-bold tracking-tight text-foreground">{value}</p>
             {hint && <p className="mt-1 text-sm text-muted-foreground">{hint}</p>}
           </div>

@@ -35,7 +35,7 @@ export const RecentReservations: React.FC<{ bookings: Booking[] }> = ({ bookings
   const formatDate = (d?: string) => (d ? format(parseISO(d), "dd MMM yyyy") : "-");
 
   return (
-    <div className="rounded-lg border border-white/10 bg-card/90 p-4">
+    <div className="admin-surface rounded-lg border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-card/90">
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="text-sm font-semibold">Filtrer :</span>
@@ -63,7 +63,7 @@ export const RecentReservations: React.FC<{ bookings: Booking[] }> = ({ bookings
           </TableHeader>
           <TableBody>
             {pageItems.map((b) => (
-              <TableRow key={b.id} className="hover:!bg-[#07142a]">
+              <TableRow key={b.id} className="hover:!bg-gray-50 dark:hover:!bg-[#07142a]">
                 <TableCell>
                   <div className="text-sm font-semibold">{b.customerName ?? b.customer?.name ?? b.phone}</div>
                   <div className="text-xs text-muted-foreground">{b.phone ?? b.email}</div>

@@ -8,7 +8,7 @@ export const FleetOverview: React.FC<{ cars: Car[]; loading?: boolean }> = ({ ca
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-44 rounded-lg bg-[#071229] animate-pulse" />
+          <div key={i} className="h-44 animate-pulse rounded-lg bg-gray-200 dark:bg-[#071229]" />
         ))}
       </div>
     );

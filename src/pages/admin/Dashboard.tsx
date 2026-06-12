@@ -17,6 +17,9 @@ import {
   subYears,
 } from "date-fns";
 import {
+  Area,
+  AreaChart,
+  CartesianGrid,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -289,24 +292,24 @@ const Dashboard = () => {
       <section className="overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 compact-hero glass shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-6">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <BrandLogo className="mb-5" markClassName="h-16 w-16" textClassName="text-white" />
+            <BrandLogo className="mb-5" markClassName="h-16 w-16" textClassName="text-gray-900 dark:text-white" />
             <Badge className="mb-4 rounded-full bg-primary/10 text-primary">Luxury command center</Badge>
-            <h1 className="brand-heading hero-title font-semibold tracking-tight text-white">Welcome to N1 Lux Cars Administration</h1>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
+            <h1 className="brand-heading hero-title font-semibold tracking-tight text-gray-900 dark:text-white">Welcome to N1 Lux Cars Administration</h1>
+            <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-slate-300">
               Premium analytics for fleet performance, reservations, revenue, and client experience.
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Revenu mensuel</p>
-                <p className="mt-3 text-3xl font-semibold text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
+              <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <p className="admin-stat-label text-xs uppercase tracking-[0.25em] text-gray-600 dark:text-slate-400">Revenu mensuel</p>
+                <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
                 <p className="mt-2 text-sm text-primary">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`} vs. mois précédent</p>
               </div>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Taux d'occupation</p>
-                <p className="mt-3 text-3xl font-semibold text-white">{analytics.occupancy}%</p>
+              <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <p className="admin-stat-label text-xs uppercase tracking-[0.25em] text-gray-600 dark:text-slate-400">Taux d'occupation</p>
+                <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.occupancy}%</p>
                 <p className="mt-2 text-sm text-slate-400">Prévision +6% sur 12 mois</p>
               </div>
             </div>
@@ -320,7 +323,7 @@ const Dashboard = () => {
                     Exporter
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-3xl border border-white/10 bg-slate-950/95 p-2 shadow-2xl">
+                <DropdownMenuContent align="end" className="w-56 rounded-3xl border border-gray-200 bg-white p-2 shadow-2xl dark:border-white/10 dark:bg-slate-950/95">
                   <DropdownMenuLabel>Exporter</DropdownMenuLabel>
                   <DropdownMenuItem onClick={downloadDashboardPdf}>Exporter PDF</DropdownMenuItem>
                   <DropdownMenuItem onClick={downloadDashboardExcel}>Exporter Excel</DropdownMenuItem>
@@ -331,7 +334,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+        <div className="admin-surface mt-8 flex flex-col gap-4 rounded-[2rem] border border-gray-200 bg-white p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Période</p>
             <div className="flex flex-wrap gap-2">
@@ -349,14 +352,14 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
-            <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
               <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Comparaison</p>
-              <p className="mt-2 text-xl font-semibold text-white">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`}</p>
+                <p className="admin-stat-value mt-2 text-xl font-semibold text-gray-900 dark:text-white">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`}</p>
               <p className="mt-1 text-sm text-slate-400">{rangeLabels[range]}</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-slate-950/70 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
               <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Performance</p>
-              <p className="mt-2 text-xl font-semibold text-white">{filteredBookings.length} réservations</p>
+              <p className="admin-stat-value mt-2 text-xl font-semibold text-gray-900 dark:text-white">{filteredBookings.length} réservations</p>
               <p className="mt-1 text-sm text-slate-400">Filtrées sur la période</p>
             </div>
           </div>
@@ -429,9 +432,10 @@ const Dashboard = () => {
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={analytics.reservationTrend} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
-                <XAxis dataKey="date" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
+                <CartesianGrid stroke="var(--admin-chart-grid)" vertical={false} />
+                <XAxis dataKey="date" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid var(--admin-tooltip-border)", background: "var(--admin-tooltip-bg)", color: "var(--admin-main-text)" }} />
                 <Line type="monotone" dataKey="count" stroke="#D4AF37" strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
@@ -445,13 +449,13 @@ const Dashboard = () => {
             <CardTitle>Clients</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-3xl bg-slate-950/70 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
               <p className="text-sm text-muted-foreground">Nouveaux ce mois</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{analytics.newCustomersThisMonth}</p>
+              <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.newCustomersThisMonth}</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
               <p className="text-sm text-muted-foreground">Retour clients</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{analytics.returningCustomers}</p>
+              <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.returningCustomers}</p>
             </div>
           </CardContent>
         </Card>
@@ -469,9 +473,10 @@ const Dashboard = () => {
                     <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid rgba(148,163,184,0.25)", background: "#0f172a" }} />
+                <CartesianGrid stroke="var(--admin-chart-grid)" vertical={false} />
+                <XAxis dataKey="month" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid var(--admin-tooltip-border)", background: "var(--admin-tooltip-bg)", color: "var(--admin-main-text)" }} />
                 <Area type="monotone" dataKey="customers" stroke="#D4AF37" strokeWidth={3} fill="url(#customerGradient)" />
               </AreaChart>
             </ResponsiveContainer>
@@ -485,17 +490,17 @@ const Dashboard = () => {
             <CardTitle>Contrats</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-3xl bg-slate-950/70 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
               <p className="text-sm text-muted-foreground">Actifs</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{analytics.activeContracts}</p>
+              <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.activeContracts}</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
               <p className="text-sm text-muted-foreground">Signés</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{analytics.signedContracts}</p>
+              <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.signedContracts}</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
               <p className="text-sm text-muted-foreground">Expirés</p>
-              <p className="mt-3 text-3xl font-semibold text-white">{analytics.expiredContracts}</p>
+              <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.expiredContracts}</p>
             </div>
           </CardContent>
         </Card>
@@ -519,8 +524,8 @@ const Dashboard = () => {
               { title: "Créer un contrat", description: "Accès direct au module de contrat." },
               { title: "Ajouter une réservation", description: "Lancer une réservation en un clic." },
             ].map((item) => (
-              <div key={item.title} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                <p className="font-semibold text-white">{item.title}</p>
+              <div key={item.title} className="admin-surface rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                <p className="font-semibold text-gray-900 dark:text-white">{item.title}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
@@ -546,12 +551,12 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             {alerts.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-white/10 p-6 text-sm text-muted-foreground">Aucune alerte en attente.</div>
+              <div className="rounded-3xl border border-dashed border-gray-200 p-6 text-sm text-muted-foreground dark:border-white/10">Aucune alerte en attente.</div>
             ) : (
               alerts.map((alert) => (
-                <div key={alert.id} className="rounded-3xl border border-white/10 bg-white/5 p-4">
+                <div key={alert.id} className="admin-surface rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="font-semibold text-white">{alert.title}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white">{alert.title}</p>
                     <Badge className="rounded-full bg-slate-800/70 text-slate-200">{alert.type}</Badge>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{alert.description}</p>

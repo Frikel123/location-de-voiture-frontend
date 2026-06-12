@@ -12,6 +12,16 @@
   font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--lux-navy);
   color: #F8FAFC;
+  --admin-main-text: #F8FAFC;
+  --admin-secondary-text: rgba(248, 250, 252, 0.78);
+  --admin-muted-text: rgba(248, 250, 252, 0.62);
+  --admin-card-bg: rgba(6, 18, 36, 0.68);
+  --admin-page-bg: #0A1225;
+  --admin-border: rgba(255, 255, 255, 0.1);
+  --admin-tooltip-bg: #071229;
+  --admin-tooltip-border: rgba(255, 255, 255, 0.1);
+  --admin-chart-axis: #94A3B8;
+  --admin-chart-grid: rgba(148, 163, 184, 0.18);
 }
 
 /* Improve overall text contrast for readability */
@@ -30,7 +40,7 @@
 .admin-root span,
 .admin-root label,
 .admin-root a {
-  color: #1f0202 !important;
+  color: #FFFFFF !important;
   opacity: 1 !important;
 }
 
@@ -189,63 +199,91 @@
 /* Light admin theme. Keep this at the end so it wins over dark admin utilities. */
 html.light .admin-root,
 .admin-root.admin-theme-light {
-  background: linear-gradient(180deg, #f6f7fb 0%, #ffffff 100%) !important;
-  color: #081226 !important;
+  --admin-main-text: #111827;
+  --admin-secondary-text: #4B5563;
+  --admin-muted-text: #6B7280;
+  --admin-card-bg: #FFFFFF;
+  --admin-page-bg: #F8FAFC;
+  --admin-border: #E5E7EB;
+  --admin-tooltip-bg: #FFFFFF;
+  --admin-tooltip-border: #E5E7EB;
+  --admin-chart-axis: #4B5563;
+  --admin-chart-grid: #E5E7EB;
+  background: var(--admin-page-bg) !important;
+  color: var(--admin-main-text) !important;
 }
 
 html.light .admin-root aside,
 .admin-root.admin-theme-light aside {
-  background: linear-gradient(180deg, #061126 0%, #071327 60%, #041020 100%) !important;
-  color: #f8fafc !important;
+  background: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+  color: #111827 !important;
+  box-shadow: 12px 0 32px rgba(17, 24, 39, 0.06) !important;
 }
 
 html.light .admin-root aside :where(h1, h2, h3, h4, p, span, a, button, div),
 .admin-root.admin-theme-light aside :where(h1, h2, h3, h4, p, span, a, button, div) {
-  color: #f8fafc !important;
+  color: #111827 !important;
 }
 
 html.light .admin-root aside :where(.text-primary, .brand-gold),
 .admin-root.admin-theme-light aside :where(.text-primary, .brand-gold) {
-  color: #d4af37 !important;
+  color: #B98900 !important;
 }
 
 html.light .admin-root aside :where(.text-slate-300, .text-slate-400, .text-slate-500, .text-muted-foreground),
 .admin-root.admin-theme-light aside :where(.text-slate-300, .text-slate-400, .text-slate-500, .text-muted-foreground) {
-  color: rgba(248, 250, 252, 0.72) !important;
+  color: #6B7280 !important;
+}
+
+html.light .admin-root aside :where(button, .rounded-3xl),
+.admin-root.admin-theme-light aside :where(button, .rounded-3xl) {
+  background: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+}
+
+html.light .admin-root aside :where(.bg-white\/5, .bg-white\/10, [class*="bg-white/5"], [class*="bg-white/10"]),
+.admin-root.admin-theme-light aside :where(.bg-white\/5, .bg-white\/10, [class*="bg-white/5"], [class*="bg-white/10"]) {
+  background: #F9FAFB !important;
+  border-color: #E5E7EB !important;
 }
 
 html.light .admin-root header,
 .admin-root.admin-theme-light header {
-  background: rgba(248, 250, 252, 0.88) !important;
+  background: rgba(248, 250, 252, 0.92) !important;
+  border-color: #E5E7EB !important;
 }
 
 html.light .admin-root main,
 .admin-root.admin-theme-light main {
-  color: #081226 !important;
+  background: #F8FAFC !important;
+  color: #111827 !important;
 }
 
 html.light .admin-root :where(header, main) :where(h1, h2, h3, h4, p, span, label, a, button, td, th, li, div),
 .admin-root.admin-theme-light :where(header, main) :where(h1, h2, h3, h4, p, span, label, a, button, td, th, li, div) {
-  color: #081226 !important;
+  color: #111827 !important;
   opacity: 1 !important;
 }
 
 html.light .admin-root :where(header, main) :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
 .admin-root.admin-theme-light :where(header, main) :where(.text-muted-foreground, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
-  color: #4b5565 !important;
+  color: #6B7280 !important;
 }
 
 html.light .admin-root :where(header, main) :where(.compact-hero, .card, .bg-card, [class*="bg-white/5"], [class*="bg-white/10"], [class*="bg-slate-950/70"], [class*="bg-slate-900/70"], [class*="bg-secondary/80"], [class*="bg-card/70"], [class*="bg-card/95"]),
 .admin-root.admin-theme-light :where(header, main) :where(.compact-hero, .card, .bg-card, [class*="bg-white/5"], [class*="bg-white/10"], [class*="bg-slate-950/70"], [class*="bg-slate-900/70"], [class*="bg-secondary/80"], [class*="bg-card/70"], [class*="bg-card/95"]) {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border-color: rgba(8, 18, 38, 0.1) !important;
-  color: #081226 !important;
+  background: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+  color: #111827 !important;
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.06) !important;
 }
 
 html.light .admin-root main .compact-hero,
 .admin-root.admin-theme-light main .compact-hero {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
-  box-shadow: 0 18px 44px rgba(8, 18, 38, 0.12) !important;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 48%, #EFF6FF 100%) !important;
+  border-color: #E5E7EB !important;
+  box-shadow: 0 18px 44px rgba(17, 24, 39, 0.1) !important;
 }
 
 html.light .admin-root :where(header, main) :where(.brand-gold, .text-primary),
@@ -262,10 +300,128 @@ html.light .admin-root :where(header, main) svg,
 
 html.light .admin-root :where(header, main) :where(.bg-primary, .btn-gold, .gold-gradient),
 .admin-root.admin-theme-light :where(header, main) :where(.bg-primary, .btn-gold, .gold-gradient) {
-  color: #081226 !important;
+  color: #111827 !important;
 }
 
-html.light .admin-root :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80) *,
-.admin-root.admin-theme-light :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80) * {
+html.light .admin-root :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-emerald-600\/80, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80, .bg-slate-800\/70),
+html.light .admin-root :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-emerald-600\/80, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80, .bg-slate-800\/70) *,
+.admin-root.admin-theme-light :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-emerald-600\/80, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80, .bg-slate-800\/70),
+.admin-root.admin-theme-light :where(header, main) :where(.bg-rose-500, .bg-emerald-500\/90, .bg-emerald-600\/80, .bg-rose-600\/90, .bg-amber-500\/80, .bg-slate-700\/80, .bg-slate-800\/70) * {
   color: #ffffff !important;
+}
+
+html.light .admin-root nav a[aria-current="true"],
+html.light .admin-root nav a[aria-current="page"],
+.admin-root.admin-theme-light nav a[aria-current="true"],
+.admin-root.admin-theme-light nav a[aria-current="page"] {
+  background: #F3F4F6 !important;
+  color: #111827 !important;
+  box-shadow: none !important;
+}
+
+html.light .admin-root nav a:not([aria-current="true"]):not([aria-current="page"]),
+.admin-root.admin-theme-light nav a:not([aria-current="true"]):not([aria-current="page"]) {
+  color: #4B5563 !important;
+}
+
+html.light .admin-root nav a:hover,
+.admin-root.admin-theme-light nav a:hover {
+  background: #F9FAFB !important;
+  color: #111827 !important;
+}
+
+html.light .admin-root :where(.admin-surface, .admin-stat-card, .vehicle-card, table, .recharts-wrapper),
+.admin-root.admin-theme-light :where(.admin-surface, .admin-stat-card, .vehicle-card, table, .recharts-wrapper) {
+  color: #111827 !important;
+}
+
+html.light .admin-root :where(.admin-surface, .admin-stat-card, .vehicle-card),
+.admin-root.admin-theme-light :where(.admin-surface, .admin-stat-card, .vehicle-card) {
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.06) !important;
+}
+
+html.light .admin-root .admin-stat-label,
+.admin-root.admin-theme-light .admin-stat-label {
+  color: #4B5563 !important;
+}
+
+html.light .admin-root .admin-stat-value,
+.admin-root.admin-theme-light .admin-stat-value {
+  color: #111827 !important;
+  font-weight: 700 !important;
+}
+
+html.light .admin-root :where(input, textarea, select),
+.admin-root.admin-theme-light :where(input, textarea, select) {
+  background: #FFFFFF !important;
+  border-color: #D1D5DB !important;
+  color: #111827 !important;
+}
+
+html.light .admin-root :where(input, textarea)::placeholder,
+.admin-root.admin-theme-light :where(input, textarea)::placeholder {
+  color: #6B7280 !important;
+  opacity: 1 !important;
+}
+
+html.light .admin-root :where(button),
+.admin-root.admin-theme-light :where(button) {
+  border-color: #E5E7EB;
+}
+
+html.light .admin-root :where(button:hover),
+.admin-root.admin-theme-light :where(button:hover) {
+  background-color: #F3F4F6;
+}
+
+html.light .admin-root table,
+.admin-root.admin-theme-light table {
+  color: #111827 !important;
+}
+
+html.light .admin-root th,
+.admin-root.admin-theme-light th {
+  color: #111827 !important;
+  border-color: #E5E7EB !important;
+}
+
+html.light .admin-root td,
+html.light .admin-root tr,
+.admin-root.admin-theme-light td,
+.admin-root.admin-theme-light tr {
+  border-color: #E5E7EB !important;
+}
+
+html.light .admin-root tr:hover,
+.admin-root.admin-theme-light tr:hover {
+  background: #F9FAFB !important;
+}
+
+html.light .admin-root .recharts-cartesian-axis-tick-value,
+.admin-root.admin-theme-light .recharts-cartesian-axis-tick-value {
+  fill: #4B5563 !important;
+}
+
+html.light .admin-root .recharts-cartesian-grid line,
+.admin-root.admin-theme-light .recharts-cartesian-grid line {
+  stroke: #E5E7EB !important;
+}
+
+html.light .admin-root .admin-chart-tooltip,
+.admin-root.admin-theme-light .admin-chart-tooltip {
+  background: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+  color: #111827 !important;
+}
+
+html.light .admin-root .admin-chart-tooltip .admin-chart-tooltip-label,
+.admin-root.admin-theme-light .admin-chart-tooltip .admin-chart-tooltip-label {
+  color: #6B7280 !important;
+}
+
+html.light .admin-root .admin-chart-tooltip .admin-chart-tooltip-value,
+.admin-root.admin-theme-light .admin-chart-tooltip .admin-chart-tooltip-value {
+  color: #111827 !important;
 }
