@@ -54,6 +54,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { BrandLogo } from "@/components/BrandLogo";
 import FleetOverview from "@/components/admin/FleetOverview";
 import KpiCard from "@/components/admin/KpiCard";
+import RecentReservations from "@/components/admin/RecentReservations";
 import {
   CalendarDays,
   Car,
