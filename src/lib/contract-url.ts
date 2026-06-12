@@ -1,6 +1,11 @@
 import type { Contract } from "@/lib/api";
 
-const normalizeOrigin = (origin?: string | null) => origin?.replace(/\/$/, "");
+const normalizeOrigin = (origin?: string | null) => {
+  if (!origin) return undefined;
+  const trimmed = origin.trim().replace(/\/$/, "");
+  if (/^[a-zA-Z][a-zA-Z\d+.-]*:\/\//.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+};
 
 const getDevelopmentOrigin = () => {
   const configuredHost = import.meta.env.VITE_PUBLIC_DEV_HOST as string | undefined;

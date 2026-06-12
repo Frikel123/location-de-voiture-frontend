@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,6 +52,14 @@ const LanguageIndex = () => {
   return <Index />;
 };
 
+const RedirectQueryToSignature = () => {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const contract = params.get("contract") || params.get("id");
+
+  return contract ? <Navigate to={`/signature/${encodeURIComponent(contract)}`} replace /> : <Navigate to="/" replace />;
+};
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -78,6 +86,8 @@ const App = () => (
                   <Route path="/:lang" element={<LanguageIndex />} />
                   <Route path="/:lang/cars/:slug" element={<VehicleDetails />} />
                   <Route path="/:lang/booking" element={<BookingFlow />} />
+                  <Route path="/verify" element={<RedirectQueryToSignature />} />
+                  <Route path="/signature" element={<RedirectQueryToSignature />} />
                   <Route path="/signature/:id" element={<PublicContractSignature />} />
                   <Route path="/contracts/verify/:id" element={<PublicContractVerification />} />
                   <Route path="/contracts/:id" element={<PublicContractVerification />} />
