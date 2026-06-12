@@ -233,7 +233,8 @@ export const generateContractPdf = async (contract: Contract) => {
   const margin = 40;
   const contentWidth = pageWidth - margin * 2;
   const publicUrl = getContractPublicUrlFromContract(pdfContract);
-  const qrCodeData = await QRCode.toDataURL(publicUrl, { errorCorrectionLevel: "H", margin: 2, scale: 8 });
+  const normalizedPublicUrl = publicUrl || getContractPublicSignatureUrl(pdfContract.contractNumber || pdfContract.contractToken || "");
+  const qrCodeData = await QRCode.toDataURL(normalizedPublicUrl, { errorCorrectionLevel: "H", margin: 2, scale: 8 });
   const vehicleImage = await dataUrlFromSource(pickVehicleImage(pdfContract));
 
   doc.setFillColor(...palette.soft);
