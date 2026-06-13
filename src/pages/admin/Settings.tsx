@@ -77,8 +77,8 @@ const Settings = () => {
     toast.success("Parametres reinitialises");
   };
 
-  const logout = () => {
-    signOut();
+  const logout = async () => {
+    await signOut();
     navigate("/admin/login", { replace: true });
   };
 

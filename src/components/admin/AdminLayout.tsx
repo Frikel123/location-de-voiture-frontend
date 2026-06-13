@@ -117,8 +117,8 @@ export const AdminLayout = () => {
     return email.slice(0, 2).toUpperCase();
   }, [user?.email]);
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut();
     navigate("/admin/login", { replace: true });
   };
 

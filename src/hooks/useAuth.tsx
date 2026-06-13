@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  api,
   clearAuthSession,
   getStoredAccessToken,
   getStoredRefreshToken,
@@ -9,7 +10,7 @@ import {
   saveAuthSession,
   UNAUTHORIZED_EVENT,
 } from "@/lib/api";
-import { AUTH_BYPASS, DEMO_MODE, DEMO_USER } from "@/lib/demo";
+import { AUTH_BYPASS, DEMO_USER } from "@/lib/demo";
 
 interface User {
   id: string;
@@ -17,53 +18,75 @@ interface User {
   role: string;
 }
 
+type TokenPayload = {
+  sub?: string | number;
+  id?: string | number;
+  email?: string;
+  role?: string;
+  exp?: number;
+};
+
 interface AuthCtx {
   user: User | null;
+  token: string | null;
   isAdmin: boolean;
+  isAuthenticated: boolean;
   loading: boolean;
-  login: (session: LoginResponse) => void;
-  signOut: () => void;
+  login: (session: LoginResponse, remember?: boolean) => void;
+  logout: () => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const Ctx = createContext<AuthCtx>({
-  user: null, isAdmin: false, loading: true, login: () => {}, signOut: () => {},
+  user: null,
+  token: null,
+  isAdmin: false,
+  isAuthenticated: false,
+  loading: true,
+  login: () => {},
+  logout: async () => {},
+  signOut: async () => {},
 });
+
+const parseToken = (token: string): TokenPayload | null => {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((char) => `%${(`00${char.charCodeAt(0).toString(16)}`).slice(-2)}`)
+        .join(""),
+    );
+    return JSON.parse(jsonPayload) as TokenPayload;
+  } catch {
+    return null;
+  }
+};
+
+const isExpired = (decoded: TokenPayload | null) => {
+  if (!decoded?.exp) return false;
+  return decoded.exp * 1000 <= Date.now();
+};
+
+const buildUser = (token: string): User | null => {
+  const decoded = parseToken(token);
+  if (!decoded || isExpired(decoded)) return null;
+
+  return {
+    id: String(decoded.sub || decoded.id || "admin"),
+    email: decoded.email || "admin@test.com",
+    role: decoded.role || "admin",
+  };
+};
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const parseToken = (token: string) => {
-    try {
-      const base64Url = token.split('.')[1];
-      if (!base64Url) return null;
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    } catch (e) {
-      return null;
-    }
-  };
-
-  const isExpired = (decoded: { exp?: number } | null) => {
-    if (!decoded?.exp) return false;
-    return decoded.exp * 1000 <= Date.now();
-  };
-
-  const buildUser = (token: string): User | null => {
-    const decoded = parseToken(token);
-    if (!decoded || isExpired(decoded)) return null;
-
-    return {
-      id: decoded?.sub || decoded?.id || "admin",
-      email: decoded?.email || "admin@test.com",
-      role: decoded?.role || "admin",
-    };
-  };
 
   useEffect(() => {
     let active = true;
@@ -71,18 +94,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const restoreSession = async () => {
       if (AUTH_BYPASS) {
         setUser(DEMO_USER);
+        setToken("demo-token");
         setIsAdmin(true);
-        setLoading(false);
-        return;
-      }
-
-      const token = getStoredAccessToken();
-      const restoredUser = token ? buildUser(token) : null;
-
-      if (restoredUser) {
-        if (!active) return;
-        setUser(restoredUser);
-        setIsAdmin(restoredUser.role === "admin");
         setLoading(false);
         return;
       }
@@ -95,6 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (refreshedUser) {
             if (!active) return;
             setUser(refreshedUser);
+            setToken(refreshedToken);
             setIsAdmin(refreshedUser.role === "admin");
             setLoading(false);
             return;
@@ -104,9 +118,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
 
+      const token = getStoredAccessToken();
+      const restoredUser = token ? buildUser(token) : null;
+
+      if (restoredUser) {
+        if (!active) return;
+        setUser(restoredUser);
+        setToken(token);
+        setIsAdmin(restoredUser.role === "admin");
+        setLoading(false);
+        return;
+      }
+
       clearAuthSession();
       if (!active) return;
       setUser(null);
+      setToken(null);
       setIsAdmin(false);
       setLoading(false);
     };
@@ -124,6 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       clearAuthSession();
       setUser(null);
+      setToken(null);
       setIsAdmin(false);
       navigate("/admin/login", { replace: true });
     };
@@ -135,6 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (session: LoginResponse, remember: boolean = true) => {
     if (AUTH_BYPASS) {
       setUser(DEMO_USER);
+      setToken("demo-token");
       setIsAdmin(true);
       return;
     }
@@ -154,12 +183,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setUser(loggedUser);
+    setToken(accessToken);
     setIsAdmin(loggedUser.role === "admin");
   };
 
-  const signOut = async () => {
+  const logout = async () => {
     if (AUTH_BYPASS) {
       setUser(DEMO_USER);
+      setToken("demo-token");
       setIsAdmin(true);
       return;
     }
@@ -172,10 +203,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     clearAuthSession();
     setUser(null);
+    setToken(null);
     setIsAdmin(false);
   };
 
-  return <Ctx.Provider value={{ user, isAdmin, loading, login, signOut }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider
+      value={{
+        user,
+        token,
+        isAdmin,
+        isAuthenticated: Boolean(user && token),
+        loading,
+        login,
+        logout,
+        signOut: logout,
+      }}
+    >
+      {children}
+    </Ctx.Provider>
+  );
 };
 
 export const useAuth = () => useContext(Ctx);
