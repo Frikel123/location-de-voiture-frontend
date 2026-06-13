@@ -166,6 +166,67 @@ type AuthSession = {
   refreshToken: string;
 };
 
+type StorageType = "localStorage" | "sessionStorage";
+
+const getStorage = (storageType: StorageType) => {
+  if (typeof window === "undefined") return null;
+  return storageType === "localStorage" ? window.localStorage : window.sessionStorage;
+};
+
+const hasStorage = (storageType: StorageType = "localStorage") => {
+  const storage = getStorage(storageType);
+  return Boolean(storage);
+};
+
+const getStoredItem = (key: string) => {
+  if (!hasStorage("localStorage") && !hasStorage("sessionStorage")) return null;
+  return window.localStorage.getItem(key) ?? window.sessionStorage.getItem(key);
+};
+
+export const getStoredAccessToken = () => {
+  return getStoredItem(ACCESS_TOKEN_KEY) ?? getStoredItem(LEGACY_TOKEN_KEY);
+};
+
+export const getStoredRefreshToken = () => {
+  return getStoredItem(REFRESH_TOKEN_KEY);
+};
+
+export const saveAuthSession = (
+  { accessToken, refreshToken }: AuthSession,
+  remember: boolean = true,
+) => {
+  if (!hasStorage("localStorage") && !hasStorage("sessionStorage")) return;
+
+  if (remember && hasStorage("localStorage")) {
+    window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    window.localStorage.setItem(LEGACY_TOKEN_KEY, accessToken);
+    window.sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+    window.sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+    window.sessionStorage.removeItem(LEGACY_TOKEN_KEY);
+    return;
+  }
+
+  if (hasStorage("sessionStorage")) {
+    window.sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    window.sessionStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    window.sessionStorage.setItem(LEGACY_TOKEN_KEY, accessToken);
+    window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+    window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+    window.localStorage.removeItem(LEGACY_TOKEN_KEY);
+  }
+};
+
+export const clearAuthSession = () => {
+  if (!hasStorage("localStorage") && !hasStorage("sessionStorage")) return;
+  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+  window.localStorage.removeItem(LEGACY_TOKEN_KEY);
+  window.sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+  window.sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+  window.sessionStorage.removeItem(LEGACY_TOKEN_KEY);
+};
+
 let refreshRequest: Promise<string> | null = null;
 
 export class ApiError extends Error {
@@ -177,32 +238,6 @@ export class ApiError extends Error {
     this.status = status;
   }
 }
-
-const hasStorage = () => typeof window !== "undefined" && !!window.localStorage;
-
-export const getStoredAccessToken = () => {
-  if (!hasStorage()) return null;
-  return localStorage.getItem(ACCESS_TOKEN_KEY) ?? localStorage.getItem(LEGACY_TOKEN_KEY);
-};
-
-export const getStoredRefreshToken = () => {
-  if (!hasStorage()) return null;
-  return localStorage.getItem(REFRESH_TOKEN_KEY);
-};
-
-export const saveAuthSession = ({ accessToken, refreshToken }: AuthSession) => {
-  if (!hasStorage()) return;
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-  localStorage.setItem(LEGACY_TOKEN_KEY, accessToken);
-};
-
-export const clearAuthSession = () => {
-  if (!hasStorage()) return;
-  localStorage.removeItem(ACCESS_TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
-  localStorage.removeItem(LEGACY_TOKEN_KEY);
-};
 
 const getHeaders = () => {
   const token = getStoredAccessToken();
@@ -230,7 +265,16 @@ const parseResponse = async <T>(res: Response): Promise<T> => {
   return res.json();
 };
 
-const isAuthEndpoint = (endpoint: string) => endpoint === "/auth/login" || endpoint === "/auth/refresh";
+const mapApiEndpoint = (endpoint: string) => {
+  if (endpoint === "/api/login") return "/auth/login";
+  if (endpoint === "/api/logout") return "/auth/logout";
+  if (endpoint === "/api/refresh") return "/auth/refresh";
+  if (endpoint.startsWith("/api/")) return `/auth/${endpoint.slice(5)}`;
+  return endpoint;
+};
+
+const isAuthEndpoint = (endpoint: string) =>
+  endpoint === "/auth/login" || endpoint === "/auth/refresh" || endpoint === "/auth/logout" || endpoint === "/api/login" || endpoint === "/api/refresh" || endpoint === "/api/logout";
 
 const notifyUnauthorized = () => {
   clearAuthSession();
@@ -250,7 +294,7 @@ const refreshAccessToken = async () => {
     throw new ApiError("Session expiree. Veuillez vous reconnecter.", 401);
   }
 
-  const res = await fetch(`${API_URL}/auth/refresh`, {
+  const res = await fetch(`${API_URL}${mapApiEndpoint("/api/refresh")}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
@@ -282,10 +326,11 @@ const request = async <T>(endpoint: string, init: RequestInit = {}, retry = true
     throw new ApiError(API_URL_MISSING_MESSAGE, 500);
   }
 
+  const mappedEndpoint = mapApiEndpoint(endpoint);
   let res: Response;
 
   try {
-    res = await fetch(`${API_URL}${endpoint}`, init);
+    res = await fetch(`${API_URL}${mappedEndpoint}`, init);
   } catch {
     throw new ApiError("Impossible de joindre le serveur API. Verifiez l'URL du backend.", 0);
   }
@@ -348,6 +393,12 @@ export const api = {
   delete: async <T>(endpoint: string) => {
     return request<T>(endpoint, {
       method: "DELETE",
+      headers: getHeaders(),
+    });
+  },
+  logout: async () => {
+    return request<{ success: boolean }>("/api/logout", {
+      method: "POST",
       headers: getHeaders(),
     });
   },

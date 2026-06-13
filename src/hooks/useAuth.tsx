@@ -132,7 +132,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
   }, [navigate]);
 
-  const login = (session: LoginResponse) => {
+  const login = (session: LoginResponse, remember: boolean = true) => {
     if (AUTH_BYPASS) {
       setUser(DEMO_USER);
       setIsAdmin(true);
@@ -146,7 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Session invalide");
     }
 
-    saveAuthSession({ accessToken, refreshToken: session.refreshToken });
+    saveAuthSession({ accessToken, refreshToken: session.refreshToken }, remember);
     const loggedUser = buildUser(accessToken);
     if (!loggedUser) {
       clearAuthSession();
@@ -157,11 +157,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAdmin(loggedUser.role === "admin");
   };
 
-  const signOut = () => {
+  const signOut = async () => {
     if (AUTH_BYPASS) {
       setUser(DEMO_USER);
       setIsAdmin(true);
       return;
+    }
+
+    try {
+      await api.logout();
+    } catch {
+      // ignore logout errors; clear session locally anyway
     }
 
     clearAuthSession();
