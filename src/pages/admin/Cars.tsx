@@ -327,7 +327,7 @@ const Cars = () => {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h3 className="truncate font-serif text-lg font-semibold tracking-tight">{car.name}</h3>
-                      <p className="mt-1 text-sm font-medium text-primary">{car.price} DH / jour</p>
+                      <p className="mt-1 text-sm font-medium text-primary">{car.price} � / jour</p>
                     </div>
                     <Badge variant="outline" className={`shrink-0 rounded-full px-3 py-1 ${statusClassName(specs.status)}`}>
                       {specs.status}
@@ -366,7 +366,7 @@ const Cars = () => {
               <Input id="car-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Dacia Logan" className="rounded-2xl" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="car-price">Prix par jour (DH)</Label>
+              <Label htmlFor="car-price">Prix par jour (€)</Label>
               <Input id="car-price" type="number" min="1" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="250" className="rounded-2xl" />
             </div>
             <div className="space-y-2">

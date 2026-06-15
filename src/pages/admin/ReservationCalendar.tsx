@@ -97,7 +97,7 @@ const ReservationCalendar = () => {
                           <GripVertical className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                           <div className="min-w-0">
                             <p className="truncate text-sm font-semibold">{booking.customerName}</p>
-                            <p className="truncate text-xs text-muted-foreground">{booking.car?.name ?? "Vehicle"} - {booking.totalPrice} DH</p>
+                            <p className="truncate text-xs text-muted-foreground">{booking.car?.name ?? "Vehicle"} - {booking.totalPrice} �</p>
                           </div>
                         </div>
                       </div>

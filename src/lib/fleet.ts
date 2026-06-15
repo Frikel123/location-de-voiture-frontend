@@ -57,7 +57,7 @@ export const demoFleet: Vehicle[] = [
     isNew: true,
     offer: "15% weekly offer",
     features: ["Air conditioning", "Bluetooth", "USB-C charging", "Rear camera", "Unlimited support"],
-    specs: { Engine: "1.2L", Range: "650 km", Deposit: "1,500 DH", Insurance: "Included" },
+    specs: { Engine: "1.2L", Range: "650 km", Deposit: "1,500 �", Insurance: "Included" },
   },
   {
     id: 102,
@@ -82,7 +82,7 @@ export const demoFleet: Vehicle[] = [
     isNew: false,
     offer: "Most booked",
     features: ["Cruise control", "CarPlay", "Parking sensors", "Premium interior", "Airport delivery"],
-    specs: { Engine: "1.5 dCi", Range: "780 km", Deposit: "2,000 DH", Insurance: "Included" },
+    specs: { Engine: "1.5 dCi", Range: "780 km", Deposit: "2,000 �", Insurance: "Included" },
   },
   {
     id: 103,
@@ -106,7 +106,7 @@ export const demoFleet: Vehicle[] = [
     popularity: 91,
     isNew: false,
     features: ["Large trunk", "Economy mode", "Bluetooth", "Child seat option", "Cleaned before pickup"],
-    specs: { Engine: "1.5 dCi", Range: "820 km", Deposit: "1,800 DH", Insurance: "Included" },
+    specs: { Engine: "1.5 dCi", Range: "820 km", Deposit: "1,800 �", Insurance: "Included" },
   },
   {
     id: 104,
@@ -131,7 +131,7 @@ export const demoFleet: Vehicle[] = [
     isNew: true,
     offer: "Premium choice",
     features: ["Hybrid drive", "Adaptive cruise", "Navigation", "Blind spot assist", "Priority delivery"],
-    specs: { Engine: "1.8 Hybrid", Range: "760 km", Deposit: "3,500 DH", Insurance: "Premium included" },
+    specs: { Engine: "1.8 Hybrid", Range: "760 km", Deposit: "3,500 �", Insurance: "Premium included" },
   },
 ];
 
@@ -160,7 +160,7 @@ const inferVehicle = (car: Car, index: number): Vehicle => {
     price: Number(car.price) || base.price,
     popularity: Math.max(80, base.popularity - index),
     trips: base.trips + index * 7,
-    specs: { ...base.specs, Daily: `${Number(car.price) || base.price} DH` },
+    specs: { ...base.specs, Daily: `${Number(car.price) || base.price} �` },
   };
 };
 

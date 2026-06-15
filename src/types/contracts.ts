@@ -45,7 +45,7 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationTotalTTC: 0,
   reservationPaymentMethod: "Esp�ces",
   agencyName: "N1 Lux Cars",
-  agencyAddress: "Casablanca, Maroc",
+  agencyAddress: "VCRF+F8M, Meknès",
   agencyPhone: "0646494968",
   insuranceName: "Assurance tous risques",
   insurancePolicyNumber: "",

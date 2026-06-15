@@ -103,8 +103,8 @@ export const Contact = () => {
 
           <Card className="overflow-hidden rounded-3xl border-border/70 shadow-card">
             <iframe
-              title="N1 Lux Cars - Fes"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3306.0693546841862!2d-5.001376399999999!3d34.042092!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9f8b13de68de95%3A0x4876f1e7dcee7a67!2sN1%20Lux%20Cars!5e0!3m2!1sfr!2sma!4v1778083235194!5m2!1sfr!2sma"
+              title="N1 Lux Cars - Meknès"
+              src="https://www.google.com/maps?q=VCRF%2BF8M%2C%20Mekn%C3%A8s&output=embed"
               className="h-full min-h-[420px] w-full border-0"
               allowFullScreen
               loading="lazy"

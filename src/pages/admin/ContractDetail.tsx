@@ -96,7 +96,7 @@ const ContractDetail = () => {
       reservationTotalTTC: contract.reservationTotalTTC ?? 0,
       reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp�ces",
       agencyName: contract.agencyName ?? "N1 Lux Cars",
-      agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
+      agencyAddress: contract.agencyAddress ?? "VCRF+F8M, Meknès",
       agencyPhone: contract.agencyPhone ?? "0646494968",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
@@ -218,7 +218,7 @@ const ContractDetail = () => {
             <div className="grid gap-4 md:grid-cols-3">
               <Metric title="Client" value={contract.clientFullName || "-"} />
               <Metric title="Voiture" value={`${contract.carMake || "-"} ${contract.carModel || ""}`} />
-              <Metric title="Total" value={`${formatMoney(contract.reservationTotalTTC)} DH`} />
+              <Metric title="Total" value={`${formatMoney(contract.reservationTotalTTC)} �`} />
             </div>
             <ContractPreview contract={previewContract} />
           </div>

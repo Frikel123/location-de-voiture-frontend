@@ -9,7 +9,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return (
     <div className="admin-chart-tooltip rounded-lg border border-gray-200 bg-white p-3 text-sm shadow-lg dark:border-white/10 dark:bg-[#071229]">
       <div className="admin-chart-tooltip-label text-xs text-gray-500 dark:text-slate-400">{label}</div>
-      <div className="admin-chart-tooltip-value mt-1 text-lg font-semibold text-gray-900 dark:text-white">{value} DH</div>
+      <div className="admin-chart-tooltip-value mt-1 text-lg font-semibold text-gray-900 dark:text-white">{value} �</div>
     </div>
   );
 };

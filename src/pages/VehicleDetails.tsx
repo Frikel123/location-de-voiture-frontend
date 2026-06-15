@@ -51,7 +51,7 @@ const VehicleDetails = () => {
         name: vehicle.name,
         brand: vehicle.brand,
         image: vehicle.gallery,
-        offers: { "@type": "Offer", price: vehicle.price, priceCurrency: "MAD", availability: "https://schema.org/InStock" },
+        offers: { "@type": "Offer", price: vehicle.price, priceCurrency: "EUR", availability: "https://schema.org/InStock" },
       },
     });
   }, [lang, vehicle]);
@@ -110,13 +110,13 @@ const VehicleDetails = () => {
                   <label className="space-y-2 text-sm font-medium"><span>Return date</span><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} /></label>
                 </div>
                 <div className="mt-4 flex items-end justify-between rounded-2xl bg-secondary p-4">
-                  <div><p className="text-sm text-muted-foreground">Estimated total</p><p className="text-3xl font-bold">{total} DH</p></div>
-                  <p className="text-right text-sm text-muted-foreground">{rentalDays} days<br />{vehicle.price} DH/day</p>
+                  <div><p className="text-sm text-muted-foreground">Estimated total</p><p className="text-3xl font-bold">{total} �</p></div>
+                  <p className="text-right text-sm text-muted-foreground">{rentalDays} days<br />{vehicle.price} �/day</p>
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button asChild className="rounded-2xl"><Link to={`/${lang}/booking?vehicle=${vehicle.slug}`}>Instant booking</Link></Button>
                   <Button asChild variant="outline" className="rounded-2xl">
-                    <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} from ${startDate} to ${endDate}. Total estimate: ${total} DH.`)} target="_blank" rel="noopener">
+                    <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} from ${startDate} to ${endDate}. Total estimate: ${total} �.`)} target="_blank" rel="noopener">
                       <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp
                     </a>
                   </Button>
@@ -155,7 +155,7 @@ const VehicleDetails = () => {
               <Link key={item.id} to={`/${lang}/cars/${item.slug}`} className="rounded-3xl border bg-card p-4 shadow-card transition hover:-translate-y-1 hover:shadow-elegant">
                 <img src={item.gallery[0]} alt={item.name} className="aspect-[4/3] w-full rounded-2xl object-cover" loading="lazy" />
                 <h3 className="mt-4 text-lg font-semibold">{item.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.price} DH/day • {item.category}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{item.price} �/day • {item.category}</p>
               </Link>
             ))}
           </div>

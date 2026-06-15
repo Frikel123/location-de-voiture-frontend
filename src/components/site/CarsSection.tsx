@@ -101,7 +101,7 @@ export const CarsSection = () => {
           </div>
           <div className="text-right">
             <p className="text-3xl font-bold">{vehicle.price}</p>
-            <p className="text-sm text-muted-foreground">DH/day</p>
+            <p className="text-sm text-muted-foreground">€/day</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export const CarsSection = () => {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Button asChild className="rounded-2xl"><Link to={`/${language}/booking?vehicle=${vehicle.slug}`} onClick={() => remember(vehicle)}>Instant booking</Link></Button>
           <Button asChild variant="outline" className="rounded-2xl">
-            <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} at ${vehicle.price} DH/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
+            <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} at ${vehicle.price} �/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
           </Button>
         </div>
       </div>
@@ -185,7 +185,7 @@ export const CarsSection = () => {
           </div>
           <div className="mt-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
             <label className="space-y-2 text-sm text-muted-foreground">
-              <span>Price range: up to {priceMax} DH/day</span>
+              <span>Price range: up to {priceMax} �/day</span>
               <input type="range" min={200} max={maxFleetPrice} step={50} value={priceMax} onChange={(event) => setPriceMax(Number(event.target.value))} className="w-full accent-primary" />
             </label>
             <Badge variant="outline" className="w-fit rounded-full px-4 py-2"><Search className="mr-2 h-4 w-4" />{filtered.length} available</Badge>
@@ -219,7 +219,7 @@ const MiniRail = ({ title, vehicles, language, remember, empty = "Coming soon" }
       {vehicles.length ? vehicles.map((vehicle) => (
         <Link key={vehicle.id} to={`/${language}/cars/${vehicle.slug}`} onClick={() => remember(vehicle)} className="flex items-center gap-3 rounded-2xl bg-secondary p-3 transition hover:bg-primary/10">
           <img src={vehicle.gallery[0]} alt={vehicle.name} className="h-16 w-20 rounded-xl object-cover" loading="lazy" />
-          <span><strong className="block text-sm">{vehicle.name}</strong><span className="text-xs text-muted-foreground">{vehicle.price} DH/day</span></span>
+          <span><strong className="block text-sm">{vehicle.name}</strong><span className="text-xs text-muted-foreground">{vehicle.price} �/day</span></span>
         </Link>
       )) : <p className="text-sm text-muted-foreground">{empty}</p>}
     </div>

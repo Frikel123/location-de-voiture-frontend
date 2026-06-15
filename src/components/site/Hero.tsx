@@ -38,7 +38,7 @@ export const Hero = () => {
     { value: "12 min", label: "confirmation" },
   ];
 
-  const message = `Hello N1 Lux Cars, I want to check availability. City: ${pickupCity}. Dates: ${startDate} - ${endDate}. Category: ${category}. Budget: ${priceRange} DH/day. Estimate: ${estimate} DH.`;
+  const message = `Hello N1 Lux Cars, I want to check availability. City: ${pickupCity}. Dates: ${startDate} - ${endDate}. Category: ${category}. Budget: ${priceRange} �/day. Estimate: ${estimate} �.`;
 
   return (
     <section id="accueil" className="relative min-h-screen overflow-hidden bg-[#05070b] pt-20 text-white">
@@ -115,16 +115,16 @@ export const Hero = () => {
               <label className="space-y-2 text-sm text-white/80">
                 <span className="flex items-center gap-2"><Gauge className="h-4 w-4" />Price range</span>
                 <input type="range" min={200} max={1200} step={50} value={priceRange} onChange={(event) => setPriceRange(Number(event.target.value))} className="mt-4 h-2 w-full accent-primary" />
-                <span className="block text-xs text-white/70">{priceRange} DH/day</span>
+                <span className="block text-xs text-white/70">{priceRange} �/day</span>
               </label>
             </div>
 
             <div className="rounded-3xl border border-primary/15 bg-primary/10 p-4 text-white/90">
               <div className="flex items-start justify-between gap-4">
                 <div><p className="text-sm uppercase tracking-[0.24em] text-primary/90">Availability</p><p className="mt-2 text-2xl font-semibold">{matchingFleet.length} cars ready</p></div>
-                <div className="rounded-2xl bg-white/5 px-4 py-3 text-right text-sm text-white/80"><p>From</p><p className="mt-1 text-xl font-bold">{lowestRate} DH/day</p></div>
+                <div className="rounded-2xl bg-white/5 px-4 py-3 text-right text-sm text-white/80"><p>From</p><p className="mt-1 text-xl font-bold">{lowestRate} �/day</p></div>
               </div>
-              <p className="mt-4 text-sm text-white/70">Estimate for {rentalDays} day(s): {estimate} DH</p>
+              <p className="mt-4 text-sm text-white/70">Estimate for {rentalDays} day(s): {estimate} �</p>
             </div>
 
             <Button asChild size="lg" className="rounded-2xl">

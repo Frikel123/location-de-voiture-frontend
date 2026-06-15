@@ -60,7 +60,7 @@ const BookingFlow = () => {
     event.preventDefault();
     if (step < steps.length - 1) return next();
     window.open(
-      waLink(`N1 Lux Cars booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} DH.`),
+      waLink(`N1 Lux Cars booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} �.`),
       "_blank",
       "noopener,noreferrer",
     );
@@ -102,7 +102,7 @@ const BookingFlow = () => {
                     >
                       <img src={vehicle.gallery[0]} alt={vehicle.name} className="aspect-[16/10] w-full rounded-2xl object-cover" loading="lazy" />
                       <h3 className="mt-3 font-semibold">{vehicle.name}</h3>
-                      <p className="text-sm text-muted-foreground">{vehicle.category} • {vehicle.price} DH/day</p>
+                      <p className="text-sm text-muted-foreground">{vehicle.category} • {vehicle.price} �/day</p>
                     </button>
                   ))}
                 </div>
@@ -143,7 +143,7 @@ const BookingFlow = () => {
                     <p><span className="text-muted-foreground">Dates:</span> {form.pickupDate} to {form.returnDate}</p>
                     <p><span className="text-muted-foreground">Pickup:</span> {form.pickupLocation}</p>
                     <p><span className="text-muted-foreground">Insurance:</span> Included</p>
-                    <p><span className="text-muted-foreground">Total TTC:</span> {total} DH</p>
+                    <p><span className="text-muted-foreground">Total TTC:</span> {total} �</p>
                   </div>
                 </div>
               </motion.div>
@@ -168,11 +168,11 @@ const BookingFlow = () => {
             <h2 className="mt-4 text-xl font-semibold">{selectedVehicle.name}</h2>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
               <p>{selectedVehicle.category} • {selectedVehicle.transmission} • {selectedVehicle.fuel}</p>
-              <p>{rentalDays} day(s) x {selectedVehicle.price} DH</p>
+              <p>{rentalDays} day(s) x {selectedVehicle.price} �</p>
             </div>
             <div className="mt-5 rounded-2xl bg-primary/10 p-4 text-primary">
               <p className="text-sm">Total estimate</p>
-              <p className="text-3xl font-bold">{total} DH</p>
+              <p className="text-3xl font-bold">{total} �</p>
             </div>
           </Card>
         </form>

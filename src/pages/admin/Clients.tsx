@@ -437,7 +437,7 @@ const Clients = () => {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{client.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {client.lastActivity ? format(client.lastActivity, "dd/MM/yyyy") : "Activite inconnue"} - {formatMoney(client.revenue)} DH
+                      {client.lastActivity ? format(client.lastActivity, "dd/MM/yyyy") : "Activite inconnue"} - {formatMoney(client.revenue)} �
                     </p>
                   </div>
                   <StatusBadge status={client.status} compact />
@@ -560,7 +560,7 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
           <Info label="Email" value={client.email} />
           <Info label="CIN / Passport" value={client.document} />
           <Info label="Statut" value={client.status} />
-          <Info label="CA total" value={`${formatMoney(client.revenue)} DH`} strong />
+          <Info label="CA total" value={`${formatMoney(client.revenue)} �`} strong />
         </div>
       </TabsContent>
 
@@ -571,7 +571,7 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
             id: booking.id,
             title: booking.car?.name ?? "Reservation",
             meta: `${booking.startDate} - ${booking.endDate}`,
-            amount: `${formatMoney(booking.totalPrice)} DH`,
+            amount: `${formatMoney(booking.totalPrice)} �`,
           }))}
         />
       </TabsContent>
@@ -583,14 +583,14 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
             id: contract.id,
             title: contract.contractNumber,
             meta: `${contract.carMake} ${contract.carModel} - ${normalizeContractStatus(contract.status)}`,
-            amount: `${formatMoney(contract.reservationTotalTTC)} DH`,
+            amount: `${formatMoney(contract.reservationTotalTTC)} �`,
           }))}
         />
       </TabsContent>
 
       <TabsContent value="payments" className="mt-5">
         <div className="grid gap-3 sm:grid-cols-3">
-          <Info label="Total encaisse" value={`${formatMoney(client.revenue)} DH`} strong />
+          <Info label="Total encaisse" value={`${formatMoney(client.revenue)} �`} strong />
           <Info label="Contrats payes" value={String(client.contracts.length)} />
           <Info label="Mode frequent" value={client.contracts[0]?.reservationPaymentMethod ?? "Non renseigne"} />
         </div>

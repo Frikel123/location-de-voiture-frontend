@@ -69,14 +69,14 @@ const fallbackAgency = {
   phone: "0646494968",
   email: "contact@n1-lux-cars.ma",
   website: "n1luxcars.netlify.app",
-  address: "Casablanca, Maroc",
+  address: "VCRF+F8M, Meknès",
 };
 
 const formatMoney = (value: number | string | undefined | null) => {
   const amount = Number(value) || 0;
   return `${new Intl.NumberFormat("fr-MA", {
     maximumFractionDigits: 0,
-  }).format(amount)} DH`;
+  }).format(amount)} �`;
 };
 
 const formatDate = (date?: string | null) => {

@@ -36,8 +36,8 @@ const defaultSettings: SettingsState = {
   companyName: "N1 Lux Cars",
   phone: "0646494968",
   whatsapp: "0646494968",
-  address: "Casablanca, Maroc",
-  currency: "MAD",
+  address: "VCRF+F8M, Meknès",
+  currency: "EUR",
   language: "fr",
   emailNotifications: true,
   bookingAlerts: true,
@@ -124,7 +124,6 @@ const Settings = () => {
                       <Select value={settings.currency} onValueChange={(value) => update("currency", value)}>
                         <SelectTrigger className="rounded-2xl"><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="MAD">MAD - Dirham</SelectItem>
                           <SelectItem value="EUR">EUR - Euro</SelectItem>
                           <SelectItem value="USD">USD - Dollar</SelectItem>
                         </SelectContent>

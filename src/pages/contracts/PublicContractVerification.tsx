@@ -41,7 +41,7 @@ const formatDate = (value?: string | Date | null) => {
 const formatMoney = (value?: number | null) =>
   new Intl.NumberFormat("fr-MA", {
     style: "currency",
-    currency: "MAD",
+    currency: "EUR",
     maximumFractionDigits: 0,
   }).format(Number(value ?? 0));
 

@@ -1,4 +1,4 @@
-﻿export type Car = {
+export type Car = {
   id: number;
   name: string;
   price: number;
@@ -32,7 +32,7 @@ export type BookingPayload = {
   endDate: string;
 };
 
-export type ContractStatus = "Brouillon" | "Confirmé" | "Signé" | "Terminé" | "Annulé";
+export type ContractStatus = "Brouillon" | "Confirm�" | "Sign�" | "Termin�" | "Annul�";
 export type LegacyContractStatus = "En attente" | "Actif";
 
 export type ContractDocument = {

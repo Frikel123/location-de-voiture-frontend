@@ -74,7 +74,7 @@ const rangeOptions = [
 
 type RangeKey = (typeof rangeOptions)[number]["value"];
 
-const formatMoney = (value: number) => money(value) + " DH";
+const formatMoney = (value: number) => money(value) + " �";
 
 const rangeLabels: Record<RangeKey, string> = {
   today: "Aujourd'hui",

@@ -267,7 +267,7 @@ const Bookings = () => {
                       <TableCell>{booking.car?.name ?? "-"}</TableCell>
                       <TableCell>{booking.phone}</TableCell>
                       <TableCell className="min-w-[190px] text-muted-foreground">{booking.startDate} - {booking.endDate}</TableCell>
-                      <TableCell className="font-semibold">{booking.totalPrice} DH</TableCell>
+                      <TableCell className="font-semibold">{booking.totalPrice} �</TableCell>
                       <TableCell><StatusBadge status={getStatus(booking)} /></TableCell>
                       <TableCell>
                         <div className="flex justify-end gap-1">
@@ -306,7 +306,7 @@ const Bookings = () => {
               <Label htmlFor="booking-car">Voiture</Label>
               <select id="booking-car" value={carId} onChange={(e) => setCarId(e.target.value)} className="flex h-11 w-full rounded-2xl border border-input bg-background px-3 py-2 text-sm">
                 <option value="" disabled>Choisir une voiture</option>
-                {cars.map((car) => <option key={car.id} value={car.id}>{car.name} - {car.price} DH/jour</option>)}
+                {cars.map((car) => <option key={car.id} value={car.id}>{car.name} - {car.price} �/jour</option>)}
               </select>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -354,7 +354,7 @@ const Bookings = () => {
               />
               {selectedContract?.signedAt && <Detail label="Date signature" value={selectedContract.signedAt} />}
               {selectedContract?.signatureIp && <Detail label="IP client" value={selectedContract.signatureIp} />}
-              <Detail label="Prix total" value={`${selected.totalPrice} DH`} strong />
+              <Detail label="Prix total" value={`${selected.totalPrice} �`} strong />
             </div>
           )}
         </DialogContent>

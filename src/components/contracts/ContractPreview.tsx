@@ -3,7 +3,7 @@ import { ContractStatusBadge } from "@/components/contracts/ContractStatusBadge"
 import { ContractQrCode } from "@/components/contracts/ContractQrCode";
 
 const formatMoney = (value: number) =>
-  new Intl.NumberFormat("fr-MA", { style: "currency", currency: "MAD", maximumFractionDigits: 0 }).format(Number(value) || 0);
+  new Intl.NumberFormat("fr-MA", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Number(value) || 0);
 
 const formatDate = (date?: string) => {
   if (!date) return "-";
@@ -47,7 +47,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
         <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">Agence</h3>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <Field label="Nom" value={contract.agencyName || "N1 Lux Cars"} />
-          <Field label="Adresse" value={contract.agencyAddress || "Casablanca, Maroc"} />
+          <Field label="Adresse" value={contract.agencyAddress || "VCRF+F8M, Meknès"} />
           <Field label="Telephone" value={contract.agencyPhone || "0646494968"} />
         </div>
       </section>

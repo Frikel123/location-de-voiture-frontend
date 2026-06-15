@@ -24,7 +24,7 @@ export const VehicleCard: React.FC<{ car: Car }> = ({ car }) => {
           <p className="mt-1 text-xs text-muted-foreground">{brand}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm font-semibold">{price} DH</p>
+          <p className="text-sm font-semibold">{price} �</p>
           <p className="text-xs text-muted-foreground">/jour</p>
         </div>
       </div>

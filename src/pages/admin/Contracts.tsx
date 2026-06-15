@@ -63,7 +63,7 @@ const toPayload = (contract: Contract): ContractPayload => ({
   reservationTotalTTC: contract.reservationTotalTTC ?? 0,
   reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp�ces",
   agencyName: contract.agencyName ?? "N1 Lux Cars",
-  agencyAddress: contract.agencyAddress ?? "Casablanca, Maroc",
+  agencyAddress: contract.agencyAddress ?? "VCRF+F8M, Meknès",
   agencyPhone: contract.agencyPhone ?? "0646494968",
   insuranceName: contract.insuranceName ?? "Assurance tous risques",
   insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
@@ -282,7 +282,7 @@ const Contracts = () => {
         <Metric title="Contrats" value={metrics.total} />
         <Metric title="Confirmes" value={metrics.confirmed} />
         <Metric title="Signes" value={metrics.signed} />
-        <Metric title="Montant total" value={`${formatMoney(metrics.revenue)} DH`} />
+        <Metric title="Montant total" value={`${formatMoney(metrics.revenue)} �`} />
       </div>
 
       {isError && (
@@ -352,7 +352,7 @@ const Contracts = () => {
                       </TableCell>
                       <TableCell>{`${contract.carMake || "-"} ${contract.carModel || ""}`}</TableCell>
                       <TableCell className="min-w-[180px] text-muted-foreground">{contract.reservationStartDate} - {contract.reservationEndDate}</TableCell>
-                      <TableCell className="font-semibold">{formatMoney(contract.reservationTotalTTC)} DH</TableCell>
+                      <TableCell className="font-semibold">{formatMoney(contract.reservationTotalTTC)} �</TableCell>
                       <TableCell><ContractStatusBadge status={contract.status} /></TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -457,7 +457,7 @@ const Contracts = () => {
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Input readOnly value={`${computedDays} jour(s)`} />
-                  <Input readOnly value={`${formatMoney(computedTotal)} DH`} />
+                  <Input readOnly value={`${formatMoney(computedTotal)} �`} />
                 </div>
                 <div className="flex items-center justify-between rounded-2xl border p-3">
                   <div>
