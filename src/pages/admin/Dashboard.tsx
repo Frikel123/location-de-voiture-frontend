@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   addDays,
   eachMonthOfInterval,
@@ -20,8 +21,6 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -50,7 +49,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BrandLogo } from "@/components/BrandLogo";
 import FleetOverview from "@/components/admin/FleetOverview";
 import KpiCard from "@/components/admin/KpiCard";
@@ -58,11 +56,13 @@ import RecentReservations from "@/components/admin/RecentReservations";
 import {
   CalendarDays,
   Car,
+  FilePlus2,
   Plus,
   RefreshCcw,
-  TrendingUp,
+  ShieldAlert,
   Users,
   Wallet,
+  Wrench,
 } from "lucide-react";
 
 const rangeOptions = [
@@ -74,22 +74,13 @@ const rangeOptions = [
 
 type RangeKey = (typeof rangeOptions)[number]["value"];
 
-const formatMoney = (value: number) => money(value) + " �";
+const formatMoney = (value: number) => `${money(value)} MAD`;
 
 const rangeLabels: Record<RangeKey, string> = {
   today: "Aujourd'hui",
   "7d": "7 derniers jours",
   "30d": "30 derniers jours",
   "12m": "12 derniers mois",
-};
-
-const statusForBooking = (booking: Booking) => {
-  const today = new Date();
-  const start = parseISO(booking.startDate);
-  const end = parseISO(booking.endDate);
-  if (isWithinInterval(today, { start, end })) return "Confirmée";
-  if (isAfter(start, today)) return "En attente";
-  return "Terminée";
 };
 
 const filterBookingsByRange = (bookings: Booking[], range: RangeKey) => {
@@ -147,7 +138,40 @@ const getTopVehicle = (cars: CarType[], bookings: Booking[], contracts: Contract
   return vehicleRevenue[0] || { vehicle: "-", revenue: 0, rentals: 0 };
 };
 
+const ChartTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="admin-chart-tooltip rounded-xl border p-3 text-sm shadow-2xl">
+      <p className="admin-chart-tooltip-label text-xs uppercase tracking-[0.18em]">{label}</p>
+      <p className="admin-chart-tooltip-value mt-1 text-lg font-semibold">{payload[0].value}</p>
+    </div>
+  );
+};
+
+const ChartEmptyState = ({ title, description }: { title: string; description: string }) => (
+  <div className="admin-chart-empty">
+    <div className="admin-chart-empty-visual" />
+    <p className="text-sm font-semibold text-foreground">{title}</p>
+    <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+  </div>
+);
+
+const quickActions = [
+  { title: "+ New Reservation", description: "Créer une réservation", icon: CalendarDays, to: "/admin/bookings" },
+  { title: "+ New Contract", description: "Générer un contrat", icon: FilePlus2, to: "/admin/contracts" },
+  { title: "+ Add Vehicle", description: "Ajouter à la flotte", icon: Car, to: "/admin/cars" },
+  { title: "+ Add Client", description: "Créer une fiche client", icon: Users, to: "/admin/clients" },
+];
+
+const getAlertTone = (type?: string) => {
+  const normalized = String(type ?? "").toLowerCase();
+  if (normalized.includes("insurance") || normalized.includes("assurance")) return "insurance";
+  if (normalized.includes("urgent") || normalized.includes("retard") || normalized.includes("expire")) return "urgent";
+  return "maintenance";
+};
+
 const Dashboard = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [range, setRange] = useState<RangeKey>("30d");
 
@@ -290,27 +314,27 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 compact-hero glass shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 lg:p-6">
-        <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+      <section className="admin-dashboard-hero overflow-hidden rounded-xl compact-hero glass shadow-2xl shadow-slate-950/40 ring-1 ring-white/10">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <BrandLogo className="mb-5" markClassName="h-16 w-16" textClassName="text-gray-900 dark:text-white" />
-            <Badge className="mb-4 rounded-full bg-primary/10 text-primary">Luxury command center</Badge>
+            <BrandLogo className="mb-3" markClassName="h-12 w-12" textClassName="text-white" />
+            <Badge className="mb-3 rounded-full bg-primary/15 text-primary">Luxury command center</Badge>
             <h1 className="brand-heading hero-title font-semibold tracking-tight text-gray-900 dark:text-white">Welcome to N1 Lux Cars Administration</h1>
-            <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-slate-300">
+            <p className="mt-2 max-w-xl text-sm leading-6 text-gray-600 dark:text-slate-300">
               Premium analytics for fleet performance, reservations, revenue, and client experience.
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+          <div className="grid gap-3 lg:min-w-[560px] sm:grid-cols-[1fr_auto]">
             <div className="grid grid-cols-2 gap-3">
-              <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <div className="admin-stat-card admin-hero-stat rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="admin-stat-label text-xs uppercase tracking-[0.25em] text-gray-600 dark:text-slate-400">Revenu mensuel</p>
-                <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
+                <p className="admin-stat-value mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{formatMoney(analytics.currentMonthRevenue)}</p>
                 <p className="mt-2 text-sm text-primary">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`} vs. mois précédent</p>
               </div>
-              <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <div className="admin-stat-card admin-hero-stat rounded-3xl border border-gray-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="admin-stat-label text-xs uppercase tracking-[0.25em] text-gray-600 dark:text-slate-400">Taux d'occupation</p>
-                <p className="admin-stat-value mt-3 text-3xl font-semibold text-gray-900 dark:text-white">{analytics.occupancy}%</p>
+                <p className="admin-stat-value mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{analytics.occupancy}%</p>
                 <p className="mt-2 text-sm text-slate-400">Prévision +6% sur 12 mois</p>
               </div>
             </div>
@@ -335,7 +359,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="admin-surface mt-8 flex flex-col gap-4 rounded-[2rem] border border-gray-200 bg-white p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="admin-surface mt-5 flex flex-col gap-4 rounded-[2rem] border border-gray-200 bg-white p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Période</p>
             <div className="flex flex-wrap gap-2">
@@ -355,7 +379,7 @@ const Dashboard = () => {
           <div className="grid gap-2 sm:grid-cols-2">
             <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
               <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Comparaison</p>
-                <p className="admin-stat-value mt-2 text-xl font-semibold text-gray-900 dark:text-white">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`}</p>
+              <p className="admin-stat-value mt-2 text-xl font-semibold text-gray-900 dark:text-white">{analytics.growthPercentage >= 0 ? `+${analytics.growthPercentage}%` : `${analytics.growthPercentage}%`}</p>
               <p className="mt-1 text-sm text-slate-400">{rangeLabels[range]}</p>
             </div>
             <div className="admin-stat-card rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950/70">
@@ -431,15 +455,37 @@ const Dashboard = () => {
             <CardTitle>Réservation trend</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={analytics.reservationTrend} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid stroke="var(--admin-chart-grid)" vertical={false} />
-                <XAxis dataKey="date" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} />
-                <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid var(--admin-tooltip-border)", background: "var(--admin-tooltip-bg)", color: "var(--admin-main-text)" }} />
-                <Line type="monotone" dataKey="count" stroke="#D4AF37" strokeWidth={3} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
+            {analytics.reservationTrend.some((item) => item.count > 0) ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={analytics.reservationTrend} margin={{ top: 20, right: 16, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="reservationTrendGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#FFF2B7" stopOpacity={0.38} />
+                      <stop offset="55%" stopColor="#D4AF37" stopOpacity={0.16} />
+                      <stop offset="100%" stopColor="#D4AF37" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid stroke="var(--admin-chart-grid)" strokeDasharray="4 8" vertical={false} />
+                  <XAxis dataKey="date" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} tickMargin={12} fontSize={12} />
+                  <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} tickMargin={10} fontSize={12} />
+                  <Tooltip content={<ChartTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey="count"
+                    stroke="#D4AF37"
+                    strokeWidth={3}
+                    fill="url(#reservationTrendGradient)"
+                    dot={false}
+                    activeDot={{ r: 6, strokeWidth: 2, fill: "#FFF2B7", stroke: "#D4AF37" }}
+                    isAnimationActive
+                    animationDuration={850}
+                    animationEasing="ease-out"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <ChartEmptyState title="Peu de réservations" description="La tendance s'animera dès que de nouvelles réservations seront enregistrées." />
+            )}
           </CardContent>
         </Card>
       </div>
@@ -466,21 +512,36 @@ const Dashboard = () => {
             <CardTitle>Croissance clients</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analytics.customerGrowth} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="customerGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.28} />
-                    <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="var(--admin-chart-grid)" vertical={false} />
-                <XAxis dataKey="month" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} />
-                <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} />
-                <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid var(--admin-tooltip-border)", background: "var(--admin-tooltip-bg)", color: "var(--admin-main-text)" }} />
-                <Area type="monotone" dataKey="customers" stroke="#D4AF37" strokeWidth={3} fill="url(#customerGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
+            {analytics.customerGrowth.some((item) => item.customers > 0) ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={analytics.customerGrowth} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="customerGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#FFF2B7" stopOpacity={0.34} />
+                      <stop offset="55%" stopColor="#D4AF37" stopOpacity={0.16} />
+                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid stroke="var(--admin-chart-grid)" strokeDasharray="4 8" vertical={false} />
+                  <XAxis dataKey="month" stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} tickMargin={12} fontSize={12} />
+                  <YAxis stroke="var(--admin-chart-axis)" tickLine={false} axisLine={false} allowDecimals={false} tickMargin={10} fontSize={12} />
+                  <Tooltip content={<ChartTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey="customers"
+                    stroke="#D4AF37"
+                    strokeWidth={3}
+                    fill="url(#customerGradient)"
+                    activeDot={{ r: 6, strokeWidth: 2, fill: "#FFF2B7", stroke: "#D4AF37" }}
+                    isAnimationActive
+                    animationDuration={850}
+                    animationEasing="ease-out"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <ChartEmptyState title="Croissance à venir" description="Les nouveaux clients seront visualisés ici mois par mois." />
+            )}
           </CardContent>
         </Card>
       </div>
@@ -518,17 +579,19 @@ const Dashboard = () => {
 
         <Card className="border-border/70 shadow-card">
           <CardHeader>
-            <CardTitle>Génération rapide</CardTitle>
+            <CardTitle>Actions rapides</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {[
-              { title: "Créer un contrat", description: "Accès direct au module de contrat." },
-              { title: "Ajouter une réservation", description: "Lancer une réservation en un clic." },
-            ].map((item) => (
-              <div key={item.title} className="admin-surface rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-                <p className="font-semibold text-gray-900 dark:text-white">{item.title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
-              </div>
+          <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+            {quickActions.map(({ title, description, icon: Icon, to }) => (
+              <button key={title} type="button" className="admin-action-button" onClick={() => navigate(to)}>
+                <span className="admin-action-icon">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 text-left">
+                  <span className="block text-sm font-semibold">{title}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">{description}</span>
+                </span>
+              </button>
             ))}
           </CardContent>
         </Card>
@@ -550,20 +613,33 @@ const Dashboard = () => {
           <CardHeader>
             <CardTitle>Notifications</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {alerts.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-gray-200 p-6 text-sm text-muted-foreground dark:border-white/10">Aucune alerte en attente.</div>
+              <div className="admin-empty-state rounded-3xl border border-dashed p-6 text-center">
+                <div className="admin-empty-state-visual mx-auto" />
+                <p className="text-sm font-semibold text-foreground">Aucune alerte en attente</p>
+                <p className="mt-1 text-xs text-muted-foreground">Les priorités assurance, maintenance et urgences apparaîtront ici.</p>
+              </div>
             ) : (
-              alerts.map((alert) => (
-                <div key={alert.id} className="admin-surface rounded-3xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+              alerts.map((alert) => {
+                const tone = getAlertTone(alert.type);
+                const Icon = tone === "insurance" ? ShieldAlert : tone === "urgent" ? Plus : Wrench;
+                return (
+                <div key={alert.id} className={`admin-notification admin-notification-${tone}`}>
                   <div className="flex items-center justify-between gap-3">
-                    <p className="font-semibold text-gray-900 dark:text-white">{alert.title}</p>
-                    <Badge className="rounded-full bg-slate-800/70 text-slate-200">{alert.type}</Badge>
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className="admin-notification-icon">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <p className="truncate font-semibold text-gray-900 dark:text-white">{alert.title}</p>
+                    </div>
+                    <Badge className="admin-notification-badge">{alert.type}</Badge>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{alert.description}</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-slate-500">Prévu le {format(parseISO(alert.dueDate), "dd MMM")}</p>
+                  <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-500">Prévu le {format(parseISO(alert.dueDate), "dd MMM")}</p>
                 </div>
-              ))
+              );
+              })
             )}
           </CardContent>
         </Card>

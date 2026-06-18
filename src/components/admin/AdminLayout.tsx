@@ -95,14 +95,20 @@ export const AdminLayout = () => {
       return Array.isArray(data) ? data : [];
     };
 
-    const cars = safeQueryData("admin-cars").filter((car) => car.name?.toLowerCase().includes(term));
-    const bookings = safeQueryData("admin-bookings").filter((booking) => booking.customerName?.toLowerCase().includes(term) || booking.phone?.includes(term));
-    const contracts = safeQueryData("admin-contracts").filter((contract) => contract.contractNumber?.toLowerCase().includes(term) || contract.clientFullName?.toLowerCase().includes(term));
+    const cars = safeQueryData("admin-cars").filter((car) =>
+      [car.name, car.brand, car.model, car.plateNumber, car.registrationNumber].some((value) => String(value ?? "").toLowerCase().includes(term))
+    );
+    const bookings = safeQueryData("admin-bookings").filter((booking) =>
+      [booking.customerName, booking.phone, booking.email, booking.car?.name].some((value) => String(value ?? "").toLowerCase().includes(term))
+    );
+    const contracts = safeQueryData("admin-contracts").filter((contract) =>
+      [contract.contractNumber, contract.clientFullName, contract.clientPhone, contract.vehicleName].some((value) => String(value ?? "").toLowerCase().includes(term))
+    );
     const clients = safeQueryData("admin-clients").filter((client) => client.name?.toLowerCase().includes(term) || client.phone?.includes(term) || client.email?.toLowerCase().includes(term));
 
     const results = [
-      ...cars.slice(0, 2).map((car) => ({ type: "Voiture", label: car.name, path: "/admin/cars", detail: car.category || car.model || "Fleet" })),
-      ...bookings.slice(0, 2).map((booking) => ({ type: "Reservation", label: booking.customerName, path: "/admin/bookings", detail: booking.car?.name ?? booking.phone })),
+      ...cars.slice(0, 2).map((car) => ({ type: "Véhicule", label: car.name ?? car.model ?? "Véhicule", path: "/admin/cars", detail: car.category || car.model || car.brand || "Flotte" })),
+      ...bookings.slice(0, 2).map((booking) => ({ type: "Réservation", label: booking.customerName ?? booking.phone, path: "/admin/bookings", detail: booking.car?.name ?? booking.phone })),
       ...contracts.slice(0, 2).map((contract) => ({ type: "Contrat", label: contract.contractNumber, path: `/admin/contracts/${contract.id}`, detail: contract.clientFullName })),
       ...clients.slice(0, 2).map((client) => ({ type: "Client", label: client.name, path: "/admin/clients", detail: client.phone })),
     ];
@@ -373,6 +379,49 @@ export const AdminLayout = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
+            </div>
+
+            <div className="relative md:hidden">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setFocusedResult(0);
+                }}
+                placeholder="Véhicules, réservations, clients, contrats..."
+                className="h-11 rounded-full border-border/70 bg-secondary/80 pl-12 pr-20 shadow-sm"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={clearQuery}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-slate-700/70 px-2 py-1 text-xs text-white transition hover:bg-slate-700"
+                >
+                  Effacer
+                </button>
+              )}
+              {searchResults.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-card/95 shadow-2xl backdrop-blur-2xl">
+                  {searchResults.map((result, index) => (
+                    <button
+                      key={`mobile-${result.label}-${index}`}
+                      type="button"
+                      onClick={() => {
+                        setQuery(result.label);
+                        navigate(result.path);
+                      }}
+                      className={`flex w-full items-start gap-3 border-b border-white/5 px-4 py-3 text-left transition hover:bg-white/5 ${index === focusedResult ? "bg-white/5" : ""}`}
+                    >
+                      <span className="shrink-0 text-xs uppercase tracking-[0.18em] text-primary">{result.type}</span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-semibold text-foreground">{result.label}</span>
+                        <span className="block truncate text-xs text-slate-400">{result.detail}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="hidden items-center justify-between gap-3 rounded-3xl border border-border/60 bg-card/70 px-4 py-3 shadow-sm md:flex">

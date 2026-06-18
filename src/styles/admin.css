@@ -159,7 +159,6 @@
 
 /* Reduce large margins for denser layout */
 .admin-root .mt-8 { margin-top: 1.25rem !important; }
-.admin-root .p-6 { padding: 0.9rem !important; }
 
 /* Table row subtle hover */
 .admin-root table tr:hover { background: rgba(212,175,55,0.02); }
@@ -191,9 +190,298 @@
   color: #081226 !important;
 }
 
-/* Ensure small badges contrast */
-.admin-root .Badge, .admin-root .badge, .admin-root .rounded-full {
+.admin-root {
+  --admin-card-bg: rgba(8, 19, 39, 0.84);
+  --admin-card-border: rgba(255, 255, 255, 0.14);
+  --admin-card-border-strong: rgba(212, 175, 55, 0.28);
+  --admin-hover-bg: rgba(212, 175, 55, 0.08);
+  --admin-tooltip-bg: rgba(7, 18, 41, 0.98);
+  --admin-tooltip-border: rgba(212, 175, 55, 0.28);
+  --admin-chart-axis: #CBD5E1;
+  --admin-chart-grid: rgba(203, 213, 225, 0.16);
+}
+
+.admin-root main {
+  color: var(--admin-main-text);
+}
+
+.admin-root .admin-dashboard-hero {
+  background:
+    linear-gradient(135deg, rgba(212, 175, 55, 0.12), transparent 34%),
+    linear-gradient(145deg, #050B18 0%, #0A1225 44%, #091C34 100%) !important;
+  padding: 1rem !important;
+  border-color: var(--admin-card-border-strong) !important;
+}
+
+.admin-root .admin-surface,
+.admin-root .admin-stat-card,
+.admin-root .card,
+.admin-root .bg-card {
+  background: linear-gradient(180deg, rgba(12, 26, 51, 0.92), rgba(5, 12, 26, 0.88)) !important;
+  border-color: var(--admin-card-border) !important;
+  color: var(--admin-main-text) !important;
+  box-shadow: 0 18px 42px -32px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.admin-root .admin-surface:hover,
+.admin-root .admin-stat-card:hover,
+.admin-root .card:hover {
+  border-color: var(--admin-card-border-strong) !important;
+  box-shadow: 0 24px 58px -36px rgba(0, 0, 0, 0.98), 0 0 0 1px rgba(212, 175, 55, 0.08) !important;
+}
+
+.admin-root .admin-hero-stat {
+  min-height: 104px;
+}
+
+.admin-root .admin-stat-label,
+.admin-root .text-muted-foreground {
+  color: rgba(226, 232, 240, 0.74) !important;
+}
+
+.admin-root .admin-stat-value,
+.admin-root .card [class*="text-3xl"],
+.admin-root .card [class*="text-2xl"] {
+  color: #FFFFFF !important;
+}
+
+.admin-root .btn-hero-action,
+.admin-root button {
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.admin-root .btn-hero-action:hover,
+.admin-root button:hover {
+  transform: translateY(-1px);
+}
+
+.admin-root .admin-action-button {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  gap: 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 175, 55, 0.26);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(255, 255, 255, 0.035));
+  padding: 1rem;
+  color: #FFFFFF;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  text-align: left;
+}
+
+.admin-root .admin-action-button:hover {
+  border-color: rgba(255, 242, 183, 0.62);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.26), rgba(255, 255, 255, 0.06));
+  box-shadow: 0 18px 36px -28px rgba(212, 175, 55, 0.85);
+}
+
+.admin-root .admin-action-icon,
+.admin-root .admin-notification-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+}
+
+.admin-root .admin-action-icon {
+  height: 42px;
+  width: 42px;
+  background: linear-gradient(135deg, #D4AF37, #FFF2B7);
+  color: #081226;
+}
+
+.admin-root .admin-table-header {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.admin-root .admin-table-header th {
+  color: rgba(248, 250, 252, 0.82) !important;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-root .admin-reservation-row {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.admin-root .admin-reservation-row:hover {
+  background: var(--admin-hover-bg) !important;
+  box-shadow: inset 3px 0 0 #D4AF37;
+}
+
+.admin-root .admin-status-badge {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #FFFFFF !important;
+}
+
+.admin-root .admin-status-confirmed {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(22, 163, 74, 0.88) !important;
+}
+
+.admin-root .admin-status-pending {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(217, 119, 6, 0.9) !important;
+}
+
+.admin-root .admin-status-cancelled {
+  border-color: rgba(248, 113, 113, 0.52);
+  background: rgba(220, 38, 38, 0.9) !important;
+}
+
+.admin-root .admin-status-completed {
+  border-color: rgba(96, 165, 250, 0.52);
+  background: rgba(37, 99, 235, 0.9) !important;
+}
+
+.admin-root .admin-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.3rem;
+}
+
+.admin-root .admin-pagination-count {
+  display: grid;
+  min-width: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #D4AF37, #FFF2B7);
   color: #081226 !important;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.admin-root .admin-chart-tooltip {
+  background: var(--admin-tooltip-bg) !important;
+  border-color: var(--admin-tooltip-border) !important;
+  color: #FFFFFF !important;
+}
+
+.admin-root .admin-chart-tooltip-label {
+  color: rgba(226, 232, 240, 0.72) !important;
+}
+
+.admin-root .admin-chart-tooltip-value {
+  color: #FFF2B7 !important;
+}
+
+.admin-root .admin-chart-empty,
+.admin-root .admin-empty-state {
+  display: grid;
+  height: 100%;
+  min-height: 180px;
+  place-items: center;
+  align-content: center;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF;
+}
+
+.admin-root .admin-chart-empty-visual,
+.admin-root .admin-empty-state-visual {
+  height: 44px;
+  width: 72px;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(212, 175, 55, 0.18) 18%, transparent 18% 32%, rgba(212, 175, 55, 0.32) 32% 50%, transparent 50% 64%, rgba(212, 175, 55, 0.5) 64%),
+    linear-gradient(180deg, transparent 55%, rgba(255, 255, 255, 0.08) 55%);
+  margin-bottom: 0.8rem;
+}
+
+.admin-root .admin-notification {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(12, 26, 51, 0.92), rgba(5, 12, 26, 0.88));
+  padding: 1rem;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.admin-root .admin-notification:hover {
+  transform: translateY(-1px);
+}
+
+.admin-root .admin-notification-icon {
+  height: 34px;
+  width: 34px;
+}
+
+.admin-root .admin-notification-badge {
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  color: #FFFFFF !important;
+}
+
+.admin-root .admin-notification-insurance {
+  border-color: rgba(234, 179, 8, 0.34);
+}
+
+.admin-root .admin-notification-insurance .admin-notification-icon,
+.admin-root .admin-notification-insurance .admin-notification-badge {
+  background: rgba(234, 179, 8, 0.18) !important;
+  color: #FDE68A !important;
+}
+
+.admin-root .admin-notification-maintenance {
+  border-color: rgba(249, 115, 22, 0.34);
+}
+
+.admin-root .admin-notification-maintenance .admin-notification-icon,
+.admin-root .admin-notification-maintenance .admin-notification-badge {
+  background: rgba(249, 115, 22, 0.18) !important;
+  color: #FDBA74 !important;
+}
+
+.admin-root .admin-notification-urgent {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.admin-root .admin-notification-urgent .admin-notification-icon,
+.admin-root .admin-notification-urgent .admin-notification-badge {
+  background: rgba(239, 68, 68, 0.18) !important;
+  color: #FCA5A5 !important;
+}
+
+.admin-root .recharts-cartesian-axis-tick-value {
+  fill: var(--admin-chart-axis) !important;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .admin-root .admin-dashboard-hero {
+    padding: 1.25rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .admin-root main {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .admin-root .hero-title {
+    font-size: 1.45rem;
+  }
+
+  .admin-root .admin-dashboard-hero {
+    padding: 0.9rem !important;
+  }
+
+  .admin-root .admin-hero-stat {
+    min-height: auto;
+  }
+
+  .admin-root .admin-stat-value {
+    font-size: 1.35rem !important;
+  }
 }
 
 /* Light admin theme. Keep this at the end so it wins over dark admin utilities. */
@@ -424,4 +712,59 @@ html.light .admin-root .admin-chart-tooltip .admin-chart-tooltip-label,
 html.light .admin-root .admin-chart-tooltip .admin-chart-tooltip-value,
 .admin-root.admin-theme-light .admin-chart-tooltip .admin-chart-tooltip-value {
   color: #111827 !important;
+}
+
+.admin-root :where(.admin-status-badge, .admin-status-badge *, .admin-pagination-count, .admin-action-icon),
+html.light .admin-root :where(.admin-status-badge, .admin-status-badge *, .admin-pagination-count, .admin-action-icon),
+.admin-root.admin-theme-light :where(.admin-status-badge, .admin-status-badge *, .admin-pagination-count, .admin-action-icon) {
+  color: #FFFFFF !important;
+}
+
+.admin-root :where(.admin-action-icon, .admin-pagination-count),
+html.light .admin-root :where(.admin-action-icon, .admin-pagination-count),
+.admin-root.admin-theme-light :where(.admin-action-icon, .admin-pagination-count) {
+  color: #081226 !important;
+}
+
+.admin-root :where(.admin-status-confirmed),
+html.light .admin-root :where(.admin-status-confirmed),
+.admin-root.admin-theme-light :where(.admin-status-confirmed) {
+  background: rgba(22, 163, 74, 0.9) !important;
+  color: #FFFFFF !important;
+}
+
+.admin-root :where(.admin-status-pending),
+html.light .admin-root :where(.admin-status-pending),
+.admin-root.admin-theme-light :where(.admin-status-pending) {
+  background: rgba(217, 119, 6, 0.92) !important;
+  color: #FFFFFF !important;
+}
+
+.admin-root :where(.admin-status-cancelled),
+html.light .admin-root :where(.admin-status-cancelled),
+.admin-root.admin-theme-light :where(.admin-status-cancelled) {
+  background: rgba(220, 38, 38, 0.92) !important;
+  color: #FFFFFF !important;
+}
+
+.admin-root :where(.admin-status-completed),
+html.light .admin-root :where(.admin-status-completed),
+.admin-root.admin-theme-light :where(.admin-status-completed) {
+  background: rgba(37, 99, 235, 0.92) !important;
+  color: #FFFFFF !important;
+}
+
+html.light .admin-root :where(.admin-notification-insurance .admin-notification-icon, .admin-notification-insurance .admin-notification-badge),
+.admin-root.admin-theme-light :where(.admin-notification-insurance .admin-notification-icon, .admin-notification-insurance .admin-notification-badge) {
+  color: #92400E !important;
+}
+
+html.light .admin-root :where(.admin-notification-maintenance .admin-notification-icon, .admin-notification-maintenance .admin-notification-badge),
+.admin-root.admin-theme-light :where(.admin-notification-maintenance .admin-notification-icon, .admin-notification-maintenance .admin-notification-badge) {
+  color: #9A3412 !important;
+}
+
+html.light .admin-root :where(.admin-notification-urgent .admin-notification-icon, .admin-notification-urgent .admin-notification-badge),
+.admin-root.admin-theme-light :where(.admin-notification-urgent .admin-notification-icon, .admin-notification-urgent .admin-notification-badge) {
+  color: #991B1B !important;
 }
