@@ -8,7 +8,7 @@ type BrandLogoProps = {
 };
 
 export const BRAND_NAME = "Service LLD";
-export const BRAND_LOGO_SRC = "/service-lld-logo.svg";
+export const BRAND_LOGO_SRC = "/service.jpeg";
 
 export const BrandLogo = ({ className, markClassName, textClassName, showText = true }: BrandLogoProps) => (
   <span className={cn("inline-flex items-center gap-3", className)}>
