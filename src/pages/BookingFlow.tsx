@@ -102,7 +102,7 @@ const BookingFlow = () => {
                     >
                       <img src={vehicle.gallery[0]} alt={vehicle.name} className="aspect-[16/10] w-full rounded-2xl object-cover" loading="lazy" />
                       <h3 className="mt-3 font-semibold">{vehicle.name}</h3>
-                      <p className="text-sm text-muted-foreground">{vehicle.category} âDH¢ {vehicle.price} DH/day</p>
+                      <p className="text-sm text-muted-foreground">{vehicle.category} - {vehicle.price} DH/day</p>
                     </button>
                   ))}
                 </div>
@@ -167,7 +167,7 @@ const BookingFlow = () => {
             <img src={selectedVehicle.gallery[0]} alt={selectedVehicle.name} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             <h2 className="mt-4 text-xl font-semibold">{selectedVehicle.name}</h2>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <p>{selectedVehicle.category} âDH¢ {selectedVehicle.transmission} âDH¢ {selectedVehicle.fuel}</p>
+              <p>{selectedVehicle.category} - {selectedVehicle.transmission} - {selectedVehicle.fuel}</p>
               <p>{rentalDays} day(s) x {selectedVehicle.price} DH</p>
             </div>
             <div className="mt-5 rounded-2xl bg-primary/10 p-4 text-primary">

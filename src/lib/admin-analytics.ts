@@ -166,7 +166,7 @@ export const buildAlerts = (cars: Car[], bookings: Booking[], contracts: Contrac
       const end = safeDate(contract.reservationEndDate);
       if (!end) return false;
       const days = differenceInCalendarDays(end, today);
-      return days >= 0 && days <= 7 && normalizeContractStatus(contract.status) !== "Termine";
+      return days >= 0 && days <= 7 && normalizeContractStatus(contract.status) !== "Termin\u00e9";
     })
     .slice(0, 5)
     .map((contract) => ({

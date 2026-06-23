@@ -1,15 +1,14 @@
 import type { Contract, ContractPayload, ContractStatus, LegacyContractStatus } from "@/lib/api";
 
-export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "Confirm�", "Sign�", "Termin�", "Annul�"];
+export const CONTRACT_STATUSES: ContractStatus[] = ["Brouillon", "Confirm\u00e9", "Sign\u00e9", "Termin\u00e9", "Annul\u00e9"];
 
 export type ContractSortKey = "date" | "client" | "amount" | "status";
 
 export const normalizeContractStatus = (status: Contract["status"]): ContractStatus => {
-  if (status === "En attente" || status === "Actif") return "Confirm�";
-  if (status === "Confirm\u00c3\u00a9") return "Confirm�";
-  if (status === "Sign\u00c3\u00a9") return "Sign�";
-  if (status === "Termin\u00c3\u00a9") return "Termin�";
-  if (status === "Annul\u00c3\u00a9") return "Annul�";
+  if (status === "En attente" || status === "Actif" || status === "Confirm\u00c3\u00a9" || status === "ConfirmDH") return "Confirm\u00e9";
+  if (status === "Sign\u00c3\u00a9" || status === "SignDH") return "Sign\u00e9";
+  if (status === "Termin\u00c3\u00a9" || status === "Termine") return "Termin\u00e9";
+  if (status === "Annul\u00c3\u00a9") return "Annul\u00e9";
   return status as ContractStatus;
 };
 
@@ -43,7 +42,7 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationDailyRate: 0,
   reservationDeposit: 0,
   reservationTotalTTC: 0,
-  reservationPaymentMethod: "Esp�ces",
+  reservationPaymentMethod: "Esp\u00e8ces",
   agencyName: "Service LLD",
   agencyAddress: "VC98+6G Meknes",
   agencyPhone: "0661927502",

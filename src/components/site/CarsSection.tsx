@@ -95,9 +95,9 @@ export const CarsSection = () => {
       <div className="p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-primary">{vehicle.brand} âDH¢ {vehicle.category}</p>
+            <p className="text-sm font-medium text-primary">{vehicle.brand} - {vehicle.category}</p>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight">{vehicle.name}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{vehicle.transmission} âDH¢ {vehicle.fuel} âDH¢ {vehicle.seats} seats âDH¢ {vehicle.year}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{vehicle.transmission} - {vehicle.fuel} - {vehicle.seats} seats - {vehicle.year}</p>
           </div>
           <div className="text-right">
             <p className="text-3xl font-bold">{vehicle.price}</p>

@@ -16,7 +16,6 @@ import {
   Settings,
   Sun,
   Users,
-  Wrench,
   Zap,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -48,7 +47,6 @@ const items = [
   { to: "/admin/bookings", label: "Reservations", icon: CalendarDays },
   { to: "/admin/contracts", label: "Contrats", icon: FileText },
   { to: "/admin/clients", label: "Clients", icon: Users },
-  { to: "/admin/maintenance", label: "Maintenance", icon: Wrench },
   { to: "/admin/revenue", label: "Revenus", icon: CreditCard },
   { to: "/admin/settings", label: "Parametres", icon: Settings },
 ];
@@ -59,7 +57,6 @@ const pageTitles: Record<string, string> = {
   "/admin/bookings": "Reservations",
   "/admin/contracts": "Contrats",
   "/admin/clients": "Clients",
-  "/admin/maintenance": "Maintenance",
   "/admin/revenue": "Revenus",
   "/admin/settings": "Parametres",
 };

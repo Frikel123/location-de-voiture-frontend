@@ -94,14 +94,14 @@ const ContractDetail = () => {
       reservationDailyRate: contract.reservationDailyRate ?? 0,
       reservationDeposit: contract.reservationDeposit ?? 0,
       reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-      reservationPaymentMethod: contract.reservationPaymentMethod ?? "EspDHces",
+      reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp\u00e8ces",
       agencyName: contract.agencyName ?? "Service LLD",
       agencyAddress: contract.agencyAddress ?? "VC98+6G Meknes",
       agencyPhone: contract.agencyPhone ?? "0661927502",
       insuranceName: contract.insuranceName ?? "Assurance tous risques",
       insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
       insuranceIncluded: contract.insuranceIncluded ?? true,
-      signedAt: signedAt || (status === "SignDH" ? new Date().toISOString() : ""),
+      signedAt: signedAt || (status === "Sign\u00e9" ? new Date().toISOString() : ""),
       signatureIp: contract.signatureIp ?? "",
       signatureStatus: contract.signatureStatus ?? (clientSignature ? "signed" : "unsigned"),
       notes,
@@ -116,7 +116,7 @@ const ContractDetail = () => {
 
   const save = () => {
     if (!payload) return;
-    if (status === "SignDH" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
+    if (status === "Sign\u00e9" && (!hasSignature(clientSignature) || !hasSignature(adminSignature))) {
       toast.error("Les signatures client et agence sont requises avant de signer le contrat.");
       return;
     }
@@ -229,7 +229,7 @@ const ContractDetail = () => {
                 <CardTitle>Controle du contrat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "SignDH" ? (
+                {contract.signatureStatus === "signed" || normalizeContractStatus(contract.status) === "Sign\u00e9" ? (
                   <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
                     <p className="font-semibold">Contrat signe</p>
                     <p className="mt-1">Date: {contract.signedAt || "-"} | IP client: {contract.signatureIp || "-"}</p>

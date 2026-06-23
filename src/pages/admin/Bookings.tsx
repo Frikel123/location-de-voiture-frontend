@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CalendarPlus, ChevronLeft, ChevronRight, Eye, Loader2, Pencil, Plus, Search, SlidersHorizontal, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { normalizeContractStatus } from "@/types/contracts";
 
 const getTodayKey = () => {
   const now = new Date();
@@ -350,7 +351,7 @@ const Bookings = () => {
               <Detail label="Contrat" value={selectedContract?.contractNumber ?? "Non genere"} />
               <Detail
                 label="Signature"
-                value={selectedContract?.signatureStatus === "signed" || selectedContract?.status === "SignÃ©" ? "Contrat signe" : "Non signe"}
+                value={selectedContract?.signatureStatus === "signed" || normalizeContractStatus(selectedContract?.status ?? "Brouillon") === "Sign\u00e9" ? "Contrat signe" : "Non signe"}
               />
               {selectedContract?.signedAt && <Detail label="Date signature" value={selectedContract.signedAt} />}
               {selectedContract?.signatureIp && <Detail label="IP client" value={selectedContract.signatureIp} />}

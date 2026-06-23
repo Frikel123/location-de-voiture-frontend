@@ -23,7 +23,6 @@ const Bookings = lazy(() => import("./pages/admin/Bookings"));
 const Clients = lazy(() => import("./pages/admin/Clients"));
 const Contracts = lazy(() => import("./pages/admin/Contracts"));
 const ContractDetail = lazy(() => import("./pages/admin/ContractDetail"));
-const Maintenance = lazy(() => import("./pages/admin/Maintenance"));
 const Settings = lazy(() => import("./pages/admin/Settings"));
 const PublicContractVerification = lazy(() => import("./pages/contracts/PublicContractVerification"));
 const PublicContractSignature = lazy(() => import("./pages/contracts/PublicContractSignature"));
@@ -110,7 +109,6 @@ const App = () => (
                     <Route path="contracts/:id" element={<ContractDetail />} />
                     <Route path="clients" element={<Clients />} />
                     <Route path="customers" element={<Clients />} />
-                    <Route path="maintenance" element={<Maintenance />} />
                     <Route path="revenue" element={<Dashboard />} />
                     <Route path="settings" element={<Settings />} />
                   </Route>

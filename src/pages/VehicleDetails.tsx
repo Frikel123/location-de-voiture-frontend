@@ -97,7 +97,7 @@ const VehicleDetails = () => {
                 {vehicle.offer && <Badge variant="outline" className="rounded-full border-white/20 text-white">{vehicle.offer}</Badge>}
               </div>
               <h1 className="mt-5 text-4xl font-bold tracking-tight md:text-5xl">{vehicle.name}</h1>
-              <p className="mt-3 text-white/70">{vehicle.category} âDH¢ {vehicle.transmission} âDH¢ {vehicle.fuel} âDH¢ {vehicle.year}</p>
+              <p className="mt-3 text-white/70">{vehicle.category} - {vehicle.transmission} - {vehicle.fuel} - {vehicle.year}</p>
               <div className="mt-6 grid grid-cols-3 gap-3 text-center">
                 <div className="rounded-2xl bg-white/8 p-4"><Users className="mx-auto mb-2 h-5 w-5 text-primary" />{vehicle.seats} seats</div>
                 <div className="rounded-2xl bg-white/8 p-4"><Star className="mx-auto mb-2 h-5 w-5 fill-primary text-primary" />{vehicle.rating}</div>
@@ -155,7 +155,7 @@ const VehicleDetails = () => {
               <Link key={item.id} to={`/${lang}/cars/${item.slug}`} className="rounded-3xl border bg-card p-4 shadow-card transition hover:-translate-y-1 hover:shadow-elegant">
                 <img src={item.gallery[0]} alt={item.name} className="aspect-[4/3] w-full rounded-2xl object-cover" loading="lazy" />
                 <h3 className="mt-4 text-lg font-semibold">{item.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.price} DH/day âDH¢ {item.category}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{item.price} DH/day - {item.category}</p>
               </Link>
             ))}
           </div>

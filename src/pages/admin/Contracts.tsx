@@ -61,7 +61,7 @@ const toPayload = (contract: Contract): ContractPayload => ({
   reservationDailyRate: contract.reservationDailyRate ?? 0,
   reservationDeposit: contract.reservationDeposit ?? 0,
   reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-  reservationPaymentMethod: contract.reservationPaymentMethod ?? "EspDHces",
+  reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp\u00e8ces",
   agencyName: contract.agencyName ?? "Service LLD",
   agencyAddress: contract.agencyAddress ?? "VC98+6G Meknes",
   agencyPhone: contract.agencyPhone ?? "0661927502",
@@ -151,8 +151,8 @@ const Contracts = () => {
   const metrics = useMemo(
     () => ({
       total: contracts.length,
-      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "SignDH").length,
-      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "ConfirmDH").length,
+      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Sign\u00e9").length,
+      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Confirm\u00e9").length,
       revenue: contracts.reduce((sum, contract) => sum + Number(contract.reservationTotalTTC || 0), 0),
     }),
     [contracts],
@@ -208,7 +208,7 @@ const Contracts = () => {
         qrCode: getContractPublicUrl(contractNumber),
         reservationDays: computedDays,
         reservationTotalTTC: computedTotal,
-        signedAt: form.status === "SignDH" && !form.signedAt ? new Date().toISOString() : form.signedAt,
+        signedAt: form.status === "Sign\u00e9" && !form.signedAt ? new Date().toISOString() : form.signedAt,
       },
       {
         onSuccess: () => {
@@ -438,7 +438,7 @@ const Contracts = () => {
                 <Select value={form.reservationPaymentMethod} onValueChange={(value) => setForm((prev) => ({ ...prev, reservationPaymentMethod: value }))}>
                   <SelectTrigger className="h-11 rounded-2xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="EspDHces">Especes</SelectItem>
+                    <SelectItem value="Esp\u00e8ces">Especes</SelectItem>
                     <SelectItem value="Carte bancaire">Carte bancaire</SelectItem>
                     <SelectItem value="Virement">Virement</SelectItem>
                   </SelectContent>

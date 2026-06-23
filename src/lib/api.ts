@@ -32,7 +32,7 @@ export type BookingPayload = {
   endDate: string;
 };
 
-export type ContractStatus = "Brouillon" | "Confirm�" | "Sign�" | "Termin�" | "Annul�";
+export type ContractStatus = "Brouillon" | "Confirm\u00e9" | "Sign\u00e9" | "Termin\u00e9" | "Annul\u00e9";
 export type LegacyContractStatus = "En attente" | "Actif";
 
 export type ContractDocument = {

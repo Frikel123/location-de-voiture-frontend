@@ -178,7 +178,7 @@ const Clients = () => {
       const isBlacklisted = client.notes.some((note) => /blacklist|blacklisted|bloque|blocked/i.test(note));
       const isVip = client.revenue >= 10000 || client.contracts.length >= 3 || client.reservations.length >= 5;
       const isNew = Boolean(client.lastActivity && isSameMonth(client.lastActivity, now));
-      const hasActiveContract = client.contracts.some((contract) => normalizeContractStatus(contract.status) === "ConfirmÃ©");
+      const hasActiveContract = client.contracts.some((contract) => normalizeContractStatus(contract.status) === "Confirm\u00e9");
 
       return {
         ...client,
