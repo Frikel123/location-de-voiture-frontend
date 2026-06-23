@@ -15,7 +15,7 @@ export const BrandLogo = ({ className, markClassName, textClassName, showText = 
     <img
       src={BRAND_LOGO_SRC}
       alt={`${BRAND_NAME} logo`}
-      className={cn("h-12 w-12 shrink-0 rounded-full object-contain shadow-elegant", markClassName)}
+      className={cn("h-12 w-12 shrink-0 rounded-xl object-cover shadow-elegant", markClassName)}
       width={96}
       height={96}
     />
