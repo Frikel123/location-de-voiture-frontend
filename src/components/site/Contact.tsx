@@ -15,7 +15,7 @@ export const Contact = () => {
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    const message = `${isFr ? "Bonjour N1 Lux Cars, je suis" : "Hello N1 Lux Cars, I am"} ${form.name || "-"}. ${
+    const message = `${isFr ? "Bonjour Service LLD, je suis" : "Hello Service LLD, I am"} ${form.name || "-"}. ${
       isFr ? "Telephone" : "Phone"
     }: ${form.phone || "-"}. ${form.message || t("wa.moreInfo")}`;
     window.open(waLink(message), "_blank", "noopener,noreferrer");
@@ -94,17 +94,17 @@ export const Contact = () => {
               </Button>
             </form>
             <Button asChild size="lg" variant="outline" className="mt-3 w-full rounded-2xl">
-              <a href={`mailto:contact@n1-lux-cars.ma`}>
+              <a href={`mailto:contact@servicelld.ma`}>
                 <Mail className="mr-2 h-5 w-5" />
-                contact@n1-lux-cars.ma
+                contact@servicelld.ma
               </a>
             </Button>
           </Card>
 
           <Card className="overflow-hidden rounded-3xl border-border/70 shadow-card">
             <iframe
-              title="N1 Lux Cars - Meknès"
-              src="https://www.google.com/maps?q=VCRF%2BF8M%2C%20Mekn%C3%A8s&output=embed"
+              title="Service LLD - Meknes"
+              src="https://www.google.com/maps?q=VC98%2B6G%20Meknes&output=embed"
               className="h-full min-h-[420px] w-full border-0"
               allowFullScreen
               loading="lazy"

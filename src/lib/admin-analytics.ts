@@ -88,7 +88,7 @@ export const buildExpenses = (cars: Car[]): ExpenseRecord[] => {
         vehicle: car.name,
         date: format(new Date(year, month, Math.min(4 + index * 3, 26)), "yyyy-MM-dd"),
         amount: Math.round(base * (1.2 + (index % 3) * 0.25)),
-        vendor: "Atelier N1 Lux",
+        vendor: "Atelier Service LLD",
         status: index % 4 === 0 ? "Planned" : "Paid",
       },
       {

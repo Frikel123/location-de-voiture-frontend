@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { differenceInCalendarDays, parseISO } from "date-fns";
@@ -61,10 +61,10 @@ const toPayload = (contract: Contract): ContractPayload => ({
   reservationDailyRate: contract.reservationDailyRate ?? 0,
   reservationDeposit: contract.reservationDeposit ?? 0,
   reservationTotalTTC: contract.reservationTotalTTC ?? 0,
-  reservationPaymentMethod: contract.reservationPaymentMethod ?? "Esp�ces",
-  agencyName: contract.agencyName ?? "N1 Lux Cars",
-  agencyAddress: contract.agencyAddress ?? "VCRF+F8M, Meknès",
-  agencyPhone: contract.agencyPhone ?? "0646494968",
+  reservationPaymentMethod: contract.reservationPaymentMethod ?? "EspDHces",
+  agencyName: contract.agencyName ?? "Service LLD",
+  agencyAddress: contract.agencyAddress ?? "VC98+6G Meknes",
+  agencyPhone: contract.agencyPhone ?? "0661927502",
   insuranceName: contract.insuranceName ?? "Assurance tous risques",
   insurancePolicyNumber: contract.insurancePolicyNumber ?? "",
   insuranceIncluded: contract.insuranceIncluded ?? true,
@@ -151,8 +151,8 @@ const Contracts = () => {
   const metrics = useMemo(
     () => ({
       total: contracts.length,
-      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Sign�").length,
-      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "Confirm�").length,
+      signed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "SignDH").length,
+      confirmed: contracts.filter((contract) => normalizeContractStatus(contract.status) === "ConfirmDH").length,
       revenue: contracts.reduce((sum, contract) => sum + Number(contract.reservationTotalTTC || 0), 0),
     }),
     [contracts],
@@ -208,7 +208,7 @@ const Contracts = () => {
         qrCode: getContractPublicUrl(contractNumber),
         reservationDays: computedDays,
         reservationTotalTTC: computedTotal,
-        signedAt: form.status === "Sign�" && !form.signedAt ? new Date().toISOString() : form.signedAt,
+        signedAt: form.status === "SignDH" && !form.signedAt ? new Date().toISOString() : form.signedAt,
       },
       {
         onSuccess: () => {
@@ -237,7 +237,7 @@ const Contracts = () => {
     );
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, sheet, "Contrats");
-    writeFile(workbook, `n1-lux-cars_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    writeFile(workbook, `service-lld_contrats_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   const printContract = (contract: Contract) => {
@@ -282,7 +282,7 @@ const Contracts = () => {
         <Metric title="Contrats" value={metrics.total} />
         <Metric title="Confirmes" value={metrics.confirmed} />
         <Metric title="Signes" value={metrics.signed} />
-        <Metric title="Montant total" value={`${formatMoney(metrics.revenue)} �`} />
+        <Metric title="Montant total" value={`${formatMoney(metrics.revenue)} DH`} />
       </div>
 
       {isError && (
@@ -352,7 +352,7 @@ const Contracts = () => {
                       </TableCell>
                       <TableCell>{`${contract.carMake || "-"} ${contract.carModel || ""}`}</TableCell>
                       <TableCell className="min-w-[180px] text-muted-foreground">{contract.reservationStartDate} - {contract.reservationEndDate}</TableCell>
-                      <TableCell className="font-semibold">{formatMoney(contract.reservationTotalTTC)} �</TableCell>
+                      <TableCell className="font-semibold">{formatMoney(contract.reservationTotalTTC)} DH</TableCell>
                       <TableCell><ContractStatusBadge status={contract.status} /></TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -438,7 +438,7 @@ const Contracts = () => {
                 <Select value={form.reservationPaymentMethod} onValueChange={(value) => setForm((prev) => ({ ...prev, reservationPaymentMethod: value }))}>
                   <SelectTrigger className="h-11 rounded-2xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Esp�ces">Especes</SelectItem>
+                    <SelectItem value="EspDHces">Especes</SelectItem>
                     <SelectItem value="Carte bancaire">Carte bancaire</SelectItem>
                     <SelectItem value="Virement">Virement</SelectItem>
                   </SelectContent>
@@ -457,7 +457,7 @@ const Contracts = () => {
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Input readOnly value={`${computedDays} jour(s)`} />
-                  <Input readOnly value={`${formatMoney(computedTotal)} �`} />
+                  <Input readOnly value={`${formatMoney(computedTotal)} DH`} />
                 </div>
                 <div className="flex items-center justify-between rounded-2xl border p-3">
                   <div>

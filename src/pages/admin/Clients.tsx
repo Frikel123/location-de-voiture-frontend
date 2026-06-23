@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format, isSameMonth, isWithinInterval, parseISO } from "date-fns";
 import { motion } from "framer-motion";
@@ -178,7 +178,7 @@ const Clients = () => {
       const isBlacklisted = client.notes.some((note) => /blacklist|blacklisted|bloque|blocked/i.test(note));
       const isVip = client.revenue >= 10000 || client.contracts.length >= 3 || client.reservations.length >= 5;
       const isNew = Boolean(client.lastActivity && isSameMonth(client.lastActivity, now));
-      const hasActiveContract = client.contracts.some((contract) => normalizeContractStatus(contract.status) === "Confirmé");
+      const hasActiveContract = client.contracts.some((contract) => normalizeContractStatus(contract.status) === "ConfirmÃ©");
 
       return {
         ...client,
@@ -437,7 +437,7 @@ const Clients = () => {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{client.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {client.lastActivity ? format(client.lastActivity, "dd/MM/yyyy") : "Activite inconnue"} - {formatMoney(client.revenue)} �
+                      {client.lastActivity ? format(client.lastActivity, "dd/MM/yyyy") : "Activite inconnue"} - {formatMoney(client.revenue)} DH
                     </p>
                   </div>
                   <StatusBadge status={client.status} compact />
@@ -560,7 +560,7 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
           <Info label="Email" value={client.email} />
           <Info label="CIN / Passport" value={client.document} />
           <Info label="Statut" value={client.status} />
-          <Info label="CA total" value={`${formatMoney(client.revenue)} �`} strong />
+          <Info label="CA total" value={`${formatMoney(client.revenue)} DH`} strong />
         </div>
       </TabsContent>
 
@@ -571,7 +571,7 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
             id: booking.id,
             title: booking.car?.name ?? "Reservation",
             meta: `${booking.startDate} - ${booking.endDate}`,
-            amount: `${formatMoney(booking.totalPrice)} �`,
+            amount: `${formatMoney(booking.totalPrice)} DH`,
           }))}
         />
       </TabsContent>
@@ -583,14 +583,14 @@ const ClientProfile = ({ client }: { client: ClientRecord }) => (
             id: contract.id,
             title: contract.contractNumber,
             meta: `${contract.carMake} ${contract.carModel} - ${normalizeContractStatus(contract.status)}`,
-            amount: `${formatMoney(contract.reservationTotalTTC)} �`,
+            amount: `${formatMoney(contract.reservationTotalTTC)} DH`,
           }))}
         />
       </TabsContent>
 
       <TabsContent value="payments" className="mt-5">
         <div className="grid gap-3 sm:grid-cols-3">
-          <Info label="Total encaisse" value={`${formatMoney(client.revenue)} �`} strong />
+          <Info label="Total encaisse" value={`${formatMoney(client.revenue)} DH`} strong />
           <Info label="Contrats payes" value={String(client.contracts.length)} />
           <Info label="Mode frequent" value={client.contracts[0]?.reservationPaymentMethod ?? "Non renseigne"} />
         </div>

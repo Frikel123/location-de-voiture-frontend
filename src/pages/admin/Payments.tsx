@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { CreditCard, Search, WalletCards } from "lucide-react";
 import { api, Booking, Contract } from "@/lib/api";
@@ -30,9 +30,9 @@ const Payments = () => {
       </section>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Metric label="Total billed" value={`${money(totals.total)} �`} />
-        <Metric label="Paid" value={`${money(totals.paid)} �`} />
-        <Metric label="Remaining balance" value={`${money(totals.remaining)} �`} />
+        <Metric label="Total billed" value={`${money(totals.total)} DH`} />
+        <Metric label="Paid" value={`${money(totals.paid)} DH`} />
+        <Metric label="Remaining balance" value={`${money(totals.remaining)} DH`} />
       </div>
 
       <Card className="border-border/70 shadow-card">
@@ -73,8 +73,8 @@ const Payments = () => {
                   <TableCell>{payment.vehicle}</TableCell>
                   <TableCell>{payment.source}</TableCell>
                   <TableCell><PaymentStatus status={payment.status} /></TableCell>
-                  <TableCell className="text-right font-semibold">{money(payment.paid)} �</TableCell>
-                  <TableCell className="text-right font-semibold">{money(payment.remaining)} �</TableCell>
+                  <TableCell className="text-right font-semibold">{money(payment.paid)} DH</TableCell>
+                  <TableCell className="text-right font-semibold">{money(payment.remaining)} DH</TableCell>
                 </TableRow>
               ))}
             </TableBody>

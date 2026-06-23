@@ -36,10 +36,10 @@ export const setSeo = ({
   link.href = canonical ?? window.location.href;
   if (!link.parentElement) document.head.appendChild(link);
 
-  document.head.querySelector("#atlas-jsonld")?.remove();
+  document.head.querySelector("#service-lld-jsonld")?.remove();
   if (jsonLd) {
     const script = document.createElement("script");
-    script.id = "atlas-jsonld";
+    script.id = "service-lld-jsonld";
     script.type = "application/ld+json";
     script.text = JSON.stringify(jsonLd);
     document.head.appendChild(script);

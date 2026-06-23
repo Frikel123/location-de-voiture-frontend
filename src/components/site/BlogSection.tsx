@@ -11,29 +11,29 @@ export const BlogSection = () => {
     {
       title: isFr ? "Guide premium : louer au Maroc" : language === "de" ? "Premium-Leitfaden: Mieten in Marokko" : "Premium guide: renting in Morocco",
       description: isFr
-        ? "Conseils locaux pour profiter d'une location fluide à Fès, Casablanca et Marrakech."
+        ? "Conseils locaux pour profiter d'une location fluide a Meknes, Casablanca et Marrakech."
         : language === "de"
-        ? "Lokale Tipps für eine reibungslose Anmietung in Fes, Casablanca und Marrakesch."
-        : "Local tips for a smooth rental in Fez, Casablanca and Marrakech.",
+        ? "Lokale Tipps fuer eine reibungslose Anmietung in Meknes, Casablanca und Marrakesch."
+        : "Local tips for a smooth rental in Meknes, Casablanca and Marrakech.",
       tags: [isFr ? "Conseils" : language === "de" ? "Tipps" : "Tips", isFr ? "Voyage" : language === "de" ? "Reise" : "Travel"],
     },
     {
-      title: isFr ? "Airport pickup sans stress" : language === "de" ? "Stressfreie Abholung am Flughafen" : "Stress-free airport pickup",
+      title: isFr ? "Livraison aeroport sans stress" : language === "de" ? "Stressfreie Abholung am Flughafen" : "Stress-free airport pickup",
       description: isFr
-        ? "Organisez votre arrivée avec livraison à l'aéroport et prise en charge VIP."
+        ? "Organisez votre arrivee avec livraison a l'aeroport et prise en charge VIP."
         : language === "de"
         ? "Organisieren Sie Ihre Ankunft mit Flughafenzustellung und VIP-Abholung."
         : "Plan your arrival with airport delivery and VIP pickup.",
-      tags: [isFr ? "Aéroport" : language === "de" ? "Flughafen" : "Airport", isFr ? "Livraison" : language === "de" ? "Lieferung" : "Delivery"],
+      tags: [isFr ? "Aeroport" : language === "de" ? "Flughafen" : "Airport", isFr ? "Livraison" : language === "de" ? "Lieferung" : "Delivery"],
     },
     {
-      title: isFr ? "Top destinations autour de Fès" : language === "de" ? "Top-Reiseziele rund um Fes" : "Top destinations around Fez",
+      title: isFr ? "Top destinations autour de Meknes" : language === "de" ? "Top-Reiseziele rund um Meknes" : "Top destinations around Meknes",
       description: isFr
-        ? "Découvrez les meilleures excursions en voiture avec des routes panoramiques et des services premium."
+        ? "Decouvrez les meilleures excursions en voiture avec des routes panoramiques et des services premium."
         : language === "de"
-        ? "Entdecken Sie die besten Tagesausflüge mit Panoramastraßen und Premium-Service."
+        ? "Entdecken Sie die besten Tagesausfluege mit Panoramastrassen und Premium-Service."
         : "Explore the best road trips with scenic routes and premium service.",
-      tags: [isFr ? "Itinéraire" : language === "de" ? "Route" : "Route", isFr ? "Aventure" : language === "de" ? "Abenteuer" : "Adventure"],
+      tags: [isFr ? "Itineraire" : language === "de" ? "Route" : "Route", isFr ? "Aventure" : language === "de" ? "Abenteuer" : "Adventure"],
     },
   ];
 
@@ -44,19 +44,19 @@ export const BlogSection = () => {
           <div>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary">{isFr ? "Conseils premium" : language === "de" ? "Premium-Tipps" : "Premium insights"}</p>
             <h2 className="text-balance text-3xl font-bold tracking-tight md:text-5xl">
-              {isFr ? "Le blog N1 Lux Cars" : language === "de" ? "N1 Lux Cars Blog" : "N1 Lux Cars blog"}
+              {isFr ? "Le blog Service LLD" : language === "de" ? "Service LLD Blog" : "Service LLD blog"}
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
               {isFr
-                ? "Guides de voyage, astuces de préparation et recommandations pour votre prochaine location."
+                ? "Guides de voyage, astuces de preparation et recommandations pour votre prochaine location."
                 : language === "de"
-                ? "Reiseguides, Vorbereitungstipps und Empfehlungen für Ihre nächste Anmietung."
+                ? "Reiseguides, Vorbereitungstipps und Empfehlungen fuer Ihre naechste Anmietung."
                 : "Travel guides, planning tips and recommendations for your next rental."}
             </p>
           </div>
           <Button variant="outline" className="rounded-full px-5 py-3">
             <ArrowRight className="mr-2 h-4 w-4" />
-            {isFr ? "Voir tous les articles" : language === "de" ? "Alle Beiträge ansehen" : "See all articles"}
+            {isFr ? "Voir tous les articles" : language === "de" ? "Alle Beitraege ansehen" : "See all articles"}
           </Button>
         </div>
 

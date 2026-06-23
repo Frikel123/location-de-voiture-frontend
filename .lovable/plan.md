@@ -1,16 +1,16 @@
 
-# Atlas Cars — Public Site + Admin Dashboard
+# Service LLD — Public Site + Admin Dashboard
 
-A modern car rental site for Fès with a full admin dashboard, all powered by Lovable Cloud (auth + database + storage). No external NestJS server needed — the same data drives both the public site and the admin.
+A modern car rental site for Meknes with a full admin dashboard, all powered by Lovable Cloud (auth + database + storage). No external NestJS server needed - the same data drives both the public site and the admin.
 
 ## 1. Public Website (FR + touches d'arabe)
 
 **Design**: black / white / WhatsApp green (#25D366), generous whitespace, rounded cards with soft shadows, clean sans-serif. Mobile-first, fully responsive.
 
 ### Sections (single-page, smooth scroll)
-- **Navbar**: "Atlas Cars" logo (left) · Accueil · Voitures · Pourquoi nous · Contact · WhatsApp CTA (right). Mobile burger menu.
+- **Navbar**: "Service LLD" logo (left) · Accueil · Voitures · Pourquoi nous · Contact · WhatsApp CTA (right). Mobile burger menu.
 - **Hero**:
-  - Title: "Location de voiture à Fès"
+  - Title: "Location premium de voitures a Meknes"
   - Subtitle: "Louez votre voiture بسهولة وبأفضل الأسعار"
   - Primary button: "Réserver via WhatsApp" → opens `wa.me/212665253565` with a prefilled message
   - Background: stylish car image with dark overlay
@@ -19,8 +19,8 @@ A modern car rental site for Fès with a full admin dashboard, all powered by Lo
 - **Contact**:
   - Phone: +212 665-253565 (click-to-call)
   - WhatsApp button
-  - Embedded Google Maps iframe centered on Fès city center
-- **Footer**: Atlas Cars · phone · copyright · small "مرحبا بكم" tag.
+  - Embedded Google Maps iframe centered on VC98+6G Meknes
+- **Footer**: Service LLD · phone · copyright · small "مرحبا بكم" tag.
 - **Floating WhatsApp button** (bottom-right, fixed, pulse animation).
 
 ## 2. Admin Dashboard

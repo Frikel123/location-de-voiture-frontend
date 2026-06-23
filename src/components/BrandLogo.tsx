@@ -7,8 +7,8 @@ type BrandLogoProps = {
   showText?: boolean;
 };
 
-export const BRAND_NAME = "N1 Lux Cars";
-export const BRAND_LOGO_SRC = "/n1-lux-cars-logo.svg";
+export const BRAND_NAME = "Service LLD";
+export const BRAND_LOGO_SRC = "/service-lld-logo.svg";
 
 export const BrandLogo = ({ className, markClassName, textClassName, showText = true }: BrandLogoProps) => (
   <span className={cn("inline-flex items-center gap-3", className)}>
@@ -21,8 +21,8 @@ export const BrandLogo = ({ className, markClassName, textClassName, showText = 
     />
     {showText && (
       <span className={cn("leading-none", textClassName)}>
-        <span className="block font-serif text-xl font-semibold tracking-wide">N1 Lux</span>
-        <span className="block text-xs font-semibold uppercase tracking-[0.28em] text-primary">Cars</span>
+        <span className="block font-serif text-xl font-semibold tracking-wide">Service</span>
+        <span className="block text-xs font-semibold uppercase tracking-[0.28em] text-primary">LLD</span>
       </span>
     )}
   </span>

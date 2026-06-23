@@ -8,9 +8,9 @@ export const Testimonials = () => {
   const { language } = useI18n();
   const isFr = language === "fr";
   const reviews = [
-    { name: "Yassine B.", initials: "YB", photo: "https://i.pravatar.cc/120?img=12", route: "Fez Airport", text: isFr ? "Voiture propre, livraison rapide a l'aeroport et prix clair. Tres bonne experience." : "Clean car, fast airport delivery and clear pricing. Great experience." },
+    { name: "Yassine B.", initials: "YB", photo: "https://i.pravatar.cc/120?img=12", route: "Meknes Airport", text: isFr ? "Voiture propre, livraison rapide a l'aeroport et prix clair. Tres bonne experience." : "Clean car, fast airport delivery and clear pricing. Great experience." },
     { name: "Sofia M.", initials: "SM", photo: "https://i.pravatar.cc/120?img=47", route: "Hotel delivery", text: isFr ? "Reservation facile sur WhatsApp. L'equipe etait disponible meme tard le soir." : "Easy booking on WhatsApp. The team was available even late at night." },
-    { name: "Adam R.", initials: "AR", photo: "https://i.pravatar.cc/120?img=33", route: "Business trip", text: isFr ? "Service serieux, voiture en tres bon etat. Je recommande pour Fes." : "Serious service, car in very good condition. Recommended for Fez." },
+    { name: "Adam R.", initials: "AR", photo: "https://i.pravatar.cc/120?img=33", route: "Business trip", text: isFr ? "Service serieux, voiture en tres bon etat. Je recommande pour Meknes." : "Serious service, car in very good condition. Recommended for Meknes." },
     { name: "Leila K.", initials: "LK", photo: "https://i.pravatar.cc/120?img=5", route: "Weekend rental", text: isFr ? "Le contrat etait clair, le prix final identique au devis et la remise tres rapide." : "The contract was clear, the final price matched the quote and pickup was very fast." },
   ];
 

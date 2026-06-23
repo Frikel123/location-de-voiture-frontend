@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+﻿import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Fuel, Receipt, ShieldCheck, TrendingUp, Wrench } from "lucide-react";
@@ -39,10 +39,10 @@ const Expenses = () => {
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric label="Monthly revenue" value={`${money(monthlyRevenue)} �`} icon={TrendingUp} tone="from-emerald-500 to-cyan-500" />
-        <Metric label="Monthly expenses" value={`${money(monthlyExpenses)} �`} icon={Receipt} tone="from-rose-500 to-orange-500" />
-        <Metric label="Monthly profit" value={`${money(profit)} �`} icon={ShieldCheck} tone="from-sky-500 to-indigo-500" />
-        <Metric label="Planned costs" value={`${money(expenses.filter((expense) => expense.status === "Planned").reduce((sum, expense) => sum + expense.amount, 0))} �`} icon={Wrench} tone="from-amber-500 to-yellow-500" />
+        <Metric label="Monthly revenue" value={`${money(monthlyRevenue)} DH`} icon={TrendingUp} tone="from-emerald-500 to-cyan-500" />
+        <Metric label="Monthly expenses" value={`${money(monthlyExpenses)} DH`} icon={Receipt} tone="from-rose-500 to-orange-500" />
+        <Metric label="Monthly profit" value={`${money(profit)} DH`} icon={ShieldCheck} tone="from-sky-500 to-indigo-500" />
+        <Metric label="Planned costs" value={`${money(expenses.filter((expense) => expense.status === "Planned").reduce((sum, expense) => sum + expense.amount, 0))} DH`} icon={Wrench} tone="from-amber-500 to-yellow-500" />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
@@ -54,7 +54,7 @@ const Expenses = () => {
                 <Pie data={byCategory} dataKey="amount" nameKey="category" innerRadius={60} outerRadius={110} paddingAngle={4}>
                   {byCategory.map((entry, index) => <Cell key={entry.category} fill={colors[index % colors.length]} />)}
                 </Pie>
-                <Tooltip formatter={(value) => [`${money(Number(value))} �`, "Amount"]} />
+                <Tooltip formatter={(value) => [`${money(Number(value))} DH`, "Amount"]} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -82,7 +82,7 @@ const Expenses = () => {
                     <TableCell>{expense.vehicle}</TableCell>
                     <TableCell>{expense.vendor}</TableCell>
                     <TableCell><Badge variant="outline" className="rounded-full">{expense.status}</Badge></TableCell>
-                    <TableCell className="text-right font-semibold">{money(expense.amount)} �</TableCell>
+                    <TableCell className="text-right font-semibold">{money(expense.amount)} DH</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

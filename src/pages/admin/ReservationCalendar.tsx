@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, eachDayOfInterval, endOfMonth, endOfWeek, format, isWithinInterval, parseISO, startOfMonth, startOfWeek } from "date-fns";
 import { CalendarDays, ChevronLeft, ChevronRight, GripVertical } from "lucide-react";
@@ -97,7 +97,7 @@ const ReservationCalendar = () => {
                           <GripVertical className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                           <div className="min-w-0">
                             <p className="truncate text-sm font-semibold">{booking.customerName}</p>
-                            <p className="truncate text-xs text-muted-foreground">{booking.car?.name ?? "Vehicle"} - {booking.totalPrice} �</p>
+                            <p className="truncate text-xs text-muted-foreground">{booking.car?.name ?? "Vehicle"} - {booking.totalPrice} DH</p>
                           </div>
                         </div>
                       </div>

@@ -101,7 +101,7 @@ export const RecentReservations: React.FC<{ bookings: Booking[] }> = ({ bookings
                   </TableCell>
                   <TableCell>
                     <div className="text-sm font-medium text-foreground">{booking.car?.name ?? booking.car?.model ?? "Véhicule"}</div>
-                    <div className="mt-1 text-xs text-muted-foreground">{booking.car?.brand ?? "N1 Lux Cars"}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{booking.car?.brand ?? "Service LLD"}</div>
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-sm text-muted-foreground">{formatDate(booking.startDate)}</TableCell>
                   <TableCell className="whitespace-nowrap text-sm text-muted-foreground">{formatDate(booking.endDate)}</TableCell>

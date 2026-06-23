@@ -65,18 +65,18 @@ const palette = {
 };
 
 const fallbackAgency = {
-  name: "N1 Lux Cars",
-  phone: "0646494968",
-  email: "contact@n1-lux-cars.ma",
-  website: "n1luxcars.netlify.app",
-  address: "VCRF+F8M, Meknès",
+  name: "Service LLD",
+  phone: "0661927502",
+  email: "contact@servicelld.ma",
+  website: "servicelld.netlify.app",
+  address: "VC98+6G Meknes",
 };
 
 const formatMoney = (value: number | string | undefined | null) => {
   const amount = Number(value) || 0;
   return `${new Intl.NumberFormat("fr-MA", {
     maximumFractionDigits: 0,
-  }).format(amount)} �`;
+  }).format(amount)} DH`;
 };
 
 const formatDate = (date?: string | null) => {
@@ -95,21 +95,21 @@ const cleanText = (value: string | number | undefined | null) => {
   const retiredBrandPattern = new RegExp(["N", "A", "Y", "S", "\\s*", "C", "A", "R"].join(""), "gi");
   const retiredPrefixPattern = new RegExp(["\\b", "N", "C", "-"].join(""), "gi");
   return String(value)
-    .replace(retiredBrandPattern, "N1 Lux Cars")
-    .replace(retiredPrefixPattern, "N1-")
+    .replace(retiredBrandPattern, "Service LLD")
+    .replace(retiredPrefixPattern, "SLLD-")
     .trim();
 };
 
 const buildDisplayContractNumber = (contract: PdfContract) => {
   const current = cleanText(contract.contractNumber);
-  if (/^N1-\d{4}-\d{5}$/i.test(current)) return current.toUpperCase();
+  if (/^SLLD-\d{4}-\d{5}$/i.test(current)) return current.toUpperCase();
 
   const rawDate = contract.createdAt || contract.signedAt || new Date().toISOString();
   const parsedDate = new Date(rawDate);
   const year = Number.isNaN(parsedDate.getTime()) ? new Date().getFullYear() : parsedDate.getFullYear();
   const rawSequence = String(contract.id || current || Date.now()).replace(/\D/g, "");
   const sequence = rawSequence.slice(-5).padStart(5, "0");
-  return `N1-${year}-${sequence}`;
+  return `SLLD-${year}-${sequence}`;
 };
 
 const setFont = (doc: jsPDF, style: FontStyle = "normal", size = 10, color: RGB = palette.ink) => {
@@ -143,7 +143,7 @@ const drawLogo = (doc: jsPDF, x: number, y: number, size = 40) => {
   doc.setFillColor(...palette.gold);
   doc.circle(x + size / 2, y + size / 2, size * 0.28, "F");
   setFont(doc, "bold", 10, palette.black);
-  doc.text("N1", x + size / 2, y + size / 2 + 3, { align: "center" });
+  doc.text("LLD", x + size / 2, y + size / 2 + 3, { align: "center" });
 };
 
 const drawStatusBadge = (doc: jsPDF, status: string, x: number, y: number) => {
@@ -170,7 +170,7 @@ const drawHeader = (layout: Layout, isFirstPage: boolean) => {
 
   drawLogo(doc, margin, 22, 40);
   setFont(doc, "bold", 18, palette.paper);
-  doc.text("N1 Lux Cars", margin + 52, 39);
+  doc.text("Service LLD", margin + 52, 39);
   setFont(doc, "normal", 8.5, [214, 219, 228]);
   doc.text("Premium Car Rental Contract", margin + 52, 55);
 
@@ -206,7 +206,7 @@ const drawFooter = (layout: Layout) => {
   doc.text("Scan to verify contract authenticity", pageWidth / 2, footerTop + 76, { align: "center" });
 
   setFont(doc, "bold", 8.5, palette.ink);
-  doc.text("N1 Lux Cars", margin, footerTop + 20);
+  doc.text("Service LLD", margin, footerTop + 20);
   setFont(doc, "normal", 7.4, palette.muted);
   doc.text(`Phone: ${cleanText(contract.agencyPhone || fallbackAgency.phone)}`, margin, footerTop + 34);
   doc.text(`Email: ${cleanText(contract.agencyEmail || fallbackAgency.email)}`, margin, footerTop + 47);
@@ -500,7 +500,7 @@ const drawSignatureSection = (layout: Layout) => {
     },
     {
       title: "AGENCY SIGNATURE",
-      name: contract.agencyName || "N1 Lux Cars",
+      name: contract.agencyName || "Service LLD",
       signature: agencySignature,
       x: margin + blockWidth + gap,
     },

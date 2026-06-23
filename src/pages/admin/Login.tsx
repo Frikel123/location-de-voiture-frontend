@@ -66,7 +66,7 @@ const Login = () => {
               </div>
               <div className="space-y-3">
                 <p className="text-sm uppercase tracking-[0.24em] text-sky-300/80">Espace administrateur</p>
-                <h1 className="text-4xl font-semibold text-white sm:text-5xl">Connectez-vous a N1 Lux Cars</h1>
+                <h1 className="text-4xl font-semibold text-white sm:text-5xl">Connectez-vous a Service LLD</h1>
                 <p className="max-w-md text-base text-slate-300">
                   Accedez a votre tableau de bord, gerez les reservations, contrats et clients en toute securite.
                 </p>

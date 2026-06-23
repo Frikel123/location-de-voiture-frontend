@@ -16,16 +16,16 @@ import { setSeo } from "@/lib/seo";
 const Index = () => {
   useEffect(() => {
     setSeo({
-      title: "N1 Lux Cars - Premium car rental experience in Morocco",
+      title: "Service LLD - Premium car rental experience in Morocco",
       description: "Premium luxury car rental platform in Morocco with live availability, instant booking, WhatsApp reservations, airport delivery and insured vehicles.",
       canonical: "/fr",
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "AutoRental",
-        name: "N1 Lux Cars",
+        name: "Service LLD",
         areaServed: "Morocco",
         telephone: "+212650958675",
-        url: "https://n1-lux-cars.ma",
+        url: "https://service-lld.ma",
       },
     });
   }, []);

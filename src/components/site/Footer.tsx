@@ -64,7 +64,7 @@ export const Footer = () => {
             <Button className="rounded-full">{isFr ? "OK" : "Join"}</Button>
           </div>
           <div className="mt-5 text-sm text-white/62">
-            <p>N1 Lux Cars</p>
+            <p>Service LLD</p>
             <p>{PHONE_DISPLAY}</p>
             <p className="mt-1">{t("footer.welcome")}</p>
           </div>
@@ -72,7 +72,7 @@ export const Footer = () => {
       </div>
       <div className="border-t border-white/10 py-5">
         <div className="container flex flex-col gap-3 text-sm text-white/48 md:flex-row md:items-center md:justify-between">
-          <p>&copy; {new Date().getFullYear()} N1 Lux Cars. {t("footer.rights")}</p>
+          <p>&copy; {new Date().getFullYear()} Service LLD. {t("footer.rights")}</p>
           <div className="flex gap-4">
             <a href="#contact" className="hover:text-primary">{isFr ? "Mentions legales" : "Legal"}</a>
             <a href="#contact" className="hover:text-primary">{isFr ? "Confidentialite" : "Privacy"}</a>

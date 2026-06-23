@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+﻿import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ const BookingFlow = () => {
     phone: "",
     pickupDate: today,
     returnDate: tomorrow,
-    pickupLocation: "Fez Airport",
+    pickupLocation: "Meknes Airport",
     notes: "",
   });
 
@@ -47,8 +47,8 @@ const BookingFlow = () => {
 
   useEffect(() => {
     setSeo({
-      title: "Online car booking | N1 Lux Cars",
-      description: "Complete your N1 Lux Cars rental in five steps with vehicle selection, customer details, rental options, contract preview and confirmation.",
+      title: "Online car booking | Service LLD",
+      description: "Complete your Service LLD rental in five steps with vehicle selection, customer details, rental options, contract preview and confirmation.",
       canonical: `/${lang}/booking`,
     });
   }, [lang]);
@@ -60,7 +60,7 @@ const BookingFlow = () => {
     event.preventDefault();
     if (step < steps.length - 1) return next();
     window.open(
-      waLink(`N1 Lux Cars booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} �.`),
+      waLink(`Service LLD booking confirmation request: ${selectedVehicle.name}, ${form.pickupDate} to ${form.returnDate}, ${form.fullName}, ${form.phone}, total ${total} DH.`),
       "_blank",
       "noopener,noreferrer",
     );
@@ -72,7 +72,7 @@ const BookingFlow = () => {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <Badge className="mb-3 rounded-full">Secure online booking</Badge>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Reserve your N1 Lux Cars vehicle</h1>
+            <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Reserve your Service LLD vehicle</h1>
             <p className="mt-3 max-w-2xl text-muted-foreground">A clear five-step flow with pricing, contract preview and instant WhatsApp confirmation.</p>
           </div>
           <Button asChild variant="outline" className="rounded-full"><Link to={`/${lang}#voitures`}>Back to fleet</Link></Button>
@@ -102,7 +102,7 @@ const BookingFlow = () => {
                     >
                       <img src={vehicle.gallery[0]} alt={vehicle.name} className="aspect-[16/10] w-full rounded-2xl object-cover" loading="lazy" />
                       <h3 className="mt-3 font-semibold">{vehicle.name}</h3>
-                      <p className="text-sm text-muted-foreground">{vehicle.category} • {vehicle.price} �/day</p>
+                      <p className="text-sm text-muted-foreground">{vehicle.category} âDH¢ {vehicle.price} DH/day</p>
                     </button>
                   ))}
                 </div>
@@ -136,14 +136,14 @@ const BookingFlow = () => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
                 <h2 className="text-2xl font-semibold">Step 4: Contract preview</h2>
                 <div className="mt-5 rounded-3xl border bg-background p-6">
-                  <div className="flex items-center gap-3"><ShieldCheck className="h-6 w-6 text-primary" /><strong>N1 Lux Cars rental agreement preview</strong></div>
+                  <div className="flex items-center gap-3"><ShieldCheck className="h-6 w-6 text-primary" /><strong>Service LLD rental agreement preview</strong></div>
                   <div className="mt-5 grid gap-3 text-sm md:grid-cols-2">
                     <p><span className="text-muted-foreground">Vehicle:</span> {selectedVehicle.name}</p>
                     <p><span className="text-muted-foreground">Customer:</span> {form.fullName || "To be completed"}</p>
                     <p><span className="text-muted-foreground">Dates:</span> {form.pickupDate} to {form.returnDate}</p>
                     <p><span className="text-muted-foreground">Pickup:</span> {form.pickupLocation}</p>
                     <p><span className="text-muted-foreground">Insurance:</span> Included</p>
-                    <p><span className="text-muted-foreground">Total TTC:</span> {total} �</p>
+                    <p><span className="text-muted-foreground">Total TTC:</span> {total} DH</p>
                   </div>
                 </div>
               </motion.div>
@@ -153,7 +153,7 @@ const BookingFlow = () => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
                 <CheckCircle2 className="mx-auto h-16 w-16 text-primary" />
                 <h2 className="mt-4 text-3xl font-semibold">Step 5: Confirmation</h2>
-                <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Review complete. Submit to send the booking request to N1 Lux Cars on WhatsApp for final confirmation.</p>
+                <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Review complete. Submit to send the booking request to Service LLD on WhatsApp for final confirmation.</p>
               </motion.div>
             )}
 
@@ -167,12 +167,12 @@ const BookingFlow = () => {
             <img src={selectedVehicle.gallery[0]} alt={selectedVehicle.name} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             <h2 className="mt-4 text-xl font-semibold">{selectedVehicle.name}</h2>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <p>{selectedVehicle.category} • {selectedVehicle.transmission} • {selectedVehicle.fuel}</p>
-              <p>{rentalDays} day(s) x {selectedVehicle.price} �</p>
+              <p>{selectedVehicle.category} âDH¢ {selectedVehicle.transmission} âDH¢ {selectedVehicle.fuel}</p>
+              <p>{rentalDays} day(s) x {selectedVehicle.price} DH</p>
             </div>
             <div className="mt-5 rounded-2xl bg-primary/10 p-4 text-primary">
               <p className="text-sm">Total estimate</p>
-              <p className="text-3xl font-bold">{total} �</p>
+              <p className="text-3xl font-bold">{total} DH</p>
             </div>
           </Card>
         </form>

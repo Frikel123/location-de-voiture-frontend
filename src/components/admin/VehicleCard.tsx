@@ -1,10 +1,10 @@
-import React from "react";
+﻿import React from "react";
 import { Button } from "@/components/ui/button";
 
 type Car = any;
 
 export const VehicleCard: React.FC<{ car: Car }> = ({ car }) => {
-  const name = car?.name || car?.model || "Véhicule";
+  const name = car?.name || car?.model || "VÃ©hicule";
   const brand = car?.brand || car?.make || "Marque";
   const price = car?.dailyPrice || car?.pricePerDay || car?.price || 0;
   const image = car?.images?.[0] || car?.imageUrl || "/assets/placeholder-car.jpg";
@@ -24,14 +24,14 @@ export const VehicleCard: React.FC<{ car: Car }> = ({ car }) => {
           <p className="mt-1 text-xs text-muted-foreground">{brand}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm font-semibold">{price} �</p>
+          <p className="text-sm font-semibold">{price} DH</p>
           <p className="text-xs text-muted-foreground">/jour</p>
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
         <Button variant="ghost" size="sm" className="btn-outline-gold">Voir</Button>
         <div className="flex gap-2">
-          <Button variant="secondary" size="sm" className="rounded-full">Réserver</Button>
+          <Button variant="secondary" size="sm" className="rounded-full">RÃ©server</Button>
           <Button variant="outline" size="sm" className="rounded-full">Modifier</Button>
         </div>
       </div>

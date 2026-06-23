@@ -44,9 +44,9 @@ export const createEmptyContractPayload = (): Omit<ContractPayload, "contractNum
   reservationDeposit: 0,
   reservationTotalTTC: 0,
   reservationPaymentMethod: "Esp�ces",
-  agencyName: "N1 Lux Cars",
-  agencyAddress: "VCRF+F8M, Meknès",
-  agencyPhone: "0646494968",
+  agencyName: "Service LLD",
+  agencyAddress: "VC98+6G Meknes",
+  agencyPhone: "0661927502",
   insuranceName: "Assurance tous risques",
   insurancePolicyNumber: "",
   insuranceIncluded: true,
@@ -62,7 +62,7 @@ export const buildContractNumber = () => {
   const year = date.getFullYear();
   // generate a short sequence from timestamp to simulate sequential id
   const seq = String(date.getTime()).slice(-5).padStart(5, "0");
-  return `N1-${year}-${seq}`;
+  return `SLLD-${year}-${seq}`;
 };
 
 export const buildContractToken = (contractNumber: string) =>

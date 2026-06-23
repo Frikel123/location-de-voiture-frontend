@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
-const formatMoney = (v = 0) => new Intl.NumberFormat('fr-MA', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+const formatMoney = (v = 0) => new Intl.NumberFormat('fr-MA', { style: 'currency', currency: 'MAD', maximumFractionDigits: 0 }).format(v);
 
 type Props = {
   contracts: Contract[];

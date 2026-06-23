@@ -72,7 +72,7 @@ const getUserFromToken = (token: string): AuthUser | null => {
 
   return {
     id: payload.sub || payload.id || "admin",
-    email: payload.email || "admin@n1-lux-cars.ma",
+    email: payload.email || "admin@service-lld.ma",
     role: payload.role || "admin",
   };
 };
@@ -173,7 +173,7 @@ export default function AdminLoginPage() {
             Espace administrateur
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Connexion N1 Lux Cars
+            Connexion Service LLD
           </h1>
           <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">
             Accedez au tableau de bord pour gerer les voitures, reservations,
@@ -208,7 +208,7 @@ export default function AdminLoginPage() {
                 autoComplete="username"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="admin@n1-lux-cars.ma"
+                placeholder="admin@service-lld.ma"
                 className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none transition focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 dark:border-white/10 dark:bg-slate-950"
                 required
               />

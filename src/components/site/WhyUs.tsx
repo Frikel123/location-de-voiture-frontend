@@ -18,7 +18,7 @@ export const WhyUs = () => {
     {
       icon: Headphones,
       title: isFr ? "Support local" : "Local support",
-      desc: isFr ? "Une equipe a Fes pour t'aider avant et pendant la location." : "A Fez-based team to help before and during your rental.",
+      desc: isFr ? "Une equipe a Meknes pour t'aider avant et pendant la location." : "A Meknes-based team to help before and during your rental.",
     },
   ];
 
@@ -33,7 +33,7 @@ export const WhyUs = () => {
           className="mb-12 max-w-3xl"
         >
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            {isFr ? "Experience N1 Lux Cars" : "N1 Lux Cars experience"}
+            {isFr ? "Experience Service LLD" : "Service LLD experience"}
           </p>
           <h2 className="text-balance text-3xl font-bold tracking-tight md:text-5xl">{t("why.title")}</h2>
           <p className="mt-4 text-base leading-7 text-white/65 md:text-lg">{t("why.subtitle")}</p>

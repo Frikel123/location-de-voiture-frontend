@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+﻿import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { jsPDF } from "jspdf";
@@ -23,15 +23,15 @@ const Reports = () => {
   const exportPdf = useCallback(() => {
     const doc = new jsPDF({ format: "a4", unit: "pt" });
     doc.setFontSize(20);
-    doc.text("N1 Lux Cars advanced reports", 40, 48);
+    doc.text("Service LLD advanced reports", 40, 48);
     doc.setFontSize(12);
-    doc.text(`Revenue this month: ${money(revenueMonths.at(-1)?.revenue ?? 0)} �`, 40, 86);
+    doc.text(`Revenue this month: ${money(revenueMonths.at(-1)?.revenue ?? 0)} DH`, 40, 86);
     doc.text(`Top vehicle: ${vehicleRevenue[0]?.vehicle ?? "-"}`, 40, 106);
     doc.text(`Top customer: ${customers[0]?.customer ?? "-"}`, 40, 126);
     vehicleRevenue.slice(0, 8).forEach((row, index) => {
-      doc.text(`${index + 1}. ${row.vehicle}: ${money(row.revenue)} � (${row.rentals} rentals)`, 40, 170 + index * 20);
+      doc.text(`${index + 1}. ${row.vehicle}: ${money(row.revenue)} DH (${row.rentals} rentals)`, 40, 170 + index * 20);
     });
-    doc.save("atlas_cars_advanced_reports.pdf");
+    doc.save("service_lld_advanced_reports.pdf");
   }, [customers, revenueMonths, vehicleRevenue]);
 
   const exportExcel = useCallback(() => {
@@ -39,7 +39,7 @@ const Reports = () => {
     utils.book_append_sheet(workbook, utils.json_to_sheet(revenueMonths), "Revenue by month");
     utils.book_append_sheet(workbook, utils.json_to_sheet(vehicleRevenue), "Revenue by vehicle");
     utils.book_append_sheet(workbook, utils.json_to_sheet(customers), "Top customers");
-    writeFile(workbook, "atlas_cars_advanced_reports.xlsx");
+    writeFile(workbook, "service_lld_advanced_reports.xlsx");
   }, [customers, revenueMonths, vehicleRevenue]);
 
   return (
@@ -67,7 +67,7 @@ const Reports = () => {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                 <XAxis dataKey="month" />
                 <YAxis />
-                <Tooltip formatter={(value) => [`${money(Number(value))} �`, "Revenue"]} />
+                <Tooltip formatter={(value) => [`${money(Number(value))} DH`, "Revenue"]} />
                 <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[10, 10, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -80,7 +80,7 @@ const Reports = () => {
               <BarChart data={vehicleRevenue.slice(0, 8)} layout="vertical" margin={{ left: 30 }}>
                 <XAxis type="number" hide />
                 <YAxis dataKey="vehicle" type="category" width={120} />
-                <Tooltip formatter={(value) => [`${money(Number(value))} �`, "Revenue"]} />
+                <Tooltip formatter={(value) => [`${money(Number(value))} DH`, "Revenue"]} />
                 <Bar dataKey="revenue" fill="#06b6d4" radius={[0, 10, 10, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -113,7 +113,7 @@ const ReportTable = ({ title, rows, first }: { title: string; rows: any[]; first
             <TableRow key={row[first]}>
               <TableCell className="font-medium">{row[first]}</TableCell>
               <TableCell className="text-center">{row.rentals}</TableCell>
-              <TableCell className="text-right font-semibold">{money(row.revenue)} �</TableCell>
+              <TableCell className="text-right font-semibold">{money(row.revenue)} DH</TableCell>
             </TableRow>
           ))}
         </TableBody>

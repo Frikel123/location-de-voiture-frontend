@@ -6,7 +6,7 @@ export const TrustSection = () => {
   const { language } = useI18n();
   const isFr = language === "fr";
   const items = [
-    { icon: Plane, title: isFr ? "Livraison aeroport" : "Airport delivery", desc: isFr ? "Prise en charge flexible a Fes." : "Flexible pickup in Fez." },
+    { icon: Plane, title: isFr ? "Livraison aeroport" : "Airport delivery", desc: isFr ? "Prise en charge flexible a Meknes." : "Flexible pickup in Meknes." },
     { icon: ShieldCheck, title: isFr ? "Assurance incluse" : "Insurance included", desc: isFr ? "Roulez avec une confirmation claire." : "Drive with clear confirmation." },
     { icon: BadgeCheck, title: isFr ? "Agence verifiee" : "Verified agency", desc: isFr ? "Une vraie equipe locale." : "A real local team." },
     { icon: Headphones, title: isFr ? "Support WhatsApp rapide" : "Fast WhatsApp support", desc: isFr ? "Reponse rapide avant et apres depart." : "Quick replies before and after pickup." },

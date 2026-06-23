@@ -278,13 +278,13 @@ const Dashboard = () => {
   const downloadDashboardPdf = useCallback(() => {
     const doc = new jsPDF({ format: "a4", unit: "pt" });
     doc.setFontSize(20);
-    doc.text("N1 Lux Cars Dashboard Report", 40, 50);
+    doc.text("Service LLD Dashboard Report", 40, 50);
     doc.setFontSize(12);
     doc.text(`Revenus mensuels: ${formatMoney(analytics.currentMonthRevenue)}`, 40, 90);
     doc.text(`Taux d'occupation: ${analytics.occupancy}%`, 40, 110);
     doc.text(`Clients: ${analytics.customers}`, 40, 130);
     doc.text(`Contrats signés: ${analytics.signedContracts}`, 40, 150);
-    doc.save("n1-lux-cars_dashboard_report.pdf");
+    doc.save("service-lld_dashboard_report.pdf");
   }, [analytics]);
 
   const downloadDashboardExcel = useCallback(() => {
@@ -292,7 +292,7 @@ const Dashboard = () => {
     const worksheet = utils.json_to_sheet(rows);
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Revenus");
-    writeFile(workbook, "n1-lux-cars_revenue_report.xlsx");
+    writeFile(workbook, "service-lld_revenue_report.xlsx");
   }, [analytics.revenueMonths]);
 
   const downloadDashboardCsv = useCallback(() => {
@@ -300,7 +300,7 @@ const Dashboard = () => {
     const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", "n1-lux-cars_revenue_report.csv");
+    link.setAttribute("download", "service-lld_revenue_report.csv");
     link.click();
   }, [analytics.revenueMonths]);
 
@@ -319,9 +319,9 @@ const Dashboard = () => {
           <div className="max-w-2xl">
             <BrandLogo className="mb-3" markClassName="h-12 w-12" textClassName="text-white" />
             <Badge className="mb-3 rounded-full bg-primary/15 text-primary">Luxury command center</Badge>
-            <h1 className="brand-heading hero-title font-semibold tracking-tight text-gray-900 dark:text-white">Welcome to N1 Lux Cars Administration</h1>
+            <h1 className="brand-heading hero-title font-semibold tracking-tight text-gray-900 dark:text-white">Pilotage complet des locations Service LLD</h1>
             <p className="mt-2 max-w-xl text-sm leading-6 text-gray-600 dark:text-slate-300">
-              Premium analytics for fleet performance, reservations, revenue, and client experience.
+              Welcome to Service LLD Administration
             </p>
           </div>
 

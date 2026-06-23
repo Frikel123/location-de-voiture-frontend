@@ -30,14 +30,14 @@ type SettingsState = {
   weeklyReport: boolean;
 };
 
-const storageKey = "atlas-cars-admin-settings";
+const storageKey = "service-lld-admin-settings";
 
 const defaultSettings: SettingsState = {
-  companyName: "N1 Lux Cars",
-  phone: "0646494968",
-  whatsapp: "0646494968",
-  address: "VCRF+F8M, Meknès",
-  currency: "EUR",
+  companyName: "Service LLD",
+  phone: "0661927502",
+  whatsapp: "0661927502",
+  address: "VC98+6G Meknes",
+  currency: "MAD",
   language: "fr",
   emailNotifications: true,
   bookingAlerts: true,
@@ -124,7 +124,7 @@ const Settings = () => {
                       <Select value={settings.currency} onValueChange={(value) => update("currency", value)}>
                         <SelectTrigger className="rounded-2xl"><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="EUR">EUR - Euro</SelectItem>
+                          <SelectItem value="MAD">MAD - Dirham marocain</SelectItem>
                           <SelectItem value="USD">USD - Dollar</SelectItem>
                         </SelectContent>
                       </Select>

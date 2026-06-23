@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isWithinInterval, parseISO } from "date-fns";
 import { api, Booking, Car, CarPayload } from "@/lib/api";
@@ -320,14 +320,14 @@ const Cars = () => {
                     <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">Aucune image</div>
                   )}
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#061426]/85 to-transparent" />
-                  <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.18em] text-white backdrop-blur">N1 Lux Fleet</div>
+                  <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-xs uppercase tracking-[0.18em] text-white backdrop-blur">Service LLD Fleet</div>
                 </div>
 
                 <CardContent className="space-y-4 p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h3 className="truncate font-serif text-lg font-semibold tracking-tight">{car.name}</h3>
-                      <p className="mt-1 text-sm font-medium text-primary">{car.price} � / jour</p>
+                      <p className="mt-1 text-sm font-medium text-primary">{car.price} DH / jour</p>
                     </div>
                     <Badge variant="outline" className={`shrink-0 rounded-full px-3 py-1 ${statusClassName(specs.status)}`}>
                       {specs.status}
@@ -366,7 +366,7 @@ const Cars = () => {
               <Input id="car-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Dacia Logan" className="rounded-2xl" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="car-price">Prix par jour (€)</Label>
+              <Label htmlFor="car-price">Prix par jour (DH)</Label>
               <Input id="car-price" type="number" min="1" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="250" className="rounded-2xl" />
             </div>
             <div className="space-y-2">

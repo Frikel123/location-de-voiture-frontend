@@ -29,7 +29,7 @@ const formatDate = (value?: string | Date | null) => {
 const formatMoney = (value?: number | null) =>
   new Intl.NumberFormat("fr-MA", {
     style: "currency",
-    currency: "EUR",
+    currency: "MAD",
     maximumFractionDigits: 0,
   }).format(Number(value ?? 0));
 

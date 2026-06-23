@@ -3,7 +3,7 @@ import { ContractStatusBadge } from "@/components/contracts/ContractStatusBadge"
 import { ContractQrCode } from "@/components/contracts/ContractQrCode";
 
 const formatMoney = (value: number) =>
-  new Intl.NumberFormat("fr-MA", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Number(value) || 0);
+  new Intl.NumberFormat("fr-MA", { style: "currency", currency: "MAD", maximumFractionDigits: 0 }).format(Number(value) || 0);
 
 const formatDate = (date?: string) => {
   if (!date) return "-";
@@ -26,7 +26,7 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
     <header className="bg-slate-950 px-6 py-6 text-white print:bg-slate-950">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.32em] text-cyan-200">N1 Lux Cars</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-cyan-200">Service LLD</p>
           <h2 className="mt-3 text-2xl font-semibold">Contrat de location</h2>
           <p className="mt-1 text-sm text-slate-300">Contrat #{contract.contractNumber}</p>
         </div>
@@ -46,9 +46,9 @@ export const ContractPreview = ({ contract }: { contract: Contract }) => {
       <section>
         <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">Agence</h3>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          <Field label="Nom" value={contract.agencyName || "N1 Lux Cars"} />
-          <Field label="Adresse" value={contract.agencyAddress || "VCRF+F8M, Meknès"} />
-          <Field label="Telephone" value={contract.agencyPhone || "0646494968"} />
+          <Field label="Nom" value={contract.agencyName || "Service LLD"} />
+          <Field label="Adresse" value={contract.agencyAddress || "VC98+6G Meknes"} />
+          <Field label="Telephone" value={contract.agencyPhone || "0661927502"} />
         </div>
       </section>
 

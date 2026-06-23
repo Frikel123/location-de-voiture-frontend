@@ -119,7 +119,7 @@ export const AdminLayout = () => {
   const unreadCount = notificationsState.filter((item) => item.unread).length;
 
   const initials = useMemo(() => {
-    const email = user?.email ?? "admin@n1-lux-cars.ma";
+    const email = user?.email ?? "admin@service-lld.ma";
     return email.slice(0, 2).toUpperCase();
   }, [user?.email]);
 
@@ -132,7 +132,7 @@ export const AdminLayout = () => {
 
   const currentTitle =
     pageTitles[location.pathname] ??
-    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "N1 Lux Cars Admin");
+    (location.pathname.startsWith("/admin/contracts") ? "Contrats" : "Service LLD Admin");
 
   const breadcrumbs = useMemo(() => {
     const segments = location.pathname.replace(/^\//, "").split("/").filter(Boolean);
@@ -164,11 +164,11 @@ export const AdminLayout = () => {
             <BrandLogo showText={false} markClassName="h-12 w-12" />
             {!collapsed ? (
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">N1 Lux Cars</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">Service LLD</p>
                 <p className="text-xs text-slate-400">Luxury administration</p>
               </div>
             ) : (
-              <span className="sr-only">N1 Lux Cars admin</span>
+              <span className="sr-only">Service LLD admin</span>
             )}
           </div>
           <Button
@@ -243,7 +243,7 @@ export const AdminLayout = () => {
               </Button>
 
               <div className="min-w-0">
-                <p className="text-xs uppercase tracking-[0.22em] text-primary">N1 Lux Cars</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-primary">Service LLD</p>
                 <h1 className="truncate text-xl font-semibold md:text-2xl">{currentTitle}</h1>
               </div>
 

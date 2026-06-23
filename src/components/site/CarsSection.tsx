@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -31,18 +31,18 @@ export const CarsSection = () => {
   const [priceMax, setPriceMax] = useState(1200);
   const [sortBy, setSortBy] = useState<SortKey>("popular");
   const [view, setView] = useState<ViewMode>("grid");
-  const [favorites, setFavorites] = useState<string[]>(() => getStoredList("atlas:favorites"));
-  const [compare, setCompare] = useState<string[]>(() => getStoredList("atlas:compare"));
-  const [recent, setRecent] = useState<string[]>(() => getStoredList("atlas:recent"));
+  const [favorites, setFavorites] = useState<string[]>(() => getStoredList("service-lld:favorites"));
+  const [compare, setCompare] = useState<string[]>(() => getStoredList("service-lld:compare"));
+  const [recent, setRecent] = useState<string[]>(() => getStoredList("service-lld:recent"));
 
   const { data: cars, isLoading } = useQuery({ queryKey: ["public-cars"], queryFn: () => api.get<Car[]>("/cars") });
   const fleet = useMemo(() => buildFleet(cars), [cars]);
   const maxFleetPrice = useMemo(() => Math.max(...fleet.map((car) => car.price), 1200), [fleet]);
 
   useEffect(() => setPriceMax(maxFleetPrice), [maxFleetPrice]);
-  useEffect(() => localStorage.setItem("atlas:favorites", JSON.stringify(favorites)), [favorites]);
-  useEffect(() => localStorage.setItem("atlas:compare", JSON.stringify(compare)), [compare]);
-  useEffect(() => localStorage.setItem("atlas:recent", JSON.stringify(recent)), [recent]);
+  useEffect(() => localStorage.setItem("service-lld:favorites", JSON.stringify(favorites)), [favorites]);
+  useEffect(() => localStorage.setItem("service-lld:compare", JSON.stringify(compare)), [compare]);
+  useEffect(() => localStorage.setItem("service-lld:recent", JSON.stringify(recent)), [recent]);
 
   const options = useMemo(
     () => ({
@@ -95,13 +95,13 @@ export const CarsSection = () => {
       <div className="p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-primary">{vehicle.brand} • {vehicle.category}</p>
+            <p className="text-sm font-medium text-primary">{vehicle.brand} âDH¢ {vehicle.category}</p>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight">{vehicle.name}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{vehicle.transmission} • {vehicle.fuel} • {vehicle.seats} seats • {vehicle.year}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{vehicle.transmission} âDH¢ {vehicle.fuel} âDH¢ {vehicle.seats} seats âDH¢ {vehicle.year}</p>
           </div>
           <div className="text-right">
             <p className="text-3xl font-bold">{vehicle.price}</p>
-            <p className="text-sm text-muted-foreground">€/day</p>
+            <p className="text-sm text-muted-foreground">DH/day</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export const CarsSection = () => {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Button asChild className="rounded-2xl"><Link to={`/${language}/booking?vehicle=${vehicle.slug}`} onClick={() => remember(vehicle)}>Instant booking</Link></Button>
           <Button asChild variant="outline" className="rounded-2xl">
-            <a href={waLink(`Hello N1 Lux Cars, I want to reserve ${vehicle.name} at ${vehicle.price} �/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
+            <a href={waLink(`Hello Service LLD, I want to reserve ${vehicle.name} at ${vehicle.price} DH/day.`)} target="_blank" rel="noopener"><MessageCircle className="mr-2 h-4 w-4" />WhatsApp</a>
           </Button>
         </div>
       </div>
@@ -185,7 +185,7 @@ export const CarsSection = () => {
           </div>
           <div className="mt-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
             <label className="space-y-2 text-sm text-muted-foreground">
-              <span>Price range: up to {priceMax} �/day</span>
+              <span>Price range: up to {priceMax} DH/day</span>
               <input type="range" min={200} max={maxFleetPrice} step={50} value={priceMax} onChange={(event) => setPriceMax(Number(event.target.value))} className="w-full accent-primary" />
             </label>
             <Badge variant="outline" className="w-fit rounded-full px-4 py-2"><Search className="mr-2 h-4 w-4" />{filtered.length} available</Badge>
@@ -219,7 +219,7 @@ const MiniRail = ({ title, vehicles, language, remember, empty = "Coming soon" }
       {vehicles.length ? vehicles.map((vehicle) => (
         <Link key={vehicle.id} to={`/${language}/cars/${vehicle.slug}`} onClick={() => remember(vehicle)} className="flex items-center gap-3 rounded-2xl bg-secondary p-3 transition hover:bg-primary/10">
           <img src={vehicle.gallery[0]} alt={vehicle.name} className="h-16 w-20 rounded-xl object-cover" loading="lazy" />
-          <span><strong className="block text-sm">{vehicle.name}</strong><span className="text-xs text-muted-foreground">{vehicle.price} �/day</span></span>
+          <span><strong className="block text-sm">{vehicle.name}</strong><span className="text-xs text-muted-foreground">{vehicle.price} DH/day</span></span>
         </Link>
       )) : <p className="text-sm text-muted-foreground">{empty}</p>}
     </div>
